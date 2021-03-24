@@ -1,0 +1,196 @@
+Use git as local VCS
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~
+$ mkdir project_dir
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~
+$ cd project_dir
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/project_dir
+$ git init
+Initialized empty Git repository in C:/Users/padmini/project_dir/.git/
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/project_dir (master)
+$ touch index.html
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/project_dir (master)
+$ git status
+On branch master
+
+No commits yet
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        index.html
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/project_dir (master)
+$ git add index.html
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/project_dir (master)
+$ git commit -m "Adding index.html first time"
+[master (root-commit) b093df7] Adding index.html first time
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 index.html
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/project_dir (master)
+$ git status
+On branch master
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   index.html
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        info.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/project_dir (master)
+$ touch .gitignore
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/project_dir (master)
+$ git add .gitignore
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/project_dir (master)
+$ git status
+On branch master
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        new file:   .gitignore
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   index.html
+
+git add index.htm
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/project_dir (master)
+$ git add index.html
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/project_dir (master)
+$ git commit -m "Adding index.html after first change"
+[master b180769] Adding index.html after first change
+ 2 files changed, 9 insertions(+)
+ create mode 100644 .gitignore
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/project_dir (master)
+$ git log
+commit b180769e2f7d81a970c2f0843f0534058f60fe65 (HEAD -> master)
+Author: Padmini Vetcha <vetchapaddu13@gmail.com>
+Date:   Fri Mar 12 17:07:11 2021 +0530
+
+    Adding index.html after first change
+
+commit b093df7d1c7c1d6a6a50fa50bfb8bce768b29a20
+Author: Padmini Vetcha <vetchapaddu13@gmail.com>
+Date:   Fri Mar 12 17:03:22 2021 +0530
+
+    Adding index.html first time
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/project_dir (master)
+$ git status
+On branch master
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   index.html
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/project_dir (master)
+$ git add index.html
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/project_dir (master)
+$ git commit -m "Adding index.html after second change"
+[master e8ad395] Adding index.html after second change
+ 1 file changed, 1 insertion(+)
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/project_dir (master)
+$ git log
+commit e8ad3951daa7e14abddcf138997ce9c00cdda3e9 (HEAD -> master)
+Author: Padmini Vetcha <vetchapaddu13@gmail.com>
+Date:   Fri Mar 12 17:08:34 2021 +0530
+
+    Adding index.html after second change
+
+commit b180769e2f7d81a970c2f0843f0534058f60fe65
+Author: Padmini Vetcha <vetchapaddu13@gmail.com>
+Date:   Fri Mar 12 17:07:11 2021 +0530
+
+    Adding index.html after first change
+
+commit b093df7d1c7c1d6a6a50fa50bfb8bce768b29a20
+Author: Padmini Vetcha <vetchapaddu13@gmail.com>
+Date:   Fri Mar 12 17:03:22 2021 +0530
+
+    Adding index.html first time
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/project_dir (master)
+$ git revert HEAD
+[master 5acd601] Revert "Adding index.html after second change" Reverting index.html for first time This reverts commit e8ad3951daa7e14abddcf138997ce9c00cdda3e9.
+ 1 file changed, 1 deletion(-)
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/project_dir (master)
+$ git add index.html
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/project_dir (master)
+$ git revert HEAD
+error: your local changes would be overwritten by revert.
+hint: commit your changes or stash them to proceed.
+fatal: revert failed
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/project_dir (master)
+$ git commit -m "Adding index.html after third change"
+[master 962cb9f] Adding index.html after third change
+ 1 file changed, 1 insertion(+)
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/project_dir (master)
+$ git revert HEAD
+[master d85039c] Revert "Adding index.html after third change" Reverting index.html second time This reverts commit 962cb9f3efa462489a9a1c71f761420caaa1c9f4.
+ 1 file changed, 1 deletion(-)
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/project_dir (master)
+$ alias my_add='git add'
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/project_dir (master)
+$ git status
+On branch master
+nothing to commit, working tree clean
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/project_dir (master)
+$ git status
+On branch master
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   index.html
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/project_dir (master)
+$ my_add index.html
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/project_dir (master)
+$ git revert HEAD
+error: your local changes would be overwritten by revert.
+hint: commit your changes or stash them to proceed.
+fatal: revert failed
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/project_dir (master)
+$ git commit -m "Adding index.html after fourth change"
+[master ba68e1d] Adding index.html after fourth change
+ 1 file changed, 1 insertion(+)
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/project_dir (master)
+$ git revert HEAD
+[master e82ddcb] Revert "Adding index.html after fourth change" Reverting index.html third time This reverts commit ba68e1d124bbda85490ecee39ef51d5ab967dcc9.
+ 1 file changed, 1 deletion(-)
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/project_dir (master)
+$ ^C
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/project_dir (master)
+$

@@ -1,0 +1,43 @@
+##Inorder to push Assignments from GitBash to github
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git remote add origin https://github.com/PadminiVetcha/FreshersBatch.git
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git push origin master
+
+##If changes made in gitbash and need to update github
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ vi jsass1.txt
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git status
+On branch master
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   jsass1.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git add jsass1.txt
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git commit -m "Modified jsass1.txt to check"
+[master 25500b7] Modified jsass1.txt to check
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git push origin master
+Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 334 bytes | 111.00 KiB/s, done.
+Total 3 (delta 1), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+To https://github.com/PadminiVetcha/FreshersBatch.git
+   5fc02d8..25500b7  master -> master
+

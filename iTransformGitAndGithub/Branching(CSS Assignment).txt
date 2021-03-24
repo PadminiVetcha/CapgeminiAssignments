@@ -1,0 +1,113 @@
+padmini@LAPTOP-0CA4TD4V MINGW64 ~
+$ cd Assignments
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git init
+Reinitialized existing Git repository in C:/Users/padmini/Assignments/.git/
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git branch
+* master
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git branch css-assignments
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git checkout css-assignments
+Switched to branch 'css-assignments'
+D       cssass1.txt
+D       cssass2.txt
+D       cssass3.txt
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (css-assignments)
+$ ls
+README.txt    htmlass2.txt  htmlass4.txt
+htmlass1.txt  htmlass3.txt  jsass1.txt
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (css-assignments)
+$ touch csass1.txt csass2.txt
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (css-assignments)
+$ git add .
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (css-assignments)
+$ git commit -m "Added csass1.txt and csass2.txt"
+[css-assignments 9e5b229] Added csass1.txt and csass2.txt
+ 3 files changed, 1 deletion(-)
+ rename cssass2.txt => csass1.txt (100%)
+ rename cssass3.txt => csass2.txt (100%)
+ delete mode 100644 cssass1.txt
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (css-assignments)
+$ git checkout master
+Switched to branch 'master'
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git checkout css-assignments csass2.txt
+Updated 1 path from c0374fb
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git checkout css-assignments
+Switched to branch 'css-assignments'
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (css-assignments)
+$ git add .
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (css-assignments)
+$ git commit -m "Modified README.txt"
+[css-assignments ed31210] Modified README.txt
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (css-assignments)
+$ git checkout master
+Switched to branch 'master'
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git add .
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git commit -m "Modified README.txt im master branch"
+[master 6cfb787] Modified README.txt im master branch
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git checkout css-assignments
+Switched to branch 'css-assignments'
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (css-assignments)
+$ git add .
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (css-assignments)
+$ git commit -m "Modified csass2.txt"
+[css-assignments c088330] Modified csass2.txt
+ 1 file changed, 1 insertion(+)
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (css-assignments)
+$ git checkout master
+Switched to branch 'master'
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git merge css-assignments
+Removing cssass3.txt
+Removing cssass2.txt
+Removing cssass1.txt
+Auto-merging README.txt
+Merge made by the 'recursive' strategy.
+ README.txt                | 2 +-
+ cssass2.txt => csass1.txt | 0
+ csass2.txt                | 1 +
+ cssass1.txt               | 1 -
+ cssass3.txt               | 0
+ 5 files changed, 2 insertions(+), 2 deletions(-)
+ rename cssass2.txt => csass1.txt (100%)
+ create mode 100644 csass2.txt
+ delete mode 100644 cssass1.txt
+ delete mode 100644 cssass3.txt
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git branch -d css-assignments
+Deleted branch css-assignments (was c088330).
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git branch
+* master

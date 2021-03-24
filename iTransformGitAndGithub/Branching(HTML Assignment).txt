@@ -1,0 +1,238 @@
+padmini@LAPTOP-0CA4TD4V MINGW64 ~
+$ mkdir Assignments
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~
+$ cd Assignments
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments
+$ git init
+Initialized empty Git repository in C:/Users/padmini/Assignments/.git/
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ touch README.txt
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git status
+On branch master
+
+No commits yet
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        README.txt
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git add README.txt
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git commit -m "Added README.txt"
+[master (root-commit) 01e35d4] Added README.txt
+ 1 file changed, 3 insertions(+)
+ create mode 100644 README.txt
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git log
+commit 01e35d40c21c5bc90356214dd23d13894dd04716 (HEAD -> master)
+Author: Padmini Vetcha <vetchapaddu13@gmail.com>
+Date:   Fri Mar 12 18:25:54 2021 +0530
+
+    Added README.txt
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git branch html-assignments
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ touch htmlass1.txt htmlass2.txt
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git checkout html-assignments
+Switched to branch 'html-assignments'
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (html-assignments)
+$ git checkout master htmlass1.txt
+error: pathspec 'htmlass1.txt' did not match any file(s) known to git
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (html-assignments)
+$ git checkout master
+Switched to branch 'master'
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git checkout html-assignments
+Switched to branch 'html-assignments'
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (html-assignments)
+$ touch htmlass3.txt
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (html-assignments)
+$ git checkout master htmlass3.txt
+error: pathspec 'htmlass3.txt' did not match any file(s) known to git
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (html-assignments)
+$ git checkout master
+Switched to branch 'master'
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ touch htmlass4.txt
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git checkout html-assignments
+Switched to branch 'html-assignments'
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (html-assignments)
+$ git status
+On branch html-assignments
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        htmlass1.txt
+        htmlass2.txt
+        htmlass3.txt
+        htmlass4.txt
+
+nothing added to commit but untracked files present (use "git add" to track)
+git add .
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (html-assignments)
+$ git add .
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (html-assignments)
+$ git status
+On branch html-assignments
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        new file:   htmlass1.txt
+        new file:   htmlass2.txt
+        new file:   htmlass3.txt
+        new file:   htmlass4.txt
+
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (html-assignments)
+$ git status
+On branch html-assignments
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        new file:   htmlass1.txt
+        new file:   htmlass2.txt
+        new file:   htmlass3.txt
+        new file:   htmlass4.txt
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   htmlass1.txt
+        modified:   htmlass2.txt
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (html-assignments)
+$ git add .
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (html-assignments)
+$ git commit -m "Assignments 1 and 2 modified"
+[html-assignments af481ef] Assignments 1 and 2 modified
+ 4 files changed, 2 insertions(+)
+ create mode 100644 htmlass1.txt
+ create mode 100644 htmlass2.txt
+ create mode 100644 htmlass3.txt
+ create mode 100644 htmlass4.txt
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (html-assignments)
+$ git checkout master
+Switched to branch 'master'
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git checkout html-assignments htmlass3.txt
+Updated 1 path from 6506fea
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git status
+On branch master
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        new file:   htmlass3.txt
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   README.txt
+
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git add .
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git commit -m "Assignments 3 added"
+[master cac4969] Assignments 3 added
+ 2 files changed, 1 insertion(+)
+ create mode 100644 htmlass3.txt
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git checkout html-assignments
+Switched to branch 'html-assignments'
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (html-assignments)
+$ git status
+On branch html-assignments
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   htmlass3.txt
+        modified:   htmlass4.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (html-assignments)
+$ git add .
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (html-assignments)
+$ git commit -m "Assignments 3 and 4 modified"
+[html-assignments 5f4a87f] Assignments 3 and 4 modified
+ 2 files changed, 2 insertions(+)
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (html-assignments)
+$ git checkout master
+Switched to branch 'master'
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ ls
+README.txt  htmlass3.txt
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git log --all --decorate --oneline --graph
+* 5f4a87f (html-assignments) Assignments 3 and 4 modified
+* af481ef Assignments 1 and 2 modified
+| * cac4969 (HEAD -> master) Assignments 3 added
+|/
+* 01e35d4 Added README.txt
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git merge html-assignments
+CONFLICT (add/add): Merge conflict in htmlass3.txt
+Auto-merging htmlass3.txt
+Merge made by the 'recursive' strategy.
+ htmlass1.txt | 1 +
+ htmlass2.txt | 1 +
+ htmlass3.txt | 1 +
+ htmlass4.txt | 1 +
+ 4 files changed, 4 insertions(+)
+ create mode 100644 htmlass1.txt
+ create mode 100644 htmlass2.txt
+ create mode 100644 htmlass4.txt
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git branch
+  html-assignments
+* master
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git branch -d html-assignments
+Deleted branch html-assignments (was 5f4a87f).
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git branch
+* master
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ ^C
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$

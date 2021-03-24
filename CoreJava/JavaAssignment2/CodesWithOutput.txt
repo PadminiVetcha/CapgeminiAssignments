@@ -1,0 +1,297 @@
+1.Create a singleton class  (Singleton.java,SingletonEx.java)
+
+Singleton.java
+
+import java.io.*;
+import java.util.*;
+public class Singleton 
+{
+	// Create private attribute that refers to a singleton object
+	private static Singleton single=new Singleton();
+	
+	//Create private constructor that restricts the object to create object
+	//outside the class.
+	private Singleton()
+	{
+		
+	}
+	//Allows us to create and access the object we created.
+	public static Singleton getInstance()
+	{
+		return single;
+	}
+	public void getInfo()
+	{
+		System.out.println("In Singleton class...!!!");
+	}
+
+}
+
+SingletonEx.java
+
+import java.io.*;
+import java.util.*;
+public class SingletonEx 
+{
+	public static void main(String[] args) 
+	{
+		Singleton ex=Singleton.getInstance();
+		ex.getInfo();
+
+	}
+
+}
+output:
+In Singleton class...!!!
+
+
+2. Hiearchy of an organisation (Employee.java,Manager.java,Labour.java)
+
+Employee.java
+import java.io.*;
+import java.util.*;
+public class Employee 
+{
+	void salary()
+	{
+		int sal=25000;
+		System.out.println("The salary of an Employee is Rs:" +sal);
+		
+	}
+	public static void main(String[] args) 
+	{
+		Employee e1 = new Employee();
+		e1.salary();
+		Manager m1=new Manager();
+		m1.salary();
+		Labour l1=new Labour();
+		l1.salary();
+		
+		
+	}
+
+}
+
+Manager.java
+
+public class Manager extends Employee 
+{
+	int incentives=6000;
+	void salary()
+	{
+		int sal;
+		sal=25000+incentives;
+		System.out.println("The salary of a Manager is Rs:" +sal);
+	}
+}
+
+Labour.java
+
+
+public class Labour  extends Employee
+{
+	int overtime=3;
+	void salary()
+	{
+		int sal;
+		sal=8000+(3*200);
+		System.out.println("The salary of a Labour is Rs:" +sal);
+	}
+
+}
+
+output:
+
+The salary of an Employee is Rs:25000
+The salary of a Manager is Rs:31000
+The salary of a Labour is Rs:8600
+
+3.To create bank accounts and use polymorphism (BankAccounts.java)
+
+import java.io.*;
+import java.util.*;
+public class BankAccounts 
+{
+	public static void main(String[] args) {
+		int a1,a2,TotalCash;
+		BankAccounts b1=new SavingsAccount();
+		BankAccounts b2= new CurrentAccount();
+		a1=((SavingsAccount) b1).cash();
+		a2=((CurrentAccount) b2).cash();
+		TotalCash=a1+a2;
+		System.out.println("Total cash in the bank is Rs."+TotalCash);
+		
+
+	}
+
+}
+class SavingsAccount extends BankAccounts
+{
+	int cash()
+	{
+		int FixedDeposit=100000;
+		return FixedDeposit;
+		
+	}
+}
+class CurrentAccount extends BankAccounts
+{
+	int cash()
+	{
+		int CashCredit=200000;
+		return CashCredit;
+	}
+}
+
+output:
+Total cash in the bank is Rs.300000
+
+4.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+5. To draw shapes and use abstract.(Shape.java,Line.java,Rectangle.java,Cube.java)
+
+Shape.java
+
+import java.io.*;
+import java.util.*;
+public abstract class Shape 
+{
+	abstract void draw();
+	
+	public static void main(String[] args) 
+	{
+		Shape l=new Line();
+		l.draw();
+		Shape r=new Rectangle();
+		r.draw();
+		Shape c=new Cube();
+		c.draw();
+	}
+
+}
+
+Line.java
+
+public class Line extends Shape
+{
+	@Override
+	void draw() {
+		System.out.println("The shape is LINE");
+		
+	}
+
+}
+
+Rectangle.java
+
+public class Rectangle  extends Shape
+{
+	@Override
+	void draw() 
+	{
+		System.out.println("The shape is RECTANGLE");
+		
+	}
+
+}
+
+Cube.java
+
+public class Cube  extends Shape
+{
+	@Override
+	void draw() 
+	{
+		System.out.println("The shape is CUBE");
+		
+	}
+
+}
+
+output:
+The shape is LINE
+The shape is RECTANGLE
+The shape is CUBE
+
+6.Abstract class persistence with file and database as its subclasses and a client class(Persistence.java,
+FilePesistence.java,DatabasePersistence.java,Client.java)
+
+Persistence.java
+
+import java.io.*;
+import java.util.*;
+public abstract class Persistence
+{
+	abstract void persist();
+
+}
+
+FilePesistence.java
+
+public class FilePesistence  extends Persistence{
+
+	@Override
+	void persist() {
+		System.out.println("The data is saved in the file...");
+		
+	}
+
+}
+
+DatabasePersistence.java
+
+public class DatabasePersistence extends Persistence {
+
+	@Override
+	void persist() {
+		System.out.println("The data in not saved in database yet....");
+		
+	}
+
+}
+
+Client.java
+
+import java.io.*;
+import java.util.*;
+public class Client 
+{
+	public static void main(String[] args)
+	{
+		Persistence fp=new FilePesistence();
+		fp.persist();
+		Persistence dp=new DatabasePersistence();
+		dp.persist();
+	}
+}
+
+output:
+
+The data is saved in the file...
+The data in not saved in database yet....
+

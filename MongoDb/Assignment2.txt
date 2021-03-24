@@ -1,0 +1,156 @@
+Start mongodb server and then open compass and connect ....
+
+step 1: open a cmd prompt go to  mongodb-win32-x86_64-windows-4.4.4/bin(where the folder is located)  and type mongod to start mongodb server.
+step 2: open another cmd prompt go to  mongodb-win32-x86_64-windows-4.4.4/bin  and type mongo to start mongo shell.
+step 3: open mongodb compass and connect to the server.
+
+ATLANTA POPULATION
+
+1.
+> db.zipcodes.find({$and:[{"city":"ATLANTA"},{"state":"GA"}]})
+{ "_id" : "30303", "city" : "ATLANTA", "loc" : [ -84.388846, 33.752504 ], "pop" : 1845, "state" : "GA" }
+{ "_id" : "30305", "city" : "ATLANTA", "loc" : [ -84.385145, 33.831963 ], "pop" : 19122, "state" : "GA" }
+{ "_id" : "30306", "city" : "ATLANTA", "loc" : [ -84.351418, 33.786027 ], "pop" : 20081, "state" : "GA" }
+{ "_id" : "30307", "city" : "ATLANTA", "loc" : [ -84.335957, 33.769138 ], "pop" : 16330, "state" : "GA" }
+{ "_id" : "30308", "city" : "ATLANTA", "loc" : [ -84.375744, 33.771839 ], "pop" : 8549, "state" : "GA" }
+{ "_id" : "30309", "city" : "ATLANTA", "loc" : [ -84.388338, 33.798407 ], "pop" : 14766, "state" : "GA" }
+{ "_id" : "30310", "city" : "ATLANTA", "loc" : [ -84.423173, 33.727849 ], "pop" : 34017, "state" : "GA" }
+{ "_id" : "30311", "city" : "ATLANTA", "loc" : [ -84.470219, 33.722957 ], "pop" : 34880, "state" : "GA" }
+{ "_id" : "30312", "city" : "ATLANTA", "loc" : [ -84.378125, 33.746749 ], "pop" : 17683, "state" : "GA" }
+{ "_id" : "30313", "city" : "ATLANTA", "loc" : [ -84.39352, 33.76825 ], "pop" : 8038, "state" : "GA" }
+{ "_id" : "30314", "city" : "ATLANTA", "loc" : [ -84.425546, 33.756103 ], "pop" : 26649, "state" : "GA" }
+{ "_id" : "30315", "city" : "ATLANTA", "loc" : [ -84.380771, 33.705062 ], "pop" : 41061, "state" : "GA" }
+{ "_id" : "30316", "city" : "ATLANTA", "loc" : [ -84.333913, 33.721686 ], "pop" : 34668, "state" : "GA" }
+{ "_id" : "30317", "city" : "ATLANTA", "loc" : [ -84.31685, 33.749788 ], "pop" : 16395, "state" : "GA" }
+{ "_id" : "30318", "city" : "ATLANTA", "loc" : [ -84.445432, 33.786454 ], "pop" : 53894, "state" : "GA" }
+still there are more....
+
+2.
+> db.zipcodes.aggregate({$match:{$and:[{"city":"ATLANTA"},{"state":"GA"}]}})
+{ "_id" : "30303", "city" : "ATLANTA", "loc" : [ -84.388846, 33.752504 ], "pop" : 1845, "state" : "GA" }
+{ "_id" : "30305", "city" : "ATLANTA", "loc" : [ -84.385145, 33.831963 ], "pop" : 19122, "state" : "GA" }
+{ "_id" : "30306", "city" : "ATLANTA", "loc" : [ -84.351418, 33.786027 ], "pop" : 20081, "state" : "GA" }
+{ "_id" : "30307", "city" : "ATLANTA", "loc" : [ -84.335957, 33.769138 ], "pop" : 16330, "state" : "GA" }
+{ "_id" : "30308", "city" : "ATLANTA", "loc" : [ -84.375744, 33.771839 ], "pop" : 8549, "state" : "GA" }
+{ "_id" : "30309", "city" : "ATLANTA", "loc" : [ -84.388338, 33.798407 ], "pop" : 14766, "state" : "GA" }
+{ "_id" : "30310", "city" : "ATLANTA", "loc" : [ -84.423173, 33.727849 ], "pop" : 34017, "state" : "GA" }
+{ "_id" : "30311", "city" : "ATLANTA", "loc" : [ -84.470219, 33.722957 ], "pop" : 34880, "state" : "GA" }
+{ "_id" : "30312", "city" : "ATLANTA", "loc" : [ -84.378125, 33.746749 ], "pop" : 17683, "state" : "GA" }
+{ "_id" : "30313", "city" : "ATLANTA", "loc" : [ -84.39352, 33.76825 ], "pop" : 8038, "state" : "GA" }
+{ "_id" : "30314", "city" : "ATLANTA", "loc" : [ -84.425546, 33.756103 ], "pop" : 26649, "state" : "GA" }
+still some more are there....
+
+3.
+> db.zipcodes.aggregate([{$match:{"city":"ATLANTA"}},{$group:{_id:"$city",count:{$sum:1}}}])
+{ "_id" : "ATLANTA", "count" : 41 }
+
+4.
+> db.zipcodes.aggregate([{$match:{"city":"ATLANTA"}},{$group:{_id:"$city",TotalPopulation:{$sum:"$pop"}}}])
+{ "_id" : "ATLANTA", "TotalPopulation" : 630046 }
+
+##POPULATIONS BY STATE
+
+1.
+> db.zipcodes.aggregate([{$group:{_id:"$city",TotalPopulation:{$sum:"$pop"}}}])
+{ "_id" : "MOULTON", "TotalPopulation" : 20820 }
+{ "_id" : "VERSAILLES", "TotalPopulation" : 34595 }
+{ "_id" : "SAND SPRINGS", "TotalPopulation" : 25840 }
+{ "_id" : "MOUNT AYR", "TotalPopulation" : 2487 }
+{ "_id" : "ROCKVILLE", "TotalPopulation" : 106673 }
+{ "_id" : "SEBRING", "TotalPopulation" : 41588 }
+{ "_id" : "BENSON", "TotalPopulation" : 22081 }
+{ "_id" : "CENTREVILLE", "TotalPopulation" : 51436 }
+{ "_id" : "OVERBROOK", "TotalPopulation" : 1913 }
+{ "_id" : "SANDIA PARK", "TotalPopulation" : 2672 }
+{ "_id" : "WESTTOWN", "TotalPopulation" : 2097 }
+{ "_id" : "WEST FRIENDSHIP", "TotalPopulation" : 937 }
+still more are there...
+
+2.
+> db.zipcodes.aggregate([{$group:{_id:"$city",TotalPopulation:{$sum:"$pop"}}},{$sort:{"TotalPopulation":-1}}])
+{ "_id" : "CHICAGO", "TotalPopulation" : 2452177 }
+{ "_id" : "BROOKLYN", "TotalPopulation" : 2341387 }
+{ "_id" : "HOUSTON", "TotalPopulation" : 2123053 }
+{ "_id" : "LOS ANGELES", "TotalPopulation" : 2102295 }
+{ "_id" : "PHILADELPHIA", "TotalPopulation" : 1639862 }
+{ "_id" : "NEW YORK", "TotalPopulation" : 1476790 }
+{ "_id" : "BRONX", "TotalPopulation" : 1209548 }
+{ "_id" : "SAN DIEGO", "TotalPopulation" : 1054316 }
+{ "_id" : "DALLAS", "TotalPopulation" : 999042 }
+{ "_id" : "DETROIT", "TotalPopulation" : 967468 }
+still more are there...
+
+3.
+> db.zipcodes.aggregate([{$group:{_id:"$city",TotalPopulation:{$sum:"$pop"}}},{$sort:{"TotalPopulation":-1}},{$limit:3}])
+{ "_id" : "CHICAGO", "TotalPopulation" : 2452177 }
+{ "_id" : "BROOKLYN", "TotalPopulation" : 2341387 }
+{ "_id" : "HOUSTON", "TotalPopulation" : 2123053 }
+
+
+##POPULATIONS BY CITY
+
+1.
+> db.zipcodes.aggregate([{$group:{_id:{city:"$city",state:"$state"},TotalPopulation:{$sum:"$pop"}}}])
+{ "_id" : { "city" : "JAMESTOWN", "state" : "NC" }, "TotalPopulation" : 9812 }
+{ "_id" : { "city" : "KAPAA", "state" : "HI" }, "TotalPopulation" : 15627 }
+{ "_id" : { "city" : "RADNOR", "state" : "PA" }, "TotalPopulation" : 30671 }
+{ "_id" : { "city" : "ELK HORN", "state" : "IA" }, "TotalPopulation" : 990 }
+{ "_id" : { "city" : "SPRUCE PINE", "state" : "AL" }, "TotalPopulation" : 465 }
+{ "_id" : { "city" : "MORRIS", "state" : "PA" }, "TotalPopulation" : 959 }
+{ "_id" : { "city" : "MOUNTAIN RANCH", "state" : "CA" }, "TotalPopulation" : 2323 }
+{ "_id" : { "city" : "SAN CARLOS", "state" : "AZ" }, "TotalPopulation" : 2307 }
+{ "_id" : { "city" : "MADDOX", "state" : "MD" }, "TotalPopulation" : 1240 }
+{ "_id" : { "city" : "FREEDOM", "state" : "ME" }, "TotalPopulation" : 1775 }
+{ "_id" : { "city" : "BRANDON", "state" : "MS" }, "TotalPopulation" : 41141 }
+{ "_id" : { "city" : "GLOVER", "state" : "VT" }, "TotalPopulation" : 795 }
+{ "_id" : { "city" : "CORRALES", "state" : "NM" }, "TotalPopulation" : 4900 }
+still are there...
+
+2.
+> db.zipcodes.aggregate([{$group:{_id:{city:"$city",state:"$state"},TotalPopulation:{$sum:"$pop"}}},{$sort:{"TotalPopulation":-1}}])
+{ "_id" : { "city" : "CHICAGO", "state" : "IL" }, "TotalPopulation" : 2452177 }
+{ "_id" : { "city" : "BROOKLYN", "state" : "NY" }, "TotalPopulation" : 2300504 }
+{ "_id" : { "city" : "LOS ANGELES", "state" : "CA" }, "TotalPopulation" : 2102295 }
+{ "_id" : { "city" : "HOUSTON", "state" : "TX" }, "TotalPopulation" : 2095918 }
+{ "_id" : { "city" : "PHILADELPHIA", "state" : "PA" }, "TotalPopulation" : 1610956 }
+{ "_id" : { "city" : "NEW YORK", "state" : "NY" }, "TotalPopulation" : 1476790 }
+{ "_id" : { "city" : "BRONX", "state" : "NY" }, "TotalPopulation" : 1209548 }
+{ "_id" : { "city" : "SAN DIEGO", "state" : "CA" }, "TotalPopulation" : 1049298 }
+{ "_id" : { "city" : "DETROIT", "state" : "MI" }, "TotalPopulation" : 963243 }
+{ "_id" : { "city" : "DALLAS", "state" : "TX" }, "TotalPopulation" : 940191 }
+still are there...
+
+3.
+> db.zipcodes.aggregate([{$group:{_id:{city:"$city",state:"$state"},TotalPopulation:{$sum:"$pop"}}},{$sort:{"TotalPopulation":-1}},{$limit:3}])
+{ "_id" : { "city" : "CHICAGO", "state" : "IL" }, "TotalPopulation" : 2452177 }
+{ "_id" : { "city" : "BROOKLYN", "state" : "NY" }, "TotalPopulation" : 2300504 }
+{ "_id" : { "city" : "LOS ANGELES", "state" : "CA" }, "TotalPopulation" : 2102295 }
+
+4.
+> db.zipcodes.aggregate([{$match:{"state":"TX"}},{$group:{_id:{"city":"$city","state":"$state"},TotalPopulation:{$sum:"$pop"}}},{$sort:{TotalPopulation:-1}},{$limit:3}])
+{ "_id" : { "city" : "HOUSTON", "state" : "TX" }, "TotalPopulation" : 2095918 }
+{ "_id" : { "city" : "DALLAS", "state" : "TX" }, "TotalPopulation" : 940191 }
+{ "_id" : { "city" : "SAN ANTONIO", "state" : "TX" }, "TotalPopulation" : 811792 }
+>
+
+##BONUS
+
+1.Get avg population of each state
+> db.zipcodes.aggregate([{$group:{_id:"$city",AvgPop:{$avg:"$pop"}}}])
+{ "_id" : "ROBERTSDALE", "AvgPop" : 2123 }
+{ "_id" : "BEECH ISLAND", "AvgPop" : 45886 }
+{ "_id" : "GROVER HILL", "AvgPop" : 1113 }
+{ "_id" : "CORA", "AvgPop" : 30 }
+{ "_id" : "BRISBEN", "AvgPop" : 5086 }
+{ "_id" : "GADSDEN", "AvgPop" : 3789.6666666666665 }
+{ "_id" : "LIVERMORE", "AvgPop" : 20896.666666666668 }
+{ "_id" : "CEDAREDGE", "AvgPop" : 3254 }
+{ "_id" : "BUSKIRK", "AvgPop" : 1272 }
+still are there
+
+2. Top 3 stated in terms of avg population
+> db.zipcodes.aggregate([{$group:{_id:"$city",AvgPop:{$avg:"$pop"}}},{$sort:{"AvgPop":-1}},{$limit:3}])
+{ "_id" : "BELL GARDENS", "AvgPop" : 99568 }
+{ "_id" : "ARLETA", "AvgPop" : 88114 }
+{ "_id" : "SOUTH GATE", "AvgPop" : 87026 }
+> 

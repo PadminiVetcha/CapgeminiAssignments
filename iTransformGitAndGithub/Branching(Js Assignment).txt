@@ -1,0 +1,164 @@
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~
+$ cd Assignments
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git init
+Reinitialized existing Git repository in C:/Users/padmini/Assignments/.git/
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git branch
+* master
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git branch js-assignments
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git checkout js-assignments
+Switched to branch 'js-assignments'
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (js-assignments)
+$ touch jsass1.txt
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (js-assignments)
+$ ls
+README.txt   cssass2.txt  htmlass1.txt  htmlass3.txt  jsass1.txt
+cssass1.txt  cssass3.txt  htmlass2.txt  htmlass4.txt
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (js-assignments)
+$ git add jsass1.txt
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (js-assignments)
+$ git commit -m "Created jsass1.txt"
+[js-assignments 8bc16aa] Created jsass1.txt
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 jsass1.txt
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (js-assignments)
+$ git checkout master
+Switched to branch 'master'
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ ls
+README.txt   cssass2.txt  htmlass1.txt  htmlass3.txt
+cssass1.txt  cssass3.txt  htmlass2.txt  htmlass4.txt
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git checkout js-assignments jsass1.txt
+Updated 1 path from 26d6b47
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ ls
+README.txt   cssass2.txt  htmlass1.txt  htmlass3.txt  jsass1.txt
+cssass1.txt  cssass3.txt  htmlass2.txt  htmlass4.txt
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git checkout js-assignments
+Switched to branch 'js-assignments'
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (js-assignments)
+$ git status
+On branch js-assignments
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   README.txt
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        cssass3.txt
+no changes added to commit (use "git add" and/or "git commit -a")
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (js-assignments)
+$ git add .
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (js-assignments)
+$ git commit -m "Modified README.txt"
+[js-assignments 5f964fb] Modified README.txt
+ 2 files changed, 1 insertion(+), 1 deletion(-)
+ create mode 100644 cssass3.txt
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (js-assignments)
+$ git checkout master
+Switched to branch 'master'
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git status
+On branch master
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   README.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git add .
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git commit -m "Modified README.txt in master branch"
+[master edc6338] Modified README.txt in master branch
+ 1 file changed, 1 deletion(-)
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git checkout js-assignments
+Switched to branch 'js-assignments'
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (js-assignments)
+$ git add .
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (js-assignments)
+$ git commit -m "Modified jsass1.txt"
+[js-assignments 6761bdc] Modified jsass1.txt
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (js-assignments)
+$ git checkout master
+Switched to branch 'master'
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (js-assignments)
+$ git checkout master
+Switched to branch 'master'
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git merge js-assignments
+Auto-merging README.txt
+CONFLICT (content): Merge conflict in README.txt
+Automatic merge failed; fix conflicts and then commit the result.
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master|MERGING)
+$ vi README.txt
+
+error: Merging is not possible because you have unmerged files.
+hint: Fix them up in the work tree, and then use 'git add/rm <file>'
+hint: as appropriate to mark resolution and make a commit.
+fatal: Exiting because of an unresolved conflict.
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master|MERGING)
+$ git add .
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master|MERGING)
+$ git commit -m "Haha jsass1 assignments added"
+[master 0649a63] Haha jsass1 assignments added
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git branch
+  js-assignments
+* master
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git merge js-assignments
+Already up to date.
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git branch -d js-assignments
+Deleted branch js-assignments (was 6761bdc).
+
+padmini@LAPTOP-0CA4TD4V MINGW64 ~/Assignments (master)
+$ git branch
+* master
+
+
+
+
+
