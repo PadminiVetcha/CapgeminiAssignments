@@ -167,8 +167,6 @@ Printing ArrayList using ListIterator:
 22
 11
 
-#### Date.java not completed yet getting error
-
 4.Create a hashmap and do with a class.(HashMapEx.java,Date.java )
 HashMapEx.java
 import java.util.*;
@@ -203,40 +201,53 @@ Printing HashMap:
 13-11-1998 Padmini
 02-06-1967 Mani
 
-Date.java ERRORRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+DateDob.java 
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.Scanner;
-import java.io.*;
-public class Date 
-{
-	public static void compareDates(String a)
+public class DateDob 
+{	
+	public static boolean checkDate(int dom1,Month m1,int y1,int dom2,Month m2,int y2)
 	{
-		LocalDate x=LocalDate.parse(a);
-		int day1=x.getDayOfMonth();
-		Month m1=x.getMonth();
-		int year1=x.getYear();
-		System.out.println(day1+" "+m1+" "+year1);
-		
-	/*	LocalDate y=LocalDate.parse(b);
-		int day2=y.getDayOfMonth();
-		Month m2=y.getMonth();
-		int year2=y.getYear();
-		System.out.println(day2+" "+m2+" "+year2);*/
-		
+		if(dom1 == dom2)
+		{
+			if(m1==m2)
+			{
+				if(y1==y2)
+				{
+					return false;
+				}
+				return true;
+			}
+			return true;
+		}
+		return true;
 	}
+	
 	public static void main(String[] args) 
 	{
-		Scanner sc=new Scanner(System.in);
-		String d1,d2;
-		System.out.println("Enter the first date: ");
-		d1=sc.next();
-		//System.out.println("Enter the second date: ");
-		//d2=sc.next();
-		compareDates(d1);
+		LocalDate currentDate1 = LocalDate.of(1998, 11, 13); 
+		int dom1 = currentDate1.getDayOfMonth();  
+		Month m1 = currentDate1.getMonth(); 
+		int y1 = currentDate1.getYear(); 
+		//System.out.println("current local date : " + currentDate1);
+		System.out.println("dayOfMonth from date in JDK 8: " + dom1); 
+		System.out.println("month from a date in Java 1.8 : " + m1);
+		System.out.println("year from date in JDK 1.8 : " + y1);
+		System.out.println("---------------------------------------------------");
+		LocalDate currentDate2 = LocalDate.of(2004, 07, 04); 
+		int dom2 = currentDate2.getDayOfMonth();  
+		Month m2 = currentDate2.getMonth(); 
+		int y2 = currentDate2.getYear(); 
+		//System.out.println("current local date : " + currentDate2);
+		System.out.println("dayOfMonth from date in JDK 8: " + dom2); 
+		System.out.println("month from a date in Java 1.8 : " + m2);
+		System.out.println("year from date in JDK 1.8 : " + y2);
+		boolean a=checkDate(dom1,m1,y1,dom2,m2,y2);
+		System.out.println(a);
 	}
-
 }
+
+
 
 
 5.Create a user defined employee that overrides equals() and hashcode()(EmployeeHashTable.java,HashTableEx.java)
@@ -257,6 +268,11 @@ class EmployeeHashtable
 	{
 		int a=13;
 		return a;
+	}
+	public String toString()
+	{
+		return "Name of employee: " +name;
+		
 	}
 }
 
@@ -279,74 +295,547 @@ public class HashTableEx
 }
 
 output:
-{EmployeeHashtable@d=Two}
-
-6.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-7.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-8.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+{Name of employee: Padmini=Two}
+
+6.(ChatRoom.java,ChatRoomMetods.java,MainOptions.java)
+ChatRoom.java
+
+import java.util.ArrayList;
+
+public class ChatRoom {
+
+    private String chatroomName;
+    ArrayList<String> users = new ArrayList<>();
+    ArrayList<String> messages = new ArrayList<>();
+    private boolean chatRoomStatus;
+    private boolean userLoginStatus;
+
+    public boolean isUserLoginStatus() {
+        return userLoginStatus;
+    }
+
+    public void setUserLoginStatus(boolean userLoginStatus) {
+        this.userLoginStatus = userLoginStatus;
+    }
+
+    public void login(String name){
+        System.out.println(name+" Logged IN !");
+    }
+
+    public boolean isChatRoomStatus() {
+        return chatRoomStatus;
+    }
+
+    public void setChatRoomStatus(boolean chatRoomStatus) {
+        this.chatRoomStatus = chatRoomStatus;
+    }
+
+    public ArrayList<String> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(ArrayList<String> messages) {
+        this.messages = messages;
+    }
+
+    public ArrayList<String> getUsers() {
+        return users;
+    }
+
+    public void setUsers(ArrayList<String> users) {
+        this.users = users;
+    }
+
+    public ChatRoom(String chatroomName) {
+        this.chatroomName = chatroomName;
+    }
+
+    public String getChatroomName() {
+        return chatroomName;
+    }
+
+    public void setChatroomName(String chatroomName) {
+        this.chatroomName = chatroomName;
+    }
+
+    @Override
+    public String toString() {
+        return "ChatRoom{" +
+                "users=" + users +
+                '}';
+    }
+}
+
+ChatRoomMethods.java
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class ChatRoomMethods {
+    public Scanner sc = new Scanner(System.in);
+
+    ArrayList<ChatRoom> cl = new ArrayList<>();
+    //test git
+
+
+    public void createChatRoom() {
+        System.out.println("Enter name: ");
+        String n = sc.nextLine();
+        cl.add(new ChatRoom(n));
+        System.out.println(n +" ChatRoom Created ! ");
+    }
+
+    public void addUser() {
+        System.out.println("Enter ChatRoom name: \n");
+        String cn = sc.nextLine();
+        sc.nextLine();
+        System.out.println("Enter user name: ");
+        String un = sc.nextLine();
+        if (cl.isEmpty()) {
+            System.out.println("No Chat Rooms present");
+        } else
+            for (ChatRoom e : cl) {
+                if (e.getChatroomName().equalsIgnoreCase(cn)) {
+                    System.out.println(cn + " ChatRoom Available");
+                    e.users.add(un);
+                    System.out.println(un +" Added !");
+                }
+            }
+    }
+//remove for main *****
+
+
+    public void userLogin(){
+        System.out.println("Enter ChatRoom name: \n");
+        String cn = sc.nextLine();
+        sc.nextLine();
+        System.out.println("Enter user name: ");
+        String un = sc.nextLine();
+        for (ChatRoom e: cl) {
+            if ((e.getChatroomName().equalsIgnoreCase(cn))) {
+                System.out.println("Welcome to: "+e.getChatroomName());
+                int index = e.users.indexOf(un);
+                if(e.users.isEmpty()){
+                    System.out.println("No users present !");
+                } else if(un.equalsIgnoreCase(e.users.get(index))){
+                    e.login(un);
+                    System.out.println(un+ " Logged in !");
+                    e.setUserLoginStatus(true);
+                    e.setChatRoomStatus(true);
+                }
+            }
+        }
+    }
+
+    public void sendMessage(){
+        userLogin();
+        System.out.println("Enter Message: ");
+        String msg = sc.nextLine();
+        for(ChatRoom c: cl){
+            if(c.isChatRoomStatus() && c.isUserLoginStatus()){
+                System.out.println(c.getChatroomName()+" is active !");
+                c.messages.add(msg);
+                System.out.println("Message added.");
+            }
+        }
+   }
+
+   public void displayMessagesOfChatroom(){
+       userLogin();
+       System.out.println("Enter ChatRoom name for MESSAGES: \n");
+       String cn = sc.nextLine();
+       for (ChatRoom c: cl) {
+           if(c.getChatroomName().equalsIgnoreCase(cn) && c.isChatRoomStatus()){
+               System.out.println(c.getMessages());
+           }
+       }
+   }
+
+   public void logout(){
+       for (ChatRoom c:cl) {
+           if(c.isUserLoginStatus()){
+               System.out.println("Logged out !");
+               c.setUserLoginStatus(false);
+           }
+       }
+   }
+
+   public void listChatrooms(){
+       for (ChatRoom c: cl) {
+           System.out.println(c.getChatroomName());
+       }
+   }
+
+   public void listUsers(){
+       for (ChatRoom c:cl) {
+           System.out.println(c.users.toString());
+       }
+   }
+
+   public void deleteChatRoom(){
+       System.out.println("Enter Chatroom Name to DELETE: ");
+       String cn = sc.nextLine();
+       for (ChatRoom c: cl) {
+           if(c.getChatroomName().equalsIgnoreCase(cn)){
+               cl.remove(c);
+               System.out.println(c.getChatroomName() + "Deleted !!");
+           } else
+                System.out.println(c.getChatroomName() + "Not Available");
+       }
+   }
+
+   public void deleteUser(){
+       System.out.println("Enter ChatRoom name: \n");
+       String cn = sc.nextLine();
+       sc.nextLine();
+       System.out.println("Enter user name: ");
+       String un = sc.nextLine();
+       for (ChatRoom c: cl) {
+           int index = c.users.indexOf(un);
+           if(c.users.get(index).equalsIgnoreCase(un)){
+               c.users.remove(index);
+               System.out.println(un +" DELETED");
+           }else
+               System.out.println("User not Available");
+       }
+   }
+}
+
+MainOptions.java
+
+import java.util.Scanner;
+
+public class MainOptions {
+
+    public static void main(String[] args) {
+
+        boolean quit = false;
+        Scanner sc = new Scanner(System.in);
+
+        ChatRoomMethods cm = new ChatRoomMethods();
+
+        while(!quit){
+            System.out.println("1. Create a ChatRoom \n 2. Add the User \n3. User login\n 4.Send a message \n 5. Display the messages from a specific chatroom\n 6. List down all users belonging to the specified chatroom.\n 7. Logout\n 8. Delete an user.\n 9. Delete the chatRoom\n 10. QUIT APPLICATION");
+            System.out.println("Select an option: ");
+            int option = sc.nextInt();
+            sc.hasNextLine();
+
+            switch (option){
+                case 1:
+                    cm.createChatRoom();
+                    break;
+
+                case 2:
+                    cm.addUser();
+                    break;
+
+                case 3:
+                    cm.userLogin();
+                    break;
+
+               case 4:
+                    cm.sendMessage();
+                    break;
+
+               case 5:
+                    cm.displayMessagesOfChatroom();
+                   break;
+
+                case 6:
+                    cm.listUsers();
+                    break;
+
+                case 7:
+                    cm.logout();
+                    break;
+
+                case 8:
+                    cm.deleteUser();
+                    break;
+
+                case 9:
+                    cm.deleteChatRoom();
+                    break;
+
+               case 10:
+                   System.out.println("Exiting App !");
+                   quit = true;
+           }
+       }
+    }
+}
+
+Output:
+
+1. Create a ChatRoom 
+ 2. Add the User 
+3. User login
+ 4.Send a message 
+ 5. Display the messages from a specific chatroom
+ 6. List down all users belonging to the specified chatroom.
+ 7. Logout
+ 8. Delete an user.
+ 9. Delete the chatRoom
+ 10. QUIT APPLICATION
+Select an option: 
+1
+Enter name: 
+Padmini
+Padmini ChatRoom Created ! 
+1. Create a ChatRoom 
+ 2. Add the User 
+3. User login
+ 4.Send a message 
+ 5. Display the messages from a specific chatroom
+ 6. List down all users belonging to the specified chatroom.
+ 7. Logout
+ 8. Delete an user.
+ 9. Delete the chatRoom
+ 10. QUIT APPLICATION
+Select an option: 
+2
+Enter ChatRoom name: 
+
+Padmini
+Jyothi
+Enter user name: 
+Jyothi
+Padmini ChatRoom Available
+Jyothi Added !
+1. Create a ChatRoom 
+ 2. Add the User 
+3. User login
+ 4.Send a message 
+ 5. Display the messages from a specific chatroom
+ 6. List down all users belonging to the specified chatroom.
+ 7. Logout
+ 8. Delete an user.
+ 9. Delete the chatRoom
+ 10. QUIT APPLICATION
+Select an option: 
+10
+Exiting App !
+
+7.(ParkedCarOwnerDetails.java,ParkedCarOwnerList.java,CarMain.java)
+ParkedCarOwnerDetails.java
+
+public class ParkedCarOwnerDetails {
+
+    private String ownerName;
+    private String carModel;
+    private int carNo;
+    private long mobileNo;
+    private String ownerAddress;
+
+    public ParkedCarOwnerDetails() {
+    }
+
+    public ParkedCarOwnerDetails(String ownerName, String carModel, int carNo, long mobileNo, String ownerAddress) {
+        this.ownerName = ownerName;
+        this.carModel = carModel;
+        this.carNo = carNo;
+        this.mobileNo = mobileNo;
+        this.ownerAddress = ownerAddress;
+    }
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
+    }
+
+    public String getCarModel() {
+        return carModel;
+    }
+
+    public void setCarModel(String carModel) {
+        this.carModel = carModel;
+    }
+
+    public int getCarNo() {
+        return carNo;
+    }
+
+    public void setCarNo(int carNo) {
+        this.carNo = carNo;
+    }
+
+    public long getMobileNo() {
+        return mobileNo;
+    }
+
+    public void setMobileNo(long mobileNo) {
+        this.mobileNo = mobileNo;
+    }
+
+    public String getOwnerAddress() {
+        return ownerAddress;
+    }
+
+    public void setOwnerAddress(String ownerAddress) {
+        this.ownerAddress = ownerAddress;
+    }
+
+    @Override
+    public String toString() {
+        return "ParkedCarOwnerDetails{" +
+                "ownerName='" + ownerName + '\'' +
+                ", carModel='" + carModel + '\'' +
+                ", carNo=" + carNo +
+                ", mobileNo=" + mobileNo +
+                ", ownerAddress='" + ownerAddress + '\'' +
+                '}';
+    }
+}
+
+ParkedCarOwnerList.java
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+public class ParkedCarOwnerList {
+
+    // ArrayList<ParkedCarOwnerDetails> cars = new ArrayList<>();
+    HashMap<Integer, ParkedCarOwnerDetails> carsParked = new HashMap<>();
+
+
+    public void addNewCar(ParkedCarOwnerDetails car, int token) {
+        carsParked.put(token, car);
+    }
+
+    public void removeCar(int token) {
+
+        for (Map.Entry m : carsParked.entrySet()) {
+            if (m.getKey().equals(token)) {
+                carsParked.remove(token);
+                System.out.println("Car with token" + token + " removed");
+            } else
+                System.out.println("Car not present");
+        }
+
+    }
+
+    public void getParkedCarLocation(int token) {
+        boolean flag = false;
+        ParkedCarOwnerDetails c = new ParkedCarOwnerDetails();
+        for (Map.Entry m : carsParked.entrySet()) {
+            if (m.getKey().equals(token)) {
+                flag = true;
+                c = carsParked.get(m.getKey());
+                break;
+            } else
+                System.out.println("Car not present");
+
+        }
+        if(flag)
+            System.out.println("Car Found at: \n" + c.toString());
+    }
+
+}
+
+CarMain.java
+
+public class CarMain {
+
+	public static void main(String[] args) 
+	{
+		
+		ParkedCarOwnerList p=new ParkedCarOwnerList();
+		ParkedCarOwnerDetails d=new ParkedCarOwnerDetails("Padmini","1234",23456,98765432,"Vzm");
+		p.addNewCar(d, 13);
+		p.removeCar(2);
+		p.getParkedCarLocation(13);
+
+	}
+
+}
+
+output:
+Car not present
+Car Found at: 
+ParkedCarOwnerDetails{ownerName='Padmini', carModel='1234', carNo=23456, mobileNo=98765432, ownerAddress='Vzm'}
+
+8.Failsafe(CopyOnWriteArrayListEx.java) and failtest (HashMapFailFast.java)
+
+CopyOnWriteArrayListEx.java
+
+import java.util.Iterator;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+public class CopyOnWriteArrayListEx extends Thread
+{
+
+	static CopyOnWriteArrayList<String> list=new CopyOnWriteArrayList<>();
+	public void run()
+	{
+		list.add("Padmini");
+	}
+	public static void main(String[] args) throws InterruptedException
+	{
+		list.add("Satish");
+		list.add("Mani");
+		list.add("Jyothi");
+		CopyOnWriteArrayListEx cp=new CopyOnWriteArrayListEx();
+		cp.run();
+		Thread.sleep(10000);
+		Iterator iter =list.iterator();
+		while(iter.hasNext())
+		{
+			String s=(String)iter.next();
+			System.out.println(s);
+			Thread.sleep(10000);
+		}
+		System.out.println(list);
+	}
+
+}
+output:
+Satish
+Mani
+Jyothi
+Padmini
+[Satish, Mani, Jyothi, Padmini]
+
+HashMapFailFast.java
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+
+public class HashMapFailFast 
+{
+	public static void main(String[] args) 
+	{
+		HashMap<String,String> hs=new HashMap<>();
+		hs.put("13-11-1998","Padmini");
+		hs.put("04-07-2004","Jyothi");
+		hs.put("22-01-1964","Satish");
+		hs.put("02-06-1967","Mani");
+		
+		System.out.println("Printing HashMap:");
+		Iterator iter = hs.keySet().iterator();
+		while(iter.hasNext())
+		{
+			System.out.println(hs.get(iter.next()));
+			hs.put("14-04-20004", "abc");
+		}
+		
+	}
+}
+
+output:
+
+Printing HashMap:
+Satish
+Exception in thread "main" java.util.ConcurrentModificationException
+	at java.base/java.util.HashMap$HashIterator.nextNode(HashMap.java:1584)
+	at java.base/java.util.HashMap$KeyIterator.next(HashMap.java:1607)
+	at HashMapFailFast.main(HashMapFailFast.java:20
 
 9.(SavingsAccCollections .java,BankAccListCollections .java)
 public class SavingsAccCollections 
@@ -440,3 +929,167 @@ Account id: 3245 Account Holder Name: Jyothi Balance: 3500.5
 Account id: 1211 Account Holder Name: Padmini Balance: 4500.4
 Account id: 2199 Account Holder Name: Mani Balance: 6000.6
 
+
+10.(MovieDetails.java,MovieDetailsList.java,MovieMain.java)
+MovieDetails.java
+
+public class MovieDetails {
+
+    private String movieName;
+    private String leadActor;
+    private String leadActress;
+    private String genre;
+
+    public MovieDetails(String movieName, String leadActor, String leadActress, String genre) {
+        this.movieName = movieName;
+        this.leadActor = leadActor;
+        this.leadActress = leadActress;
+        this.genre = genre;
+    }
+
+    public String getMovieName() {
+        return movieName;
+    }
+
+    public void setMovieName(String movieName) {
+        this.movieName = movieName;
+    }
+
+    public String getLeadActor() {
+        return leadActor;
+    }
+
+    public void setLeadActor(String leadActor) {
+        this.leadActor = leadActor;
+    }
+
+    public String getLeadActress() {
+        return leadActress;
+    }
+
+    public void setLeadActress(String leadActress) {
+        this.leadActress = leadActress;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    @Override
+    public String toString() {
+        return "Movie_Details{" +
+                "movieName='" + movieName + '\'' +
+                ", leadActor='" + leadActor + '\'' +
+                ", leadActress='" + leadActress + '\'' +
+                ", genre='" + genre + '\'' +
+                '}';
+    }
+}
+
+MovieDetailsList.java
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
+public class MovieDetailsList {
+
+    ArrayList<MovieDetails> movies = new ArrayList<>();
+
+
+    public void addMovie(String name, String leadActor, String leadActress, String genre){
+        movies.add(new MovieDetails(name,leadActor,leadActress,genre));
+    }
+
+    public void removeMovie(String movie){
+
+        for (MovieDetails m:movies) {
+            if(m.getMovieName().equalsIgnoreCase(movie)){
+                int index = m.getMovieName().indexOf(movie);
+                movies.remove(index);
+            }
+            System.out.println("Movie is not in the LIST");
+        }
+    }
+
+    public void removeAllMovies(){
+        movies.removeAll(movies);
+    }
+
+    public void findMovieByName(String name){
+
+        for (MovieDetails m: movies) {
+            if(m.getMovieName().equalsIgnoreCase(name)){
+                int index = m.getMovieName().indexOf(name);
+                System.out.println(m.toString());
+            }else
+                System.out.println("Movie not in the LIST");
+            break;
+        }
+
+    }
+
+    public void findMovieByGenre(String genre){
+        for (MovieDetails m: movies) {
+            if(m.getGenre().equalsIgnoreCase(genre)){
+                System.out.println(m.toString());
+            }
+        }
+    }
+
+    /*public void sortBy(String id){
+        if(id.equalsIgnoreCase("name")){
+            movies.sort(new NameComparator());
+            System.out.println("Name Sorting ");
+        }
+        if(id.equalsIgnoreCase("genre")){
+            movies.sort(new GenreComparator());
+            System.out.println("Genre Sorting ");
+        }
+
+
+        System.out.println(movies.toString());
+    }*/
+
+    @Override
+    public String toString() {
+        return "MovieDetailsList{" +
+                "movies=" + movies +
+                '}';
+    }
+}
+
+MovieMain.java
+
+public class MovieMain {
+
+    public static void main(String[] args) {
+
+        MovieDetailsList m = new MovieDetailsList();
+
+        m.addMovie("titanic","Jack","simren","Thriller");
+        m.addMovie("zz","Jack","simren","Thriller");
+        m.addMovie("aa","Jack","simren","Thriller");
+
+       m.findMovieByName("Titanc");
+
+        //System.out.println(m.toString());
+
+        //m.removeAllMovies();
+        m.findMovieByGenre("Thriller");
+
+        //System.out.println(m.toString());
+
+        //m.sortBy("name");
+    }
+}
+
+output:
+
+Movie not in the LIST
+Movie_Details{movieName='titanic', leadActor='Jack', leadActress='simren', genre='Thriller'}
+Movie_Details{movieName='zz', leadActor='Jack', leadActress='simren', genre='Thriller'}
+Movie_Details{movieName='aa', leadActor='Jack', leadActress='simren', genre='Thriller'}

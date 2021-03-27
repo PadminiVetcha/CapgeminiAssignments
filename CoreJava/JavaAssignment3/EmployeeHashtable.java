@@ -14,4 +14,9 @@ class EmployeeHashtable
 		int a=13;
 		return a;
 	}
+	public String toString()
+	{
+		return "Name of employee: " +name;
+		
+	}
 }
