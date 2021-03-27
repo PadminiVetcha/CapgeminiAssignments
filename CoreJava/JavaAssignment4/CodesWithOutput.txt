@@ -1,0 +1,328 @@
+1.LambdaEx1.java
+
+@FunctionalInterface
+interface Addition
+{
+	int add(int a,int b);
+}
+interface Subtract
+{
+	int sub(int a,int b);
+}
+interface Multiply
+{
+	int mul(int a,int b);
+}
+interface Divide
+{
+	int div(int a,int b);
+}
+public class LambdaEx1 
+{
+	public static void main(String[] args)
+	{
+		System.out.println("Addition:");
+		Addition MyAdd=(a,b)->(a+b);
+		System.out.println(MyAdd.add(100,50));
+		
+		System.out.println("Subtraction:");
+		Subtract MySub=(a,b)->(a-b);
+		System.out.println(MySub.sub(100,50));
+		
+		System.out.println("Multiplication:");
+		Multiply MyMul=(a,b)->(a*b);
+		System.out.println(MyMul.mul(100, 50));
+		
+		System.out.println("Division:");
+		Divide MyDiv=(a,b)->(a/b);
+		System.out.println(MyDiv.div(100,50));
+	}
+	
+}
+
+output:
+Addition:
+150
+Subtraction:
+50
+Multiplication:
+5000
+Division:
+2
+
+2.LambdaEx2.java
+
+interface Order
+{
+	void result(int price,String status);
+}
+public class LambdaEx2 
+{
+	public static void main(String[] args)
+	{
+		Order MyOrder=(price,status)->{
+			if(price>10000) {
+				if(status=="ACCEPTED" || status=="COMPLETED")
+				{
+					System.out.println("Order Printed");
+				}
+			}
+			else
+			{
+				System.out.println("Order is not printed");
+			}
+		};
+		MyOrder.result(5000, "COMPLETED");
+		MyOrder.result(5000000, "COMPLETED");
+		MyOrder.result(50, "ACCEPTED");
+		MyOrder.result(150000, "ACCEPTED");
+
+	}
+
+}
+output:
+Order is not printed
+Order Printed
+Order is not printed
+Order Printed
+
+3.LambdaEx3.java
+
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+public class LambdaEx3 
+{
+		public static void main(String[] args) {
+			
+			Supplier<Double> randomValue = ()->Math.random();
+			Predicate<Integer> greaterThan = i->(i>50);
+			Consumer<Integer> display = (i)->System.out.println(i);
+			Function<Integer,Double> half =(a)->a/2.0;
+			
+			
+			System.out.println("Using Supplier Functional Interface");
+			System.out.println(randomValue.get());
+			
+			System.out.println("Using Predicate Functional Interface");
+			System.out.println(greaterThan.test(90));
+			
+			System.out.println("Using Consumer Functional Interface");
+			display.accept(100);
+
+			System.out.println("Using Function Functional Interface");
+			System.out.println(half.apply(250));
+		}
+	}
+
+output:
+Using Supplier Functional Interface
+0.21615140523735354
+Using Predicate Functional Interface
+true
+Using Consumer Functional Interface
+100
+Using Function Functional Interface
+125.0
+
+4.LambdaEx4 .java
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class LambdaEx4 
+{
+	public static void main(String[] args) 
+	{
+		List<String> li=new ArrayList<>();
+		li.add("Padmini");
+		li.add("Jyothi");
+		li.add("Mani");
+		li.add("Satish");
+		
+		System.out.println("Elements in the list are:");
+		
+		for (String string : li) {
+			System.out.println(string);
+		}
+		
+		li.removeIf(a->(a.length()%2 !=0));
+		
+		System.out.println("Elements in the list with odd lengths are:");
+		
+		for (String string : li) {
+			System.out.println(string);
+		}
+	}
+}
+
+output:
+Elements in the list are:
+Padmini
+Jyothi
+Mani
+Satish
+Elements in the list with odd lengths are:
+Jyothi
+Mani
+Satish
+
+5.LambdaEx5.java
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.function.Consumer;
+
+public class LambdaEx5 
+{
+	public static void main(String[] args) 
+	{
+		StringBuilder sb=new StringBuilder();
+		Consumer<String> letter=(s)->
+		{
+			sb.append(s.charAt(0)); 
+		};
+		List<String> li=new ArrayList<>();
+		li.add("Satish");
+		li.add("Mani");
+		li.add("Padmini");
+		li.add("Jyothi");
+		for (Iterator iterator = li.iterator(); iterator.hasNext();) 
+		{
+			String string = (String) iterator.next();
+			letter.accept(string);
+			
+		}
+		System.out.println(sb);
+	}
+}
+
+output:
+SMPJ
+
+6.LambdaEx6.java
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.UnaryOperator;
+
+class MyOperator implements UnaryOperator<String>
+{
+	@Override
+	public String apply(String t) 
+	{
+		return t.toUpperCase();
+	}
+}
+public class LambdaEx6 
+{	
+	public static void main(String[] args)
+	{
+		List<String> li=new ArrayList<>();
+		li.add("Satish");
+		li.add("Mani");
+		li.add("Padmini");
+		li.add("Jyothi");
+		System.out.println("Elements in list are:");
+		System.out.println(li);
+		li.replaceAll(new MyOperator());
+		System.out.println("Elements in list after replacing with upper case letters are:");
+		System.out.println(li);
+		
+	}
+
+}
+
+output:
+Elements in list are:
+[Satish, Mani, Padmini, Jyothi]
+Elements in list after replacing with upper case letters are:
+[SATISH, MANI, PADMINI, JYOTHI]
+
+7.LambdaEx7.java
+
+import java.util.HashMap;
+import java.util.Map.Entry;
+
+public class LambdaEx7
+{
+
+	public static void main(String[] args)
+	{
+		HashMap<Integer,String> hs=new HashMap<>();
+		StringBuilder sb=new StringBuilder();
+		hs.put(22, "Satish");
+		hs.put(2, "Mani");
+		hs.put(13, "Padmini");
+		hs.put(4, "Jyothi");
+		
+		System.out.println("The elements in the hashmap are:");
+		System.out.println(hs);
+
+		System.out.println("After converting entire hashmap into a string, the result is:");
+		for (Entry<Integer, String> m:hs.entrySet()) 
+		{
+			sb.append(m);
+		}
+		System.out.println(sb);
+		
+	}
+
+}
+
+output:
+The elements in the hashmap are:
+{2=Mani, 4=Jyothi, 22=Satish, 13=Padmini}
+After converting entire hashmap into a string, the result is:
+2=Mani4=Jyothi22=Satish13=Padmini
+
+8.LambdaEx8.java
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.function.Consumer;
+
+public class LambdaEx8
+{
+	public static void main(String[] args)
+	{
+		Consumer<Integer> display = (i)->System.out.println(i);
+		List<Integer> li = new ArrayList<>();
+		li.add(1);
+		li.add(2);
+		li.add(3);
+		li.add(4);
+		li.add(5);
+		
+		for (Iterator iterator = li.iterator(); iterator.hasNext();) {
+			Integer integer = (Integer) iterator.next();
+			//System.out.println(integer);
+			display.accept(integer);
+		}
+		Thread lambdaThread=new Thread();
+		lambdaThread.run();	
+	}
+}
+output:
+1
+2
+3
+4
+5
+
+
+
+
+
+
+
+
+
+
+
+
+
+
