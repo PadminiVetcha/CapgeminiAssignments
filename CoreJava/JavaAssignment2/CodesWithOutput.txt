@@ -120,8 +120,6 @@ public class BankAccounts
 		a2=((CurrentAccount) b2).cash();
 		TotalCash=a1+a2;
 		System.out.println("Total cash in the bank is Rs."+TotalCash);
-		
-
 	}
 
 }
@@ -147,27 +145,6 @@ output:
 Total cash in the bank is Rs.300000
 
 4.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -295,3 +272,126 @@ output:
 The data is saved in the file...
 The data in not saved in database yet....
 
+7.Dessert shop(DessertShop.java,IceCream.java,Candy.java,Application.java)
+
+DessertShop.java
+
+public abstract class DessertShop 
+{
+	abstract void getCost();
+}
+
+
+IceCream.java
+
+public class IceCream extends DessertShop {
+	int tax,count=0;
+	public void getCost()
+	{
+		int cost=50;
+		System.out.println("The cost of IceCream is Rs."+cost);			
+	}
+	public int add(int x) 
+	{
+		count=count+x;
+		return count;
+	}
+
+}
+
+Candy.java
+
+public class Candy extends DessertShop {
+
+	int tax,count=0;
+	public void getCost()
+	{
+		int cost=20;
+		System.out.println("The cost of Candy is $"+(cost));	
+		int r=20*60;
+		System.out.println("Cost in rupees:"+r);
+	}
+	public int add(int x) 
+	{
+		count=count+x;
+		return count;
+	}
+}
+
+Application.java
+
+import java.util.Scanner;
+
+public class Application 
+{
+
+	@SuppressWarnings("resource")
+	public static void main(String[] args) 
+	{
+		Scanner sc=new Scanner(System.in);
+		String r="No"; 
+		System.out.println("Yes or No:");
+		while(r!=sc.next())
+		{
+			//System.out.println("Yes or No:");
+			System.out.println("Enter your role( 1 for Owner and 0 for customer )");
+			int role=sc.nextInt();
+			if(role==1)
+			{
+				System.out.println("Item u want to add(1 for icecream 0 for candy:)");
+				int a=sc.nextInt();
+				if(a==1)
+				{
+					IceCream ic=new IceCream();
+					System.out.println("Enter the no of items to add:");
+					int k=sc.nextInt();
+					int b=ic.add(k);
+					System.out.println(b);
+					System.out.println("Count of Icecream is "+b);
+				}
+				else
+				{
+					Candy c=new Candy();
+					System.out.println("Enter the no of items to add:");
+					int s=sc.nextInt();
+					int z=c.add(s);
+					System.out.println("Count of candy is "+z);
+				}
+			}
+			else
+			{
+				System.out.println("Item u want to order(1 for icecream 0 for candy:)");
+				int a=sc.nextInt();
+				if(a==1)
+				{
+					IceCream ic1=new IceCream();
+					ic1.getCost();
+				}
+				else
+				{
+					Candy c1=new Candy();
+					c1.getCost();
+				}
+				
+			}
+		}
+	}
+}
+
+output:
+Yes or No:
+Yes
+Enter your role( 1 for Owner and 0 for customer )
+0
+Item u want to order(1 for icecream 0 for candy:)
+1
+The cost of IceCream is Rs.50
+Yes
+Enter your role( 1 for Owner and 0 for customer )
+1
+Item u want to add(1 for icecream 0 for candy:)
+1
+Enter the no of items to add:
+5
+5
+Count of Icecream is 5
