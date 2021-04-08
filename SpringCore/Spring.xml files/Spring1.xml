@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns = "http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+          
+           
+	<!-- Used in  Setter Injection with setter mtds and without constructor
+		<bean id="customer" class="org.padmini.springcore.Customer">
+		<property name="customerId" value="46060633"/>
+		<property name="customerName" value="Padmini"/>
+		<property name="customerContact" value="987654321"/>
+		<property name="customerAddress">
+			<bean id="address" class="org.padmini.springcore.Address">
+				<property name="street" value="RingRoad"/>
+				<property name="city" value="Vizianagaram"/>
+				<property name="state" value="AndhraPradesh"/>
+				<property name="zip" value="535002"/>
+				<property name="country" value="India"/>
+			</bean>
+		</property>	  
+	</bean>   -->
+	
+	<!-- Used in constructor injection -->
+	<bean id="customer" class="org.padmini.springcore.Customer">
+		<constructor-arg value="46060633"/>
+		<constructor-arg value="Padmini"/>
+		<constructor-arg value="987654321"/>
+		<constructor-arg>
+			<ref bean="address"/>
+		</constructor-arg>
+		
+	</bean>
+	<bean id="address" class="org.padmini.springcore.Address">
+		<constructor-arg value="RingRoad"/>
+		<constructor-arg value="Vizianagaram"/>
+		<constructor-arg value="AndhraPradesh"/>
+		<constructor-arg value="535002"/>
+		<constructor-arg value="India"/>
+		
+		
+	</bean>
+
+</beans>

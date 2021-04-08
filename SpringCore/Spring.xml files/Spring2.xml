@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns = "http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util" 
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+            http://www.springframework.org/schema/util 
+  			http://www.springframework.org/schema/util/spring-util.xsd">
+         
+       <!-- For list<String> 
+       <util:list id="answerlist" list-class="java.util.ArrayList">
+      			<value>Apple</value>
+      			<value>Strawberry</value>
+      			<value>Grapes</value>
+      </util:list>   
+      <bean id="question" class="org.padmini.springcore.Question">
+      	<property name="QuestionId" value="1"/>
+      	<property name="Question" value="Name some fruits?"/>
+      	<property name="Answers" ref="answerlist"/>
+      </bean> -->
+      
+   
+      <!-- for set<string> 
+      <util:set id="answerset" set-class="java.util.TreeSet">
+      			<value>Apple</value>
+      			<value>Strawberry</value>
+      			<value>Grapes</value>
+      </util:set>
+      <bean id="question" class="org.padmini.springcore.Question">
+      	<property name="QuestionId" value="1"/>
+      	<property name="Question" value="Name some fruits?"/>
+      	<property name="Answers" ref="answerset"/>
+      	</bean> -->
+     
+      <bean id="question" class="org.padmini.springcore.Question">
+      	<property name="QuestionId" value="1"/>
+      	<property name="Question" value="Name some fruits?"/>
+      	<property name="Answers" ref="answermap"/>	
+      </bean>
+     <util:map id="answermap" map-class="java.util.HashMap">
+    	<entry key="1" value="Apple"></entry>
+    	<entry key="2" value="Strawberry"></entry>
+    	<entry key="3" value="Grapes"></entry>
+   	</util:map>
+ </beans>

@@ -1,0 +1,1162 @@
+1.(Test.java,Customer.java,Address.java,Spring.xml)
+
+Customer.java
+package org.padmini.springcore;
+
+import java.util.List;
+
+public class Customer {
+
+	private int customerId;
+	private String customerName;
+	private int customerContact;
+	private Address customerAddress;
+	
+	public Customer(int customerId, String customerName, int customerContact, Address customerAddress) {
+		super();
+		this.customerId = customerId;
+		this.customerName = customerName;
+		this.customerContact = customerContact;
+		this.customerAddress = customerAddress;
+	}
+	
+	public int getCustomerId() {
+		return customerId;
+	}
+
+	/*
+	 * public void setCustomerId(int customerId) { this.customerId = customerId; }
+	 */
+	public String getCustomerName() {
+		return customerName;
+	}
+
+	/*
+	 * public void setCustomerName(String customerName) { this.customerName =
+	 * customerName; }
+	 */
+	public int getCustomerContact() {
+		return customerContact;
+	}
+
+	/*
+	 * public void setCustomerContact(int customerContact) { this.customerContact =
+	 * customerContact; }
+	 */
+	public Address getCustomerAddress() {
+		return customerAddress;
+	}
+
+	/*
+	 * public void setCustomerAddress(Address customerAddress) {
+	 * this.customerAddress = customerAddress; }
+	 */
+	public void printDetails() {
+		System.out.println("Customer Details are:--------------------");
+		System.out.println("Customer Id: "+customerId+", Customer Name: "+customerName+", Customer Contact: "+customerContact);
+		System.out.println("Customer Address:");
+		System.out.println("Street: "+customerAddress.getStreet()+", City: "+customerAddress.getCity()+", State: "+customerAddress.getState()+", Zip: "+customerAddress.getZip()+", Country: "+customerAddress.getCountry());
+	}
+	
+}
+
+Address.java
+package org.padmini.springcore;
+
+public class Address {
+
+		private String street;
+		private String city;
+		private String state;
+		private int zip;
+		private String country;
+		
+		public Address(String street, String city, String state, int zip, String country) {
+			super();
+			this.street = street;
+			this.city = city;
+			this.state = state;
+			this.zip = zip;
+			this.country = country;
+		}
+		public String getStreet() {
+			return street;
+		}
+
+		/*
+		 * public void setStreet(String street) { this.street = street; }
+		 */
+		public String getCity() {
+			return city;
+		}
+
+		/*
+		 * public void setCity(String city) { this.city = city; }
+		 */
+		public String getState() {
+			return state;
+		}
+
+		/*
+		 * public void setState(String state) { this.state = state; }
+		 */
+		public int getZip() {
+			return zip;
+		}
+
+		/*
+		 * public void setZip(int zip) { this.zip = zip; }
+		 */
+		public String getCountry() {
+			return country;
+		}
+		/*
+		 * public void setCountry(String country) { this.country = country; }
+		 */
+		
+		public void printAddress() {
+			System.out.println("Address is printed");
+		}
+		
+		
+		
+}
+
+Test.java
+package org.padmini.springcore;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class Test {
+
+	public static void main(String[] args) {
+		
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring1.xml");
+		Customer c1=(Customer)context.getBean("customer");
+		c1.printDetails();
+	}
+
+}
+
+Spring1.xml
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns = "http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+          
+           
+	<!-- Used in  Setter Injection with setter mtds and without constructor
+		<bean id="customer" class="org.padmini.springcore.Customer">
+		<property name="customerId" value="46060633"/>
+		<property name="customerName" value="Padmini"/>
+		<property name="customerContact" value="987654321"/>
+		<property name="customerAddress">
+			<bean id="address" class="org.padmini.springcore.Address">
+				<property name="street" value="RingRoad"/>
+				<property name="city" value="Vizianagaram"/>
+				<property name="state" value="AndhraPradesh"/>
+				<property name="zip" value="535002"/>
+				<property name="country" value="India"/>
+			</bean>
+		</property>	  
+	</bean>   -->
+	
+	<!-- Used in constructor injection -->
+	<bean id="customer" class="org.padmini.springcore.Customer">
+		<constructor-arg value="46060633"/>
+		<constructor-arg value="Padmini"/>
+		<constructor-arg value="987654321"/>
+		<constructor-arg>
+			<ref bean="address"/>
+		</constructor-arg>
+		
+	</bean>
+	<bean id="address" class="org.padmini.springcore.Address">
+		<constructor-arg value="RingRoad"/>
+		<constructor-arg value="Vizianagaram"/>
+		<constructor-arg value="AndhraPradesh"/>
+		<constructor-arg value="535002"/>
+		<constructor-arg value="India"/>		
+	</bean>
+</beans>
+
+output:
+Customer Details are:--------------------
+Customer Id: 46060633, Customer Name: Padmini, Customer Contact: 987654321
+Customer Address:
+Street: RingRoad, City: Vizianagaram, State: AndhraPradesh, Zip: 535002, Country: India
+
+
+2.(Question.java,TestQuestion.java,Spring2.xml)
+
+Question.java
+package org.padmini.springcore;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+public class Question {
+	private int QuestionId;
+	private String Question;
+	// private List<String> Answers;
+	//private Set<String> Answers;
+	private Map<Integer,String> Answers;
+	
+	public int getQuestionId() {
+		return QuestionId;
+	}
+	public void setQuestionId(int questionId) {
+		QuestionId = questionId;
+	}
+	public String getQuestion() {
+		return Question;
+	}
+	public void setQuestion(String question) {
+		Question = question;
+	}
+
+	/* for list<String>
+	 * public List<String> getAnswers() { return Answers; } public void
+	 * setAnswers(List<String> answers) { Answers = answers; }
+	 */
+	
+	/* for set<string>
+	 * public Set<String> getAnswers() { return Answers; } public void
+	 * setAnswers(Set<String> answers) { this.Answers = answers; }
+	 */
+	
+	public Map<Integer, String> getAnswers() {
+		return Answers;
+	}
+	public void setAnswers(Map<Integer, String> answers) {
+		Answers = answers;
+	}
+	public void printQuestion() {
+		System.out.println("Question Id: "+QuestionId+", Question: "+Question+", Answers: "+getAnswers());
+		
+	}	
+}
+
+TestQuestion.java
+
+package org.padmini.springcore;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class TestQuestion {
+
+	public static void main(String[] args) {
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring2.xml");
+		Question q1=(Question)context.getBean("question");
+		q1.printQuestion();
+	}
+}
+
+Spring2.xml
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns = "http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util" 
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+            http://www.springframework.org/schema/util 
+  			http://www.springframework.org/schema/util/spring-util.xsd">
+         
+       <!-- For list<String> 
+       <util:list id="answerlist" list-class="java.util.ArrayList">
+      			<value>Apple</value>
+      			<value>Strawberry</value>
+      			<value>Grapes</value>
+      </util:list>   
+      <bean id="question" class="org.padmini.springcore.Question">
+      	<property name="QuestionId" value="1"/>
+      	<property name="Question" value="Name some fruits?"/>
+      	<property name="Answers" ref="answerlist"/>
+      </bean> -->
+      
+   
+      <!-- for set<string> 
+      <util:set id="answerset" set-class="java.util.TreeSet">
+      			<value>Apple</value>
+      			<value>Strawberry</value>
+      			<value>Grapes</value>
+      </util:set>
+      <bean id="question" class="org.padmini.springcore.Question">
+      	<property name="QuestionId" value="1"/>
+      	<property name="Question" value="Name some fruits?"/>
+      	<property name="Answers" ref="answerset"/>
+      	</bean> -->
+     
+      <bean id="question" class="org.padmini.springcore.Question">
+      	<property name="QuestionId" value="1"/>
+      	<property name="Question" value="Name some fruits?"/>
+      	<property name="Answers" ref="answermap"/>	
+      </bean>
+     <util:map id="answermap" map-class="java.util.HashMap">
+    	<entry key="1" value="Apple"></entry>
+    	<entry key="2" value="Strawberry"></entry>
+    	<entry key="3" value="Grapes"></entry>
+   	</util:map>
+ </beans>
+
+output:
+Question Id: 1, Question: Name some fruits?, Answers: {1=Apple, 2=Strawberry, 3=Grapes}
+
+
+3.(BankAccount.java,BankAccountController.java,BankAccountRepository.java,
+BankAccountRepositoryImpl.java,BankAccountService.java,BankAccountServiceImpl.java,TestBank.java,Spring3.xml)
+
+BankAccount.java
+
+package org.padmini.springcore;
+
+public class BankAccount {
+
+		private long accountId;
+		private String accountHolderName;
+		private String accountType;
+		private double accountBalance;
+		
+		public long getAccountId() {
+			return accountId;
+		}
+		public void setAccountId(int accountId) {
+			this.accountId = accountId;
+		}
+		public String getAccountHolderName() {
+			return accountHolderName;
+		}
+		public void setAccountHolderName(String accountHolderName) {
+			this.accountHolderName = accountHolderName;
+		}
+		public String getAccountType() {
+			return accountType;
+		}
+		public void setAccountType(String accountType) {
+			this.accountType = accountType;
+		}
+		public double getAccountBalance() {
+			return accountBalance;
+		}
+		public void setAccountBalance(double accountBalance) {
+			this.accountBalance = accountBalance;
+		}		
+}
+
+BankAccountController.java
+
+package org.padmini.springcore;
+
+public class BankAccountController {
+	private double accountBalance;
+	public double withdraw(long accountId, double balance) {
+		if(accountId==987654321)
+		{
+			double update=accountBalance-balance;
+			accountBalance=update;
+			return update;
+		}
+		return 0;
+	}
+
+	public double deposit(long accountId, double balance) {
+		if(accountId==987654321)
+		{
+			double update=accountBalance+balance;
+			accountBalance=update;
+			return update;
+		}
+		return 0;
+	}
+
+	public double getBalance(long accountId) {
+		if(accountId==987654321)
+		{
+			return accountBalance;
+		}
+		return 0;
+	}
+
+	public boolean fundTransfer(long fromAccount, long toAccount, double amount) {
+		if(fromAccount==987654321 && amount<accountBalance)
+		{
+			return true;
+		}
+		return false;
+	}
+}
+
+BankAccountRepository.java
+
+package org.padmini.springcore;
+
+public interface BankAccountRepository 
+{
+	public double getBalance(long accountId);
+	public double updateBalance(long accountId, double newBalance);
+}
+
+BankAccountRepositoryImpl.java
+
+package org.padmini.springcore;
+
+public class BankAccountRepositoryImpl implements BankAccountRepository {
+
+	private double accountBalance; 
+	public double getBalance(long accountId) {
+		if(accountId==987654321)
+		{
+			return accountBalance;
+		}
+		return 0;
+	}
+
+	public double updateBalance(long accountId, double newBalance) {
+		if(accountId==987654321)
+		{
+			double update = accountBalance + newBalance;
+			accountBalance=update;
+			return update;
+		}
+	return 0;
+	}
+}
+
+BankAccountService.java
+
+package org.padmini.springcore;
+
+public interface BankAccountService 
+{
+	public double withdraw(long accountId, double balance);
+	public double deposit(long accountId,double balance);
+	public double getBalance(long accountId);
+	public boolean fundTransfer(long fromAccount,long toAccount,double amount);
+}
+
+BankAccountServiceImpl.java
+
+package org.padmini.springcore;
+
+public class BankAccountServiceImpl implements BankAccountService{
+
+	private double accountBalance;
+	public double withdraw(long accountId, double balance) {
+		if(accountId==987654321)
+		{
+			double update=accountBalance-balance;
+			accountBalance=update;
+			return update;
+		}
+		return 0;
+	}
+
+	public double deposit(long accountId, double balance) {
+		if(accountId==987654321)
+		{
+			double update=accountBalance+balance;
+			accountBalance=update;
+			return update;
+		}
+		return 0;
+	}
+
+	public double getBalance(long accountId) {
+		if(accountId==987654321)
+		{
+			return accountBalance;
+		}
+		return 0;
+	}
+
+	public boolean fundTransfer(long fromAccount, long toAccount, double amount) {
+		if(fromAccount==987654321 && amount<accountBalance)
+		{
+			return true;
+		}
+		return false;
+	}
+}
+
+TestBank.java
+
+package org.padmini.springcore;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class TestBank {
+
+	public static void main(String[] args) {
+		
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring3.xml");
+		BankAccountController b1=(BankAccountController)context.getBean("bankAccountController");
+		double bal=b1.getBalance(987654321);
+		System.out.println("Initial balance: "+bal);
+		double value=b1.deposit(987654321, 500);
+		System.out.println("After depositing 500 :"+value);
+		double bala=b1.getBalance(987654321);
+		System.out.println("Balance: "+bala);
+		double value1=b1.deposit(987654321, 1500);
+		System.out.println("After depositing 1500: "+value1);
+		double value2=b1.withdraw(987654321, 250);
+		System.out.println("After withdraw 250: "+value2);	
+	}
+}
+
+Spring3.xml
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns = "http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+         
+	
+		<bean id="bankAccount" class="org.padmini.springcore.BankAccount" autowire="byName" >
+		<property name="accountId" value="987654321"/>
+			<property name="accountHolderName" value="Padmini"/>
+			<property name="accountType" value="Savings"/>
+			<property name="accountBalance" value="100000"/>
+		</bean>
+		
+		<bean id="bankAccountRepositoryImpl" class="org.padmini.springcore.BankAccountRepositoryImpl" >
+		</bean>
+		
+		<bean id="bankAccountServiceImpl" class="org.padmini.springcore.BankAccountServiceImpl" >
+		</bean>	
+		
+		<bean id="bankAccountController" class="org.padmini.springcore.BankAccountController" >
+		</bean>
+
+</beans>           
+
+output:
+
+Initial balance: 0.0
+After depositing 500 :500.0
+Balance: 500.0
+After depositing 1500: 2000.0
+After withdraw 250: 1750.0
+
+4.  TOTAL 3
+1.@Bean @Configuration(Anno1.java,Anno1Config.java,TestAnno1.java)
+
+Anno1.java
+package org.padmini.springcore;
+
+public class Anno1 {
+
+	private String msg;
+
+	public void getMsg() {
+		System.out.println("Messsage Received is : "+msg);
+	}
+
+	public void setMsg(String msg) {
+		this.msg = msg;
+	}
+}
+
+Anno1Config.java
+package org.padmini.springcore;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class Anno1Config {
+	
+	@Bean
+	public Anno1 anno1()
+	{
+		return new Anno1();
+	}
+}
+
+TestAnno1.java
+package org.padmini.springcore;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class TestAnno1 {
+
+	public static void main(String[] args) {
+		
+		ApplicationContext context = new AnnotationConfigApplicationContext(Anno1Config.class);
+		Anno1 a1=context.getBean(Anno1.class);
+		a1.setMsg("Hello ! How r u?");
+		a1.getMsg();
+	}
+}
+
+output:
+Messsage Received is : Hello ! How r u?
+
+2.@Autowired(Anno2.java,Anno2Config.java,TestAnno2.java,Spring4.xml)
+
+Anno2.java
+package org.padmini.springcore;
+
+public class Anno2 {
+	public Anno2()
+	{
+		System.out.println("Inside Anno2 constructor");
+	}
+	public void check()
+	{
+		System.out.println("Inside check.");
+	}
+}
+
+Anno2Config.java
+package org.padmini.springcore;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+public class Anno2Config {
+	
+	@Autowired
+	private Anno2 anno2;
+	
+	public void TextEditor() {
+		System.out.println("Inside text editor");
+	}
+	
+	public Anno2 getAnno2() {
+		return anno2;
+	}
+	
+	public void checking()
+	{
+		anno2.check();
+	}	
+}
+
+TestAnno2.java
+package org.padmini.springcore;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class TestAnno2 {
+
+	public static void main(String[] args) {
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring4.xml");
+		Anno2Config a1=(Anno2Config)context.getBean("anno2Config");
+		a1.TextEditor();
+		a1.checking();
+	}
+}
+
+Spring4.xml
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns = "http://www.springframework.org/schema/beans"
+   xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:context = "http://www.springframework.org/schema/context"
+   xsi:schemaLocation = "http://www.springframework.org/schema/beans
+   http://www.springframework.org/schema/beans/spring-beans.xsd
+   http://www.springframework.org/schema/context
+   http://www.springframework.org/schema/context/spring-context.xsd">
+
+   <context:annotation-config/>
+
+   <bean id = "anno2Config" class = "org.padmini.springcore.Anno2Config">
+   </bean> 
+   <bean id = "anno2" class = "org.padmini.springcore.Anno2">
+   </bean>
+</beans>
+
+output:
+Inside Anno2 constructor
+Inside text editor
+Inside check.
+
+3.@Service (Maths.java,TestMaths.java)
+
+Maths.java
+package org.padmini.springcore;
+
+import org.springframework.stereotype.Service;
+
+@Service("ms")
+public class Maths {
+	public int add(int x,int y) {
+		return x+y;
+	}
+	public int sub(int x,int y) {
+		return x-y;
+	}
+}
+
+TestMaths.java
+package org.padmini.springcore;
+
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+public class TestMaths {
+
+	public static void main(String[] args) {
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+		context.scan("org.padmini.springcore");
+		context.refresh();
+		Maths ms=(Maths)context.getBean("ms");
+		int a=ms.add(5, 10);
+		System.out.println("Addition of 5 and 10 is: "+a);
+		int b=ms.sub(11, 6);
+		System.out.println("Subtraction of 11 and 6 is: "+b);
+	}
+}
+
+output:
+Addition of 5 and 10 is: 15
+Subtraction of 11 and 6 is: 5
+
+5.(Circle.java,Point.java,TestShape.java,Spring5.xml)
+
+Circle.java
+package org.padmini.springcore;
+
+import javax.annotation.Resource;
+import javax.inject.Inject;
+
+import org.springframework.beans.factory.annotation.Required;
+
+public class Circle {
+	@Inject
+	private Point center;
+
+	public Point getCenter() {
+		return center;
+	}
+	@SuppressWarnings("deprecation")
+	@Required
+	@Resource(name="cen")
+	public void setCenter(Point center) {
+		this.center = center;
+	}
+	public void getInfo() {
+		System.out.println("Center of circle is: (" +center.getX()+" , "+center.getY()+")");
+	}
+}
+
+Point.java
+package org.padmini.springcore;
+
+public class Point {
+	private int x;
+	private int y;
+	public int getX() {
+		return x;
+	}
+	public void setX(int x) {
+		this.x = x;
+	}
+	public int getY() {
+		return y;
+	}
+	public void setY(int y) {
+		this.y = y;
+	}	
+}
+
+TestShape.java
+package org.padmini.springcore;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class TestShape {
+
+	public static void main(String[] args) {
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring5.xml");
+		Circle c1=(Circle)context.getBean("circle");
+		c1.getInfo();
+	}
+}
+Spring5.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns = "http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+          
+        <bean id="circle" class="org.padmini.springcore.Circle">
+ 			<!-- <property name="center" ref="cen"/> -->
+        </bean>
+          
+         <bean id="cen" class="org.padmini.springcore.Point">
+         	<property name="x" value="0"/>
+         	<property name="y" value="0"/>
+         </bean>
+        <context:annotation-config/>
+</beans>
+
+output:
+Center of circle is: (0 , 0)
+
+6.(DatabaseConfigurations.java,Testdb.java,Spring6.xml,dbConfig.properties)
+DatabaseConfigurations.java
+package org.padmini.springcore;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
+
+@Component
+@PropertySource("classpath:dbConfig.properties")
+public class DatabaseConfigurations {
+	private String driverclassname;
+	private String dburl;
+	private String username;
+	private String password;
+	@Value("padmini")
+	 String name;
+	
+	
+	public String getDriverclassname() {
+		return driverclassname;
+	}
+	public void setDriverclassname(String driverclassname) {
+		this.driverclassname = driverclassname;
+	}
+	public String getDburl() {
+		return dburl;
+	}
+	public void setDburl(String dburl) {
+		this.dburl = dburl;
+	}
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public void getInfo()
+	{
+		System.out.println("Driver class name is: "+driverclassname);
+		System.out.println("Database url is: "+dburl);
+		System.out.println("Username: "+username);
+		System.out.println("Password: "+password);
+		System.out.println("Admin name is: "+name);
+	}
+}
+
+Testdb.java
+package org.padmini.springcore;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class Testdb {
+
+	public static void main(String[] args) {
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring6.xml");
+		DatabaseConfigurations c1=(DatabaseConfigurations)context.getBean("databaseConfigurations");
+		c1.getInfo();
+	}
+}
+
+dbConfig.properties
+driverclassname=com.mysql.jdbc.Driver
+dburl=jdbc:mysql://localhost:3306/Test
+username=root
+password=root
+
+Spring6.xml
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns = "http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+  
+    	<bean id="databaseConfigurations" class="org.padmini.springcore.DatabaseConfigurations">
+    		<property name="driverclassname" value="${driverclassname}"/>
+    		<property name="dburl" value="${dburl}"/>
+    		<property name="username" value="${username}"/>
+    		<property name="password" value="${password}"/>
+    	</bean>
+    	
+    	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    		<property name="locations" value="dbConfig.properties"/>
+    	</bean>
+    	
+    	<context:annotation-config/>
+		<context:component-scan base-package="org.padmini.springcore"/>
+</beans>
+
+output:
+Driver class name is: com.mysql.jdbc.Driver
+Database url is: jdbc:mysql://localhost:3306/Test
+Username: root
+Password: root
+Admin name is: padmini
+
+7.TestSpel.java
+package org.padmini.springcore;
+
+import org.springframework.expression.Expression;
+import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
+
+public class TestSpel {
+
+	public static void main(String[] args) {
+		ExpressionParser parser=new SpelExpressionParser();
+		Expression exp = parser.parseExpression("'Hello Spel'"); 
+		String msg=(String)exp.getValue();
+		System.out.println(msg);
+
+	}
+
+}
+
+output:
+Hello Spel
+
+8.Bean life cycle mtds TOTAL 3
+
+1.Using interfaces(BeanLife1.java,TestBeanLife1.java,Spring8-1.xml)
+
+BeanLife1.java
+package org.padmini.springcore;
+
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
+
+public class BeanLife1 implements InitializingBean , DisposableBean {
+	
+		public void afterPropertiesSet() throws Exception {
+			System.out.println("Initializing bean using interfaces");
+		}	
+		public void destroy() throws Exception {
+			System.out.println("Destroying the bean using interfaces");
+		}
+
+		public void life(){
+			System.out.println("Bean life cycle mtds using initializing and disposable bean ");
+		}
+}
+
+TestBeanLife1.java
+package org.padmini.springcore;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class TestBeanLife1 {
+
+	public static void main(String[] args) {
+		AbstractApplicationContext context = new ClassPathXmlApplicationContext("Spring8-1.xml");
+		context.registerShutdownHook();
+		BeanLife1 b1=(BeanLife1)context.getBean("beanLife1");
+		b1.life();
+	}
+}
+Spring8-1.xml
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns = "http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+          
+    <bean id="beanLife1" class="org.padmini.springcore.BeanLife1"/>       
+	
+</beans>
+
+output:
+Initializing bean using interfaces
+Bean life cycle mtds using initializing and disposable bean 
+Destroying the bean using interfaces
+
+
+2.Using init-method and destroy-method (BeanLife2.java,TestBeanLife2.java,Spring8-2.xml)
+BeanLife2.java
+package org.padmini.springcore;
+
+public class BeanLife2 {
+	
+	public void myInit()
+	{
+		System.out.println("Initializing bean using init-method");
+	}
+	public void life(){
+		System.out.println("Bean life cycle mtds using initializing and disposable bean ");
+	}
+	public void destroy()
+	{
+		System.out.println("Destroying bean using destroy-method");
+	}
+}
+
+TestBeanLife2.java
+package org.padmini.springcore;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class TestBeanLife1 {
+
+	public static void main(String[] args) {
+		AbstractApplicationContext context = new ClassPathXmlApplicationContext("Spring8-1.xml");
+		context.registerShutdownHook();
+		BeanLife1 b1=(BeanLife1)context.getBean("beanLife1");
+		b1.life();
+	}
+}
+Spring8-2.xml
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns = "http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+          
+    <bean id="beanLife2" class="org.padmini.springcore.BeanLife2" init-method="myInit" destroy-method="destroy"/>       
+</beans>
+
+output:
+Initializing bean using init-method
+Bean life cycle mtds using initializing and disposable bean 
+Destroying bean using destroy-method
+
+3.(BeanLife3.java,TestBeanLife3.java,Spring8-3.xml)
+
+BeanLife3.java
+package org.padmini.springcore;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
+public class BeanLife3 {
+	@PostConstruct
+	public void myInit() throws Exception{
+		System.out.println("Initializing bean using annotations");
+	}
+	 @PreDestroy
+	 public void destroy() throws Exception{
+		 System.out.println("Destroying bean using annotations");
+	 }
+	 
+	 public void life()
+	 {
+		 System.out.println("Bean life cycle mtds");
+	 } 
+}
+
+TestBeanLife3.java
+package org.padmini.springcore;
+
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class TestBeanLife3 {
+
+	public static void main(String[] args) {
+		AbstractApplicationContext context = new ClassPathXmlApplicationContext("Spring8-3.xml");
+		context.registerShutdownHook();
+		BeanLife3 b1=(BeanLife3)context.getBean("beanLife3");
+		b1.life();
+	}
+}
+
+Spring8-3.xml
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns = "http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+         
+    <bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor"/>
+    <bean id="beanLife3" class="org.padmini.springcore.BeanLife3" />       
+</beans>
+
+output:
+Initializing bean using annotations
+Bean life cycle mtds
+Destroying bean using annotations
+
+9.Both 8 and 9 are same
+
+
+10.(HelloWorld.java,TestHelloWorld.java,Spring10.xml)
+
+HelloWorld.java
+package org.padmini.springcore;
+
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+
+public class HelloWorld  implements ApplicationContextAware
+{
+
+	private ApplicationContext context=null;
+
+	public void setApplicationContext(ApplicationContext context) throws BeansException {
+		this.context=context;
+		
+	}
+	public void wish()
+	{
+		System.out.println("Hello World!!!!!!");
+	}
+}
+
+TestHelloWorld.java
+package org.padmini.springcore;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class TestHelloWorld {
+
+	public static void main(String[] args) {
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring10.xml");
+		HelloWorld h1=(HelloWorld)context.getBean("helloWorld");
+		h1.wish();
+	}
+}
+
+Spring10.xml
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns = "http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+          
+    <bean id="helloWorld" class="org.padmini.springcore.HelloWorld"/>       
+</beans>
+
+output::
+Hello World!!!!!!
+

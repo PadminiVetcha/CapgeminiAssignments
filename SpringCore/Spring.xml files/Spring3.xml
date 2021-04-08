@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns = "http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+         
+	
+		<bean id="bankAccount" class="org.padmini.springcore.BankAccount" autowire="byName" >
+		<property name="accountId" value="987654321"/>
+			<property name="accountHolderName" value="Padmini"/>
+			<property name="accountType" value="Savings"/>
+			<property name="accountBalance" value="100000"/>
+		</bean>
+		
+		<bean id="bankAccountRepositoryImpl" class="org.padmini.springcore.BankAccountRepositoryImpl" >
+		</bean>
+		
+		<bean id="bankAccountServiceImpl" class="org.padmini.springcore.BankAccountServiceImpl" >
+		</bean>	
+		
+		<bean id="bankAccountController" class="org.padmini.springcore.BankAccountController" >
+		</bean>
+
+</beans>           
