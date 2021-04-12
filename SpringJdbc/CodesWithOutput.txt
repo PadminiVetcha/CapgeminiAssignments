@@ -1,0 +1,1324 @@
+In SssQLyog ...
+
+CREATE DATABASE spring_jdbc;
+
+USE spring_jdbc;
+
+CREATE TABLE EmployeeDetails( Emp_id INT,
+NAME VARCHAR(20), 
+Age INT,
+Designation VARCHAR(30),
+Dept_Code INT,
+Manager VARCHAR(20));
+
+SELECT * FROM EmployeeDetails;
+
+INSERT INTO EmployeeDetails VALUES(9862,'Robert Bayley',34,'H.R.Manager',454,'Sarah Bainbrigde');
+INSERT INTO EmployeeDetails VALUES(4171,'Nicki Carter',49,'PHP Developer',415,'Eric Beaumont');
+INSERT INTO EmployeeDetails VALUES(5613,'Michael Copsey',41,'Android Developer',463,'Lee Daniels');
+
+INSERT INTO EmployeeDetails VALUES(7570,'Judith Dooley',34,'Project Manager',173,'David Edwards');
+
+INSERT INTO EmployeeDetails VALUES(2732,'Le Fisher',48,'General Manager',848,'Jane Foster');
+
+INSERT INTO EmployeeDetails VALUES(8552,'Susan Gill',55,'Business Development Manager',436,'Vincent Gauci');
+INSERT INTO EmployeeDetails VALUES(8324,'Irene Hammond',38,'Internet Marketing Head',765,'Helen Harker');
+
+INSERT INTO EmployeeDetails VALUES(3721,'Kenneth Henderson',31,'Content Writer',568,'Sarah Herbert');
+
+INSERT INTO EmployeeDetails VALUES(7919,'Adul Lawal',51,'System Administrator',922,'John Knowles');
+INSERT INTO EmployeeDetails VALUES(1401,'Mandy Logan',52,'CEO/MD',545,'John Leese');
+
+INSERT INTO EmployeeDetails VALUES(6926,'Paul Lucas',53,'Internet Marketing Head',426,'Jonathan Levens');
+
+INSERT INTO EmployeeDetails VALUES(6884,'Valerie Mitchell',36,'PHP Developer',919,'Michael McAdam');
+
+INSERT INTO EmployeeDetails VALUES(9350,'James Rose',31,'Content Writer',239,'Simon Stanton');
+
+INSERT INTO EmployeeDetails VALUES(6942,'Rhonda Tasker',51,'Business Development Manager',951,'David Wilson');
+
+INSERT INTO EmployeeDetails VALUES(1136,'Una Tobin',50,'Project Manager',132,'Victoria Wynne');
+INSERT INTO EmployeeDetails VALUES(4141,'Shaun Williams',33,'Android Developer',834,'Victor Beadle');
+
+
+
+output::
+will be the table given in assignment!!!!
+
+Emp_id  Name                  Age  Designation                   Dept_Code  Manager           
+------  -----------------  ------  ----------------------------  ---------  ------------------
+  9862  Robert Bayley          34  H.R.Manager                         454  Sarah Bainbrigde  
+  4171  Nicki Carter           49  PHP Developer                       415  Eric Beaumont     
+  5613  Michael Copsey         41  Android Developer                   463  Lee Daniels       
+  7570  Judith Dooley          34  Project Manager                     173  David Edwards     
+  2732  Le Fisher              48  General Manager                     848  Jane Foster       
+  8552  Susan Gill             55  Business Development Manager        436  Vincent Gauci     
+  8324  Irene Hammond          38  Internet Marketing Head             765  Helen Harker      
+  3721  Kenneth Henderson      31  Content Writer                      568  Sarah Herbert     
+  7919  Adul Lawal             51  System Administrator                922  John Knowles      
+  1401  Mandy Logan            52  CEO/MD                              545  John Leese        
+  6926  Paul Lucas             53  Internet Marketing Head             426  Jonathan Levens   
+  6884  Valerie Mitchell       36  PHP Developer                       919  Michael McAdam    
+  9350  James Rose             31  Content Writer                      239  Simon Stanton     
+  6942  Rhonda Tasker          51  Business Development Manager        951  David Wilson      
+  1136  Una Tobin              50  Project Manager                     132  Victoria Wynne    
+  4141  Shaun Williams         33  Android Developer                   834  Victor Beadle   
+
+Pom.xml
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.padmini.springjdbc</groupId>
+  <artifactId>SpringJdbcAssignment</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  
+  <dependencies>
+  	<dependency>
+ 		<groupId>org.springframework</groupId>
+ 		<artifactId>spring-context</artifactId>  
+ 		<version>5.3.5</version>    
+	</dependency>
+	
+	<dependency>
+ 		<groupId>org.springframework</groupId>
+ 		<artifactId>spring-core</artifactId>  
+ 		<version>5.3.5</version>    
+	</dependency>
+	
+	<dependency>
+ 		<groupId>org.springframework</groupId>
+ 		<artifactId>spring-jdbc</artifactId>  
+ 		<version>5.3.5</version>    
+	</dependency>
+	
+	<dependency>  
+      <groupId>junit</groupId>  
+      <artifactId>junit</artifactId>  
+      <version>3.8.1</version>  
+      <scope>test</scope>  
+    </dependency>  
+    
+    <dependency>
+	<groupId>mysql</groupId>
+	<artifactId>mysql-connector-java</artifactId>
+	<version>8.0.23</version>
+</dependency>
+	</dependencies>
+  
+</project>
+
+1.(EmployeeDetails.java,EmployeeDetailsDao.java,EmployeeDetailsDaoImpl.java,EmployeeMgmt.java,applicationContext.xml)
+
+EmployeeDetails.java
+
+package org.padmini.springjdbc.model;
+
+public class EmployeeDetails {
+
+	private int Emp_id;
+	private String Name;
+	private int Age;
+	private String Designation;
+	private int Dept_Code;
+	private String Manager;
+	
+	public EmployeeDetails(int emp_id, String name, int age, String designation, int dept_Code, String manager) {
+		super();
+		Emp_id = emp_id;
+		Name = name;
+		Age = age;
+		Designation = designation;
+		Dept_Code = dept_Code;
+		Manager = manager;
+	}
+	
+	public int getEmp_id() {
+		return Emp_id;
+	}
+	public void setEmp_id(int emp_id) {
+		Emp_id = emp_id;
+	}
+	public String getName() {
+		return Name;
+	}
+	public void setName(String name) {
+		Name = name;
+	}
+	public int getAge() {
+		return Age;
+	}
+	public void setAge(int age) {
+		Age = age;
+	}
+	public String getDesignation() {
+		return Designation;
+	}
+	public void setDesignation(String designation) {
+		Designation = designation;
+	}
+	public int getDept_Code() {
+		return Dept_Code;
+	}
+	public void setDept_Code(int dept_Code) {
+		Dept_Code = dept_Code;
+	}
+	public String getManager() {
+		return Manager;
+	}
+	public void setManager(String manager) {
+		Manager = manager;
+	}
+	@Override
+	public String toString() {
+		return "EmployeeDetails [Emp_id=" + Emp_id + ", Name=" + Name + ", Age=" + Age + ", Designation=" + Designation
+				+ ", Dept_Code=" + Dept_Code + ", Manager=" + Manager + "]";
+	}
+}
+
+EmployeeDetailsdao.java
+
+package org.padmini.springjdbc.dao;
+
+import org.padmini.springjdbc.model.EmployeeDetails;
+
+public interface EmployeeDetailsDao
+{
+	public void insert(EmployeeDetails empDetails);
+}
+
+EmployeeDetailsDaoImpl.java
+
+package org.padmini.springjdbc.impl;
+
+import org.padmini.springjdbc.dao.EmployeeDetailsDao;
+import org.padmini.springjdbc.model.EmployeeDetails;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
+
+public class EmployeeDetailsDaoImpl extends JdbcDaoSupport implements EmployeeDetailsDao
+{
+
+	public void insert(EmployeeDetails empDetails)
+	{
+		String query = " INSERT INTO EmployeeDetails "
+				+ "(Emp_id,Name,Age,Designation,Dept_Code,Manager) VALUES(?,?,?,?,?,?)";
+		
+		getJdbcTemplate().update(query,
+				new Object[] { empDetails.getEmp_id(),empDetails.getName(),
+						empDetails.getAge(),empDetails.getDesignation(),
+						empDetails.getDept_Code(),empDetails.getManager() });
+	}
+
+}
+
+EmployeeMgmt.java
+
+import org.padmini.springjdbc.dao.EmployeeDetailsDao;
+import org.padmini.springjdbc.model.EmployeeDetails;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class EmployeeMgmt {
+	
+	public static void main(String args[])
+	{
+		ApplicationContext context=new ClassPathXmlApplicationContext("applicationContext.xml");
+		
+		EmployeeDetailsDao empDetailsDao =(EmployeeDetailsDao) context.getBean("empDetailsDao");
+		EmployeeDetails empDet = new EmployeeDetails(3333,"Joey Wright",45,"Business Development Manager",834,"Michael McAdam");
+		empDetailsDao.insert(empDet);
+		System.out.println("Syccessfully inserted one row...!!");		
+	}
+}
+
+applicationContext.xml
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns = "http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+           
+       <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+       		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+       		<property name="url" value="jdbc:mysql://localhost:3306/spring_jdbc"/>
+       		<property name="username" value="root"/>
+       		<property name="password" value="padmini"/>
+       </bean>
+       
+       <bean id="empDetailsDao" class=" org.padmini.springjdbc.impl.EmployeeDetailsDaoImpl">
+       		<property name="dataSource" ref="dataSource"/>
+       </bean>
+</beans>
+
+output:
+(in eclipse)
+Syccessfully inserted one row...!!
+
+(chk database)
+a new row is inserted
+
+Emp_id  Name                  Age  Designation                   Dept_Code  Manager           
+------  -----------------  ------  ----------------------------  ---------  ------------------
+  9862  Robert Bayley          34  H.R.Manager                         454  Sarah Bainbrigde  
+  4171  Nicki Carter           49  PHP Developer                       415  Eric Beaumont     
+  5613  Michael Copsey         41  Android Developer                   463  Lee Daniels       
+  7570  Judith Dooley          34  Project Manager                     173  David Edwards     
+  2732  Le Fisher              48  General Manager                     848  Jane Foster       
+  8552  Susan Gill             55  Business Development Manager        436  Vincent Gauci     
+  8324  Irene Hammond          38  Internet Marketing Head             765  Helen Harker      
+  3721  Kenneth Henderson      31  Content Writer                      568  Sarah Herbert     
+  7919  Adul Lawal             51  System Administrator                922  John Knowles      
+  1401  Mandy Logan            52  CEO/MD                              545  John Leese        
+  6926  Paul Lucas             53  Internet Marketing Head             426  Jonathan Levens   
+  6884  Valerie Mitchell       36  PHP Developer                       919  Michael McAdam    
+  9350  James Rose             31  Content Writer                      239  Simon Stanton     
+  6942  Rhonda Tasker          51  Business Development Manager        951  David Wilson      
+  1136  Una Tobin              50  Project Manager                     132  Victoria Wynne    
+  4141  Shaun Williams         33  Android Developer                   834  Victor Beadle     
+  3333  Joey Wright            45  Business Development Manager        834  Michael McAdam    
+
+2.(EmployeeDetails.java,EmployeeDetailsDao.java,EmployeeDetailsDaoImpl.java,EmployeeMgmt.java,applicationContext.xml)
+
+But only 2 files need update remaining are same as 1
+
+EmployeeDetailsDaoImpl.java
+
+package org.padmini.springjdbc.impl;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.padmini.springjdbc.dao.EmployeeDetailsDao;
+import org.padmini.springjdbc.model.EmployeeDetails;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
+
+public class EmployeeDetailsDaoImpl extends NamedParameterJdbcDaoSupport implements EmployeeDetailsDao
+{
+
+	public void insert(EmployeeDetails empDetails)
+	{
+		String query = " INSERT INTO EmployeeDetails "
+				+ "(Emp_id,Name,Age,Designation,Dept_Code,Manager) VALUES(:empid, :name, :age, :designation, :deptcode,:manager)";
+		
+		Map<String,Object> param = new HashMap<String,Object>();
+		param.put("empid", empDetails.getEmp_id());
+		param.put("name", empDetails.getName());
+		param.put("age", empDetails.getAge());
+		param.put("designation",empDetails.getDesignation());
+		param.put("deptcode", empDetails.getDept_Code());
+		param.put("manager", empDetails.getManager());
+		
+		getNamedParameterJdbcTemplate().update(query, param);
+	}
+}
+
+EmployeeMgmt.java
+
+import org.padmini.springjdbc.dao.EmployeeDetailsDao;
+import org.padmini.springjdbc.model.EmployeeDetails;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class EmployeeMgmt {
+	
+	public static void main(String args[])
+	{
+		ApplicationContext context=new ClassPathXmlApplicationContext("applicationContext.xml");
+		
+		EmployeeDetailsDao empDetailsDao =(EmployeeDetailsDao) context.getBean("empDetailsDao");
+		EmployeeDetails empDet = new EmployeeDetails(3135,"Brian Osborne",34,"Business Development Manager",343,"Winifred Griffith");
+		empDetailsDao.insert(empDet);
+		System.out.println("Successfully inserted one row...!!");
+		
+	}
+}
+
+output:
+Emp_id  Name                  Age  Designation                   Dept_Code  Manager            
+------  -----------------  ------  ----------------------------  ---------  -------------------
+  9862  Robert Bayley          34  H.R.Manager                         454  Sarah Bainbrigde   
+  4171  Nicki Carter           49  PHP Developer                       415  Eric Beaumont      
+  5613  Michael Copsey         41  Android Developer                   463  Lee Daniels        
+  7570  Judith Dooley          34  Project Manager                     173  David Edwards      
+  2732  Le Fisher              48  General Manager                     848  Jane Foster        
+  8552  Susan Gill             55  Business Development Manager        436  Vincent Gauci      
+  8324  Irene Hammond          38  Internet Marketing Head             765  Helen Harker       
+  3721  Kenneth Henderson      31  Content Writer                      568  Sarah Herbert      
+  7919  Adul Lawal             51  System Administrator                922  John Knowles       
+  1401  Mandy Logan            52  CEO/MD                              545  John Leese         
+  6926  Paul Lucas             53  Internet Marketing Head             426  Jonathan Levens    
+  6884  Valerie Mitchell       36  PHP Developer                       919  Michael McAdam     
+  9350  James Rose             31  Content Writer                      239  Simon Stanton      
+  6942  Rhonda Tasker          51  Business Development Manager        951  David Wilson       
+  1136  Una Tobin              50  Project Manager                     132  Victoria Wynne     
+  4141  Shaun Williams         33  Android Developer                   834  Victor Beadle      
+  3333  Joey Wright            45  Business Development Manager        834  Michael McAdam     
+  3135  Brian Osborne          34  Business Development Manager        343  Winifred Griffith  
+
+3.(EmployeeDetails.java,EmployeeDetailsDao.java,EmployeeDetailsDaoImpl.java,EmployeeMgmt.java,applicationContext.xml,EmployeeDetailsRowMapper.java)
+
+changed files are::
+
+EmployeeDetailsRowMapper.java
+
+package org.padmini.springcore.mapper;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import org.padmini.springjdbc.model.EmployeeDetails;
+import org.springframework.jdbc.core.RowMapper;
+public class EmployeeDetailsRowMapper  implements RowMapper<EmployeeDetails>
+{
+
+	public EmployeeDetails mapRow(ResultSet rs,int rowNum) throws SQLException
+	{
+		EmployeeDetails empDetails = new EmployeeDetails();
+		empDetails.setEmp_id(rs.getInt("Emp_id"));
+		empDetails.setName(rs.getString("Name"));
+		empDetails.setAge(rs.getInt("Age"));
+		empDetails.setDesignation(rs.getString("Designation"));
+		empDetails.setDept_Code(rs.getInt("Dept_Code"));
+		empDetails.setManager(rs.getString("Manager"));
+		
+		return empDetails;
+	}
+}
+
+EmployeeDetailsDao.java
+
+package org.padmini.springjdbc.dao;
+import java.util.Collection;
+import java.util.List;
+import org.padmini.springjdbc.model.EmployeeDetails;
+
+public interface EmployeeDetailsDao
+{
+	public List<EmployeeDetails> getEmployeeDetailsRowMapper();
+}
+
+EmployeeDetailsDaoImpl.java
+
+package org.padmini.springjdbc.impl;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.sql.DataSource;
+
+import org.padmini.springcore.mapper.EmployeeDetailsRowMapper;
+import org.padmini.springjdbc.dao.EmployeeDetailsDao;
+import org.padmini.springjdbc.model.EmployeeDetails;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcDaoSupport;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
+
+public class EmployeeDetailsDaoImpl extends JdbcDaoSupport implements EmployeeDetailsDao
+{
+	//3.get all employee details using row mapper
+	public List<EmployeeDetails> getEmployeeDetailsRowMapper()
+	{
+		String query="SELECT * FROM EmployeeDetails";
+		List<EmployeeDetails> empDet=getJdbcTemplate().query(query, new EmployeeDetailsRowMapper());
+		return empDet;
+	}
+}
+
+EmployeeMgmt .java
+
+import java.util.Collection;
+import java.util.List;
+import org.padmini.springjdbc.dao.EmployeeDetailsDao;
+import org.padmini.springjdbc.impl.EmployeeDetailsDaoImpl;
+import org.padmini.springjdbc.model.EmployeeDetails;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+public class EmployeeMgmt {
+	
+	public static void main(String args[])
+	{
+		ApplicationContext context=new ClassPathXmlApplicationContext("applicationContext.xml");
+		EmployeeDetailsDao empDetailsDao =(EmployeeDetailsDao) context.getBean("empDetailsDao");
+		List<EmployeeDetails> emplist = empDetailsDao.getEmployeeDetailsRowMapper();
+       		for (EmployeeDetails employee : emplist) 
+		{
+            		System.out.println(employee.toString());
+        	}
+	}
+}
+
+output::
+EmployeeDetails [Emp_id=9862, Name=Robert Bayley, Age=34, Designation=H.R.Manager, Dept_Code=454, Manager=Sarah Bainbrigde]
+EmployeeDetails [Emp_id=4171, Name=Nicki Carter, Age=49, Designation=PHP Developer, Dept_Code=415, Manager=Eric Beaumont]
+EmployeeDetails [Emp_id=5613, Name=Michael Copsey, Age=41, Designation=Content Writer, Dept_Code=545, Manager=David Edwards]
+EmployeeDetails [Emp_id=7570, Name=Judith Dooley, Age=34, Designation=Project Manager, Dept_Code=173, Manager=David Edwards]
+EmployeeDetails [Emp_id=2732, Name=Le Fisher, Age=48, Designation=General Manager, Dept_Code=848, Manager=Jane Foster]
+EmployeeDetails [Emp_id=8552, Name=Susan Gill, Age=55, Designation=Business Development Manager, Dept_Code=436, Manager=Vincent Gauci]
+EmployeeDetails [Emp_id=8324, Name=Irene Hammond, Age=38, Designation=Internet Marketing Head, Dept_Code=765, Manager=Helen Harker]
+EmployeeDetails [Emp_id=3721, Name=Kenneth Henderson, Age=31, Designation=Content Writer, Dept_Code=568, Manager=Sarah Herbert]
+EmployeeDetails [Emp_id=7919, Name=Adul Lawal, Age=51, Designation=System Administrator, Dept_Code=922, Manager=John Knowles]
+EmployeeDetails [Emp_id=1401, Name=Mandy Logan, Age=52, Designation=CEO/MD, Dept_Code=545, Manager=John Leese]
+EmployeeDetails [Emp_id=6926, Name=Paul Lucas, Age=53, Designation=Internet Marketing Head, Dept_Code=426, Manager=Jonathan Levens]
+EmployeeDetails [Emp_id=6884, Name=Valerie Mitchell, Age=36, Designation=PHP Developer, Dept_Code=919, Manager=Michael McAdam]
+EmployeeDetails [Emp_id=9350, Name=James Rose, Age=31, Designation=Content Writer, Dept_Code=239, Manager=Simon Stanton]
+EmployeeDetails [Emp_id=6942, Name=Rhonda Tasker, Age=23, Designation=Content Writer, Dept_Code=951, Manager=Unity Baker]
+EmployeeDetails [Emp_id=1136, Name=Una Tobin, Age=50, Designation=Project Manager, Dept_Code=132, Manager=Victoria Wynne]
+EmployeeDetails [Emp_id=4141, Name=Shaun Williams, Age=33, Designation=Android Developer, Dept_Code=834, Manager=Victor Beadle]
+EmployeeDetails [Emp_id=3333, Name=Joey Wright, Age=45, Designation=Business Development Manager, Dept_Code=834, Manager=Michael McAdam]
+EmployeeDetails [Emp_id=3135, Name=Brian Osborne, Age=34, Designation=Business Development Manager, Dept_Code=343, Manager=Winifred Griffith]
+EmployeeDetails [Emp_id=3135, Name=Georgia Garraway, Age=43, Designation=PHP Developer, Dept_Code=763, Manager=JakeMatthews]
+
+
+4.(EmployeeDetails.java,EmployeeDetailsDao.java,EmployeeDetailsDaoImpl.java,EmployeeMgmt.java,applicationContext.xml)
+
+changed files are::
+
+EmployeeDetailsDao.java
+
+package org.padmini.springjdbc.dao;
+import java.util.List;
+import org.padmini.springjdbc.model.EmployeeDetails;
+public interface EmployeeDetailsDao
+{
+	public List<EmployeeDetails> findAll();
+}
+
+EmployeeMgmt.java
+
+
+import java.util.List;
+import org.padmini.springjdbc.dao.EmployeeDetailsDao;
+import org.padmini.springjdbc.model.EmployeeDetails;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+public class EmployeeMgmt {
+	
+	public static void main(String args[])
+	{
+		ApplicationContext context=new ClassPathXmlApplicationContext("applicationContext.xml");
+		
+		EmployeeDetailsDao empDetailsDao =(EmployeeDetailsDao) context.getBean("empDetailsDao");
+		List<EmployeeDetails> empDet=empDetailsDao.findAll();
+		System.out.println("EmployeeDetails List is:");
+		System.out.println(empDet);
+	}
+}
+EmployeeDetailsDaoImpl.java
+
+package org.padmini.springjdbc.impl;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.padmini.springcore.mapper.EmployeeDetailsRowMapper;
+import org.padmini.springjdbc.dao.EmployeeDetailsDao;
+import org.padmini.springjdbc.model.EmployeeDetails;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
+
+public class EmployeeDetailsDaoImpl extends JdbcDaoSupport implements EmployeeDetailsDao
+{
+	// 4..get all employees using beanpropertyrowmapper
+	public List<EmployeeDetails> findAll() 
+	{
+		String query = "SELECT * FROM EmployeeDetails";
+		List<EmployeeDetails> empDetailsList = getJdbcTemplate().query(query, new BeanPropertyRowMapper(EmployeeDetails.class));
+		return empDetailsList;
+	}
+}
+
+output::
+EmployeeDetails List is:
+[EmployeeDetails [Emp_id=9862, Name=Robert Bayley, Age=34, Designation=H.R.Manager, Dept_Code=454, Manager=Sarah Bainbrigde], EmployeeDetails [Emp_id=4171, Name=Nicki Carter, Age=49, Designation=PHP Developer, Dept_Code=415, Manager=Eric Beaumont], EmployeeDetails [Emp_id=5613, Name=Michael Copsey, Age=41, Designation=Android Developer, Dept_Code=463, Manager=Lee Daniels], EmployeeDetails [Emp_id=7570, Name=Judith Dooley, Age=34, Designation=Project Manager, Dept_Code=173, Manager=David Edwards], EmployeeDetails [Emp_id=2732, Name=Le Fisher, Age=48, Designation=General Manager, Dept_Code=848, Manager=Jane Foster], EmployeeDetails [Emp_id=8552, Name=Susan Gill, Age=55, Designation=Business Development Manager, Dept_Code=436, Manager=Vincent Gauci], EmployeeDetails [Emp_id=8324, Name=Irene Hammond, Age=38, Designation=Internet Marketing Head, Dept_Code=765, Manager=Helen Harker], EmployeeDetails [Emp_id=3721, Name=Kenneth Henderson, Age=31, Designation=Content Writer, Dept_Code=568, Manager=Sarah Herbert], EmployeeDetails [Emp_id=7919, Name=Adul Lawal, Age=51, Designation=System Administrator, Dept_Code=922, Manager=John Knowles], EmployeeDetails [Emp_id=1401, Name=Mandy Logan, Age=52, Designation=CEO/MD, Dept_Code=545, Manager=John Leese], EmployeeDetails [Emp_id=6926, Name=Paul Lucas, Age=53, Designation=Internet Marketing Head, Dept_Code=426, Manager=Jonathan Levens], EmployeeDetails [Emp_id=6884, Name=Valerie Mitchell, Age=36, Designation=PHP Developer, Dept_Code=919, Manager=Michael McAdam], EmployeeDetails [Emp_id=9350, Name=James Rose, Age=31, Designation=Content Writer, Dept_Code=239, Manager=Simon Stanton], EmployeeDetails [Emp_id=6942, Name=Rhonda Tasker, Age=51, Designation=Business Development Manager, Dept_Code=951, Manager=David Wilson], EmployeeDetails [Emp_id=1136, Name=Una Tobin, Age=50, Designation=Project Manager, Dept_Code=132, Manager=Victoria Wynne], EmployeeDetails [Emp_id=4141, Name=Shaun Williams, Age=33, Designation=Android Developer, Dept_Code=834, Manager=Victor Beadle], EmployeeDetails [Emp_id=3333, Name=Joey Wright, Age=45, Designation=Business Development Manager, Dept_Code=834, Manager=Michael McAdam], EmployeeDetails [Emp_id=3135, Name=Brian Osborne, Age=34, Designation=Business Development Manager, Dept_Code=343, Manager=Winifred Griffith]]
+
+
+5.(EmployeeDetails.java,EmployeeDetailsDao.java,EmployeeDetailsDaoImpl.java,EmployeeMgmt.java,applicationContext.xml)
+
+changed files are::
+
+EmployeeDetailsDao.java
+
+package org.padmini.springjdbc.dao;
+import java.util.List;
+import org.padmini.springjdbc.model.EmployeeDetails;
+public interface EmployeeDetailsDao
+{
+
+	public EmployeeDetails findEmployeeDetailsById(int empid);
+}
+
+EmployeeDetailsDaoImpl.java
+
+package org.padmini.springjdbc.impl;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.padmini.springcore.mapper.EmployeeDetailsRowMapper;
+import org.padmini.springjdbc.dao.EmployeeDetailsDao;
+import org.padmini.springjdbc.model.EmployeeDetails;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
+
+public class EmployeeDetailsDaoImpl extends JdbcDaoSupport implements EmployeeDetailsDao
+{	
+	//5..get a record with empid:8324 using beanpropertyrowmapper
+	
+	public EmployeeDetails findEmployeeDetailsById(int empid) 
+	{	
+		String query = " SELECT * FROM EmployeeDetails where Emp_id= ?";
+		EmployeeDetails empDet = (EmployeeDetails) getJdbcTemplate().queryForObject(query, new Object[] { empid }, new BeanPropertyRowMapper(EmployeeDetails.class));
+		return empDet;
+	}
+}
+
+EmployeeMgmt.java
+
+
+import java.util.List;
+import org.padmini.springjdbc.dao.EmployeeDetailsDao;
+import org.padmini.springjdbc.model.EmployeeDetails;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+public class EmployeeMgmt {
+	
+	public static void main(String args[])
+	{
+		ApplicationContext context=new ClassPathXmlApplicationContext("applicationContext.xml");
+		
+		EmployeeDetailsDao empDetailsDao =(EmployeeDetailsDao) context.getBean("empDetailsDao");
+		EmployeeDetails empDetails=empDetailsDao.findEmployeeDetailsById(8324);
+		System.out.println(empDetails);
+	}
+}
+
+output::
+EmployeeDetails [Emp_id=8324, Name=Irene Hammond, Age=38, Designation=Internet Marketing Head, Dept_Code=765, Manager=Helen Harker]
+
+6.(EmployeeDetails.java,EmployeeDetailsDao.java,EmployeeDetailsDaoImpl.java,EmployeeMgmt.java,applicationContext.xml)
+
+changed files are::
+
+EmployeeDetailsDao.java
+
+package org.padmini.springjdbc.dao;
+import java.util.List;
+import org.padmini.springjdbc.model.EmployeeDetails;
+public interface EmployeeDetailsDao
+{
+	public List<EmployeeDetails> findAll();
+}
+
+EmployeeDetailsDaoImpl.java
+
+package org.padmini.springjdbc.impl;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.padmini.springcore.mapper.EmployeeDetailsRowMapper;
+import org.padmini.springjdbc.dao.EmployeeDetailsDao;
+import org.padmini.springjdbc.model.EmployeeDetails;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
+public class EmployeeDetailsDaoImpl extends JdbcDaoSupport implements EmployeeDetailsDao
+{	
+	//6..get all employee details using resultsetExtractor
+	public List<EmployeeDetails> findAll() {
+		return getJdbcTemplate().query("SELECT * FROM EmployeeDetails",
+				new ResultSetExtractor<List<EmployeeDetails>>()
+				{
+					public List<EmployeeDetails> extractData(ResultSet rs)
+								throws SQLException , DataAccessException
+					{
+						List<EmployeeDetails> empDetailsList = new ArrayList<EmployeeDetails>();
+						while(rs.next())
+						{
+							EmployeeDetails ed=new EmployeeDetails();
+							ed.setEmp_id(rs.getInt(1));
+							ed.setName(rs.getString(2));
+							ed.setAge(rs.getInt(3));
+							ed.setDesignation(rs.getString(4));
+							ed.setDept_Code(rs.getInt(5));
+							ed.setManager(rs.getString(6));
+							empDetailsList.add(ed);
+						}
+						return empDetailsList;
+					}
+				});
+	}
+}
+
+EmployeeMgmt.java
+
+import java.util.List;
+import org.padmini.springjdbc.dao.EmployeeDetailsDao;
+import org.padmini.springjdbc.model.EmployeeDetails;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+public class EmployeeMgmt {
+	
+	public static void main(String args[])
+	{
+		ApplicationContext context=new ClassPathXmlApplicationContext("applicationContext.xml");
+		
+		EmployeeDetailsDao empDetailsDao =(EmployeeDetailsDao) context.getBean("empDetailsDao");
+		List<EmployeeDetails> empDet=empDetailsDao.findAll();
+		System.out.println(empDet);
+	}
+}
+
+output:
+[EmployeeDetails [Emp_id=9862, Name=Robert Bayley, Age=34, Designation=H.R.Manager, Dept_Code=454, Manager=Sarah Bainbrigde], EmployeeDetails [Emp_id=4171, Name=Nicki Carter, Age=49, Designation=PHP Developer, Dept_Code=415, Manager=Eric Beaumont], EmployeeDetails [Emp_id=5613, Name=Michael Copsey, Age=41, Designation=Android Developer, Dept_Code=463, Manager=Lee Daniels], EmployeeDetails [Emp_id=7570, Name=Judith Dooley, Age=34, Designation=Project Manager, Dept_Code=173, Manager=David Edwards], EmployeeDetails [Emp_id=2732, Name=Le Fisher, Age=48, Designation=General Manager, Dept_Code=848, Manager=Jane Foster], EmployeeDetails [Emp_id=8552, Name=Susan Gill, Age=55, Designation=Business Development Manager, Dept_Code=436, Manager=Vincent Gauci], EmployeeDetails [Emp_id=8324, Name=Irene Hammond, Age=38, Designation=Internet Marketing Head, Dept_Code=765, Manager=Helen Harker], EmployeeDetails [Emp_id=3721, Name=Kenneth Henderson, Age=31, Designation=Content Writer, Dept_Code=568, Manager=Sarah Herbert], EmployeeDetails [Emp_id=7919, Name=Adul Lawal, Age=51, Designation=System Administrator, Dept_Code=922, Manager=John Knowles], EmployeeDetails [Emp_id=1401, Name=Mandy Logan, Age=52, Designation=CEO/MD, Dept_Code=545, Manager=John Leese], EmployeeDetails [Emp_id=6926, Name=Paul Lucas, Age=53, Designation=Internet Marketing Head, Dept_Code=426, Manager=Jonathan Levens], EmployeeDetails [Emp_id=6884, Name=Valerie Mitchell, Age=36, Designation=PHP Developer, Dept_Code=919, Manager=Michael McAdam], EmployeeDetails [Emp_id=9350, Name=James Rose, Age=31, Designation=Content Writer, Dept_Code=239, Manager=Simon Stanton], EmployeeDetails [Emp_id=6942, Name=Rhonda Tasker, Age=51, Designation=Business Development Manager, Dept_Code=951, Manager=David Wilson], EmployeeDetails [Emp_id=1136, Name=Una Tobin, Age=50, Designation=Project Manager, Dept_Code=132, Manager=Victoria Wynne], EmployeeDetails [Emp_id=4141, Name=Shaun Williams, Age=33, Designation=Android Developer, Dept_Code=834, Manager=Victor Beadle], EmployeeDetails [Emp_id=3333, Name=Joey Wright, Age=45, Designation=Business Development Manager, Dept_Code=834, Manager=Michael McAdam], EmployeeDetails [Emp_id=3135, Name=Brian Osborne, Age=34, Designation=Business Development Manager, Dept_Code=343, Manager=Winifred Griffith]]
+
+7.(EmployeeDetails.java,EmployeeDetailsDao.java,EmployeeDetailsDaoImpl.java,EmployeeMgmt.java,applicationContext.xml)
+
+changed files are::
+
+EmployeeDetailsDao.java
+
+package org.padmini.springjdbc.dao;
+import java.util.List;
+import org.padmini.springjdbc.model.EmployeeDetails;
+public interface EmployeeDetailsDao
+{
+	public int findTotalEmployees();
+}
+
+EmployeeDetailsDaoImpl.java
+
+package org.padmini.springjdbc.impl;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.padmini.springcore.mapper.EmployeeDetailsRowMapper;
+import org.padmini.springjdbc.dao.EmployeeDetailsDao;
+import org.padmini.springjdbc.model.EmployeeDetails;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
+
+public class EmployeeDetailsDaoImpl extends JdbcDaoSupport implements EmployeeDetailsDao
+{	
+	public int findTotalEmployees()
+	{
+		String query = "SELECT COUNT(*) FROM EmployeeDetails";
+		int rowCount=getJdbcTemplate().queryForObject(query,Integer.class);
+		return  rowCount;
+	}
+}
+
+EmployeeMgmt.java
+
+import java.util.List;
+import org.padmini.springjdbc.dao.EmployeeDetailsDao;
+import org.padmini.springjdbc.model.EmployeeDetails;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+public class EmployeeMgmt {
+	
+	public static void main(String args[])
+	{
+		ApplicationContext context=new ClassPathXmlApplicationContext("applicationContext.xml");
+		
+		EmployeeDetailsDao empDetailsDao =(EmployeeDetailsDao) context.getBean("empDetailsDao");
+		int count=empDetailsDao.findTotalEmployees();
+		System.out.println("Total number of rows in EmployeeDetails table are :"+count);
+	}
+}
+
+output::
+Total number of rows in EmployeeDetails table are :18
+
+8.(EmployeeDetails.java,EmployeeDetailsDao.java,EmployeeDetailsDaoImpl.java,EmployeeMgmt.java,applicationContext.xml)
+
+changed files are::
+
+EmployeeDetailsDao.java
+
+package org.padmini.springjdbc.dao;
+import java.util.List;
+import org.padmini.springjdbc.model.EmployeeDetails;
+public interface EmployeeDetailsDao
+{
+	public void insert(EmployeeDetails empDetails);
+}
+
+EmployeeDetailsDaoImpl.java
+
+package org.padmini.springjdbc.impl;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.sql.DataSource;
+import org.padmini.springcore.mapper.EmployeeDetailsRowMapper;
+import org.padmini.springjdbc.dao.EmployeeDetailsDao;
+import org.padmini.springjdbc.model.EmployeeDetails;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcDaoSupport;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
+public class EmployeeDetailsDaoImpl implements EmployeeDetailsDao
+{
+	//8..Insert into table using simplejdbcinsert
+	
+	private SimpleJdbcInsert simpleJdbcInsert;
+	public void setDataSource(DataSource dataSource)
+	{
+		this.simpleJdbcInsert=new SimpleJdbcInsert(dataSource).withTableName("EmployeeDetails");
+	}
+	public void insert(EmployeeDetails empDetails)
+	{
+		Map<String,Object> param=new HashMap<String,Object>(1);
+		param.put("Emp_id", empDetails.getEmp_id());
+		param.put("Name", empDetails.getName());
+		param.put("Age", empDetails.getAge());
+		param.put("Designation", empDetails.getDesignation());
+		param.put("Dept_Code", empDetails.getDept_Code());
+		param.put("Manager", empDetails.getManager());
+		simpleJdbcInsert.execute(param);
+		
+	}
+}
+
+EmployeeMgmt.java
+
+import java.util.List;
+import org.padmini.springjdbc.dao.EmployeeDetailsDao;
+import org.padmini.springjdbc.model.EmployeeDetails;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+public class EmployeeMgmt {
+	
+	public static void main(String args[])
+	{
+		ApplicationContext context=new ClassPathXmlApplicationContext("applicationContext.xml");
+		
+		EmployeeDetailsDao empDetailsDao =(EmployeeDetailsDao) context.getBean("empDetailsDao");
+		EmployeeDetails empDetails=new EmployeeDetails(3135,"Georgia Garraway",43,"PHP Developer",763,"JakeMatthews");
+		empDetailsDao.insert(empDetails);
+		System.out.println("Inserted a record successfully..!!!");
+	}
+}
+
+output::
+console============
+Inserted a record successfully..!!!
+
+table updated in database=======
+Emp_id  Name                  Age  Designation                   Dept_Code  Manager            
+------  -----------------  ------  ----------------------------  ---------  -------------------
+  9862  Robert Bayley          34  H.R.Manager                         454  Sarah Bainbrigde   
+  4171  Nicki Carter           49  PHP Developer                       415  Eric Beaumont      
+  5613  Michael Copsey         41  Android Developer                   463  Lee Daniels        
+  7570  Judith Dooley          34  Project Manager                     173  David Edwards      
+  2732  Le Fisher              48  General Manager                     848  Jane Foster        
+  8552  Susan Gill             55  Business Development Manager        436  Vincent Gauci      
+  8324  Irene Hammond          38  Internet Marketing Head             765  Helen Harker       
+  3721  Kenneth Henderson      31  Content Writer                      568  Sarah Herbert      
+  7919  Adul Lawal             51  System Administrator                922  John Knowles       
+  1401  Mandy Logan            52  CEO/MD                              545  John Leese         
+  6926  Paul Lucas             53  Internet Marketing Head             426  Jonathan Levens    
+  6884  Valerie Mitchell       36  PHP Developer                       919  Michael McAdam     
+  9350  James Rose             31  Content Writer                      239  Simon Stanton      
+  6942  Rhonda Tasker          51  Business Development Manager        951  David Wilson       
+  1136  Una Tobin              50  Project Manager                     132  Victoria Wynne     
+  4141  Shaun Williams         33  Android Developer                   834  Victor Beadle      
+  3333  Joey Wright            45  Business Development Manager        834  Michael McAdam     
+  3135  Brian Osborne          34  Business Development Manager        343  Winifred Griffith  
+  3135  Georgia Garraway       43  PHP Developer                       763  JakeMatthews       
+
+9.(EmployeeDetails.java,EmployeeDetailsDao.java,EmployeeDetailsDaoImpl.java,EmployeeMgmt.java,applicationContext.xml)
+Create a procedure in SQLyog===
+
+DELIMITER $$
+
+USE EmployeeDetails $$
+
+DROP PROCEDURE IF EXISTS `read_employee_withid`$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `read_employee_withid`
+		(IN in_empid INT,
+		 OUT out_name VARCHAR(20),
+		 OUT out_age INT,
+		 OUT out_designation VARCHAR(30),
+		 OUT out_deptcode INT,
+		 OUT out_manager VARCHAR(30))
+BEGIN
+		SELECT NAME, AGE, DESIGNATION, DEPT_CODE, MANAGER
+		INTO out_name, out_age, out_designation, out_deptcode, out_manager
+		FROM EmployeeDetails WHERE EMP_ID=in_empid;
+		END $$
+DELIMITER $$
+
+changed files are::
+
+EmployeeDetailsDao.java
+
+package org.padmini.springjdbc.dao;
+import java.util.List;
+import org.padmini.springjdbc.model.EmployeeDetails;
+public interface EmployeeDetailsDao
+{
+	public EmployeeDetails getEmployeeDetails(int empid);
+}
+
+EmployeeDetailsDaoImpl.java
+
+package org.padmini.springjdbc.impl;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.sql.DataSource;
+import org.padmini.springcore.mapper.EmployeeDetailsRowMapper;
+import org.padmini.springjdbc.dao.EmployeeDetailsDao;
+import org.padmini.springjdbc.model.EmployeeDetails;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcDaoSupport;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
+public class EmployeeDetailsDaoImpl implements EmployeeDetailsDao
+{
+	//9..retrieve record with empid=3721
+	private SimpleJdbcCall simpleJdbcCall;
+	public void setDataSource(DataSource dataSource) 
+	{
+		this.simpleJdbcCall=new SimpleJdbcCall(dataSource).withProcedureName("read_employee_withid");
+	}
+	public EmployeeDetails getEmployeeDetails(int empid)
+	{
+		SqlParameterSource in = new MapSqlParameterSource().addValue("in_empid", empid);
+		Map<String,Object> out=simpleJdbcCall.execute(in);
+		EmployeeDetails empDet = new EmployeeDetails();
+		empDet.setEmp_id(empid);
+		empDet.setName((String)out.get("out_name"));
+		empDet.setAge((Integer)out.get("out_age"));
+		empDet.setDesignation((String)out.get("out_designation"));
+		empDet.setDept_Code((Integer)out.get("out_deptcode"));
+		empDet.setManager((String)out.get("out_manager"));
+		return empDet;
+	}
+}
+
+EmployeeMgmt.java
+
+import java.util.List;
+
+import org.padmini.springjdbc.dao.EmployeeDetailsDao;
+import org.padmini.springjdbc.model.EmployeeDetails;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+public class EmployeeMgmt {
+	
+	public static void main(String args[])
+	{
+		ApplicationContext context=new ClassPathXmlApplicationContext("applicationContext.xml");
+		EmployeeDetailsDao empDetailsDao =(EmployeeDetailsDao) context.getBean("empDetailsDao");
+		EmployeeDetails empDetails=empDetailsDao.getEmployeeDetails(3721); 
+		System.out.println(empDetails);
+	}
+}
+
+output::
+EmployeeDetails [Emp_id=3721, Name=Kenneth Henderson, Age=31, Designation=Content Writer, Dept_Code=568, Manager=Sarah Herbert]
+
+10.(EmployeeDetails.java,EmployeeDetailsDao.java,EmployeeDetailsDaoImpl.java,EmployeeMgmt.java,applicationContext.xml)
+
+create a procedure in SQLyog::
+DELIMITER $$
+
+USE EmployeeDetails $$
+
+DROP PROCEDURE IF EXISTS `read_all_employee`$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `read_all_employee`()
+
+BEGIN
+		SELECT EMP_ID ,NAME, AGE, DESIGNATION, DEPT_CODE, MANAGER
+		FROM EmployeeDetails;
+		END $$
+DELIMITER $$
+
+changed files are::
+
+EmployeeDetailsDao.java
+
+package org.padmini.springjdbc.dao;
+import java.util.List;
+import org.padmini.springjdbc.model.EmployeeDetails;
+public interface EmployeeDetailsDao
+{
+	public List<EmployeeDetails> getAllEmployees();
+}
+
+EmployeeDetailsDaoImpl.java
+
+package org.padmini.springjdbc.impl;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.sql.DataSource;
+import org.padmini.springcore.mapper.EmployeeDetailsRowMapper;
+import org.padmini.springjdbc.dao.EmployeeDetailsDao;
+import org.padmini.springjdbc.model.EmployeeDetails;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcDaoSupport;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
+
+public class EmployeeDetailsDaoImpl implements EmployeeDetailsDao
+{	
+	//10..print all records using simplejdbccallclass
+	private SimpleJdbcCall simpleJdbcCall;
+	public void setDataSource(DataSource dataSource)
+	{ 
+		this.simpleJdbcCall=new SimpleJdbcCall(dataSource).withProcedureName("read_all_employee")
+								.returningResultSet("employeeDetails", BeanPropertyRowMapper.newInstance(EmployeeDetails.class));
+	}
+	public List<EmployeeDetails> getAllEmployees()
+	{
+		Map m=simpleJdbcCall.execute(new HashMap<String,Object>(0));
+		return (List<EmployeeDetails>) m.get("employeeDetails");
+	}
+}
+
+EmployeeMgmt.java
+
+import java.util.List;
+import org.padmini.springjdbc.dao.EmployeeDetailsDao;
+import org.padmini.springjdbc.model.EmployeeDetails;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class EmployeeMgmt {
+	
+	public static void main(String args[])
+	{
+		ApplicationContext context=new ClassPathXmlApplicationContext("applicationContext.xml");
+		EmployeeDetailsDao empDetailsDao =(EmployeeDetailsDao) context.getBean("empDetailsDao");
+		List<EmployeeDetails> empDet=empDetailsDao.getAllEmployees();
+		System.out.println(empDet);
+	}
+}
+
+output:
+[EmployeeDetails [Emp_id=9862, Name=Robert Bayley, Age=34, Designation=H.R.Manager, Dept_Code=454, Manager=Sarah Bainbrigde], EmployeeDetails [Emp_id=4171, Name=Nicki Carter, Age=49, Designation=PHP Developer, Dept_Code=415, Manager=Eric Beaumont], EmployeeDetails [Emp_id=5613, Name=Michael Copsey, Age=41, Designation=Android Developer, Dept_Code=463, Manager=Lee Daniels], EmployeeDetails [Emp_id=7570, Name=Judith Dooley, Age=34, Designation=Project Manager, Dept_Code=173, Manager=David Edwards], EmployeeDetails [Emp_id=2732, Name=Le Fisher, Age=48, Designation=General Manager, Dept_Code=848, Manager=Jane Foster], EmployeeDetails [Emp_id=8552, Name=Susan Gill, Age=55, Designation=Business Development Manager, Dept_Code=436, Manager=Vincent Gauci], EmployeeDetails [Emp_id=8324, Name=Irene Hammond, Age=38, Designation=Internet Marketing Head, Dept_Code=765, Manager=Helen Harker], EmployeeDetails [Emp_id=3721, Name=Kenneth Henderson, Age=31, Designation=Content Writer, Dept_Code=568, Manager=Sarah Herbert], EmployeeDetails [Emp_id=7919, Name=Adul Lawal, Age=51, Designation=System Administrator, Dept_Code=922, Manager=John Knowles], EmployeeDetails [Emp_id=1401, Name=Mandy Logan, Age=52, Designation=CEO/MD, Dept_Code=545, Manager=John Leese], EmployeeDetails [Emp_id=6926, Name=Paul Lucas, Age=53, Designation=Internet Marketing Head, Dept_Code=426, Manager=Jonathan Levens], EmployeeDetails [Emp_id=6884, Name=Valerie Mitchell, Age=36, Designation=PHP Developer, Dept_Code=919, Manager=Michael McAdam], EmployeeDetails [Emp_id=9350, Name=James Rose, Age=31, Designation=Content Writer, Dept_Code=239, Manager=Simon Stanton], EmployeeDetails [Emp_id=6942, Name=Rhonda Tasker, Age=51, Designation=Business Development Manager, Dept_Code=951, Manager=David Wilson], EmployeeDetails [Emp_id=1136, Name=Una Tobin, Age=50, Designation=Project Manager, Dept_Code=132, Manager=Victoria Wynne], EmployeeDetails [Emp_id=4141, Name=Shaun Williams, Age=33, Designation=Android Developer, Dept_Code=834, Manager=Victor Beadle], EmployeeDetails [Emp_id=3333, Name=Joey Wright, Age=45, Designation=Business Development Manager, Dept_Code=834, Manager=Michael McAdam], EmployeeDetails [Emp_id=3135, Name=Brian Osborne, Age=34, Designation=Business Development Manager, Dept_Code=343, Manager=Winifred Griffith], EmployeeDetails [Emp_id=3135, Name=Georgia Garraway, Age=43, Designation=PHP Developer, Dept_Code=763, Manager=JakeMatthews]]
+
+11.(EmployeeDetails.java,EmployeeDetailsDao.java,EmployeeDetailsDaoImpl.java,EmployeeMgmt.java,applicationContext.xml)
+
+changed files are::
+
+EmployeeDetailsDao.java
+
+package org.padmini.springjdbc.dao;
+import java.util.List;
+import org.padmini.springjdbc.model.EmployeeDetails;
+public interface EmployeeDetailsDao
+{
+	public int updateEmployeeDetailsOnEmpId(int age,String descr,String manager,int empid);
+}
+
+EmployeeDetailsDaoImpl.java
+
+package org.padmini.springjdbc.impl;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.sql.DataSource;
+import org.padmini.springcore.mapper.EmployeeDetailsRowMapper;
+import org.padmini.springjdbc.dao.EmployeeDetailsDao;
+import org.padmini.springjdbc.model.EmployeeDetails;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcDaoSupport;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
+public class EmployeeDetailsDaoImpl extends JdbcDaoSupport implements EmployeeDetailsDao
+{
+	//11..update a row using object args
+	public int updateEmployeeDetailsOnEmpId(int age,String descr,String manager,int empid)
+	{
+		String query = " UPDATE EmployeeDetails SET AGE=?, DESIGNATION=?,MANAGER=? WHERE EMP_ID=?";
+		int rowsAffected=getJdbcTemplate().update(query, age, descr, manager, empid);
+		return rowsAffected;
+	}
+}
+
+EmployeeMgmt.java
+
+import java.util.List;
+import org.padmini.springjdbc.dao.EmployeeDetailsDao;
+import org.padmini.springjdbc.model.EmployeeDetails;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+public class EmployeeMgmt {
+	
+	public static void main(String args[])
+	{
+		ApplicationContext context=new ClassPathXmlApplicationContext("applicationContext.xml");
+		EmployeeDetailsDao empDetailsDao =(EmployeeDetailsDao) context.getBean("empDetailsDao");
+		int change=empDetailsDao.updateEmployeeDetailsOnEmpId(23,"Content Writer","Unity Baker",6942);
+		System.out.println("Number of rows effected: "+change);
+	}
+}
+
+output::
+console===========
+Number of rows effected: 1
+table updated=======
+
+Emp_id  Name                  Age  Designation                   Dept_Code  Manager            
+------  -----------------  ------  ----------------------------  ---------  -------------------
+  9862  Robert Bayley          34  H.R.Manager                         454  Sarah Bainbrigde   
+  4171  Nicki Carter           49  PHP Developer                       415  Eric Beaumont      
+  5613  Michael Copsey         41  Android Developer                   463  Lee Daniels        
+  7570  Judith Dooley          34  Project Manager                     173  David Edwards      
+  2732  Le Fisher              48  General Manager                     848  Jane Foster        
+  8552  Susan Gill             55  Business Development Manager        436  Vincent Gauci      
+  8324  Irene Hammond          38  Internet Marketing Head             765  Helen Harker       
+  3721  Kenneth Henderson      31  Content Writer                      568  Sarah Herbert      
+  7919  Adul Lawal             51  System Administrator                922  John Knowles       
+  1401  Mandy Logan            52  CEO/MD                              545  John Leese         
+  6926  Paul Lucas             53  Internet Marketing Head             426  Jonathan Levens    
+  6884  Valerie Mitchell       36  PHP Developer                       919  Michael McAdam     
+  9350  James Rose             31  Content Writer                      239  Simon Stanton      
+  6942  Rhonda Tasker          23  Content Writer                      951  Unity Baker        
+  1136  Una Tobin              50  Project Manager                     132  Victoria Wynne     
+  4141  Shaun Williams         33  Android Developer                   834  Victor Beadle      
+  3333  Joey Wright            45  Business Development Manager        834  Michael McAdam     
+  3135  Brian Osborne          34  Business Development Manager        343  Winifred Griffith  
+  3135  Georgia Garraway       43  PHP Developer                       763  JakeMatthews       
+
+12.(EmployeeDetails.java,EmployeeDetailsDao.java,EmployeeDetailsDaoImpl.java,EmployeeMgmt.java,applicationContext.xml)
+
+changed files are::
+
+EmployeeDetailsDao.java
+
+package org.padmini.springjdbc.dao;
+import java.util.List;
+import org.padmini.springjdbc.model.EmployeeDetails;
+public interface EmployeeDetailsDao
+{
+	public int updateEmployeeDetailsOnEmpId(String descr,int deptcode,String manager,int empid);
+}
+
+EmployeeDetailsDaoImpl.java
+
+package org.padmini.springjdbc.impl;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.sql.DataSource;
+import org.padmini.springcore.mapper.EmployeeDetailsRowMapper;
+import org.padmini.springjdbc.dao.EmployeeDetailsDao;
+import org.padmini.springjdbc.model.EmployeeDetails;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcDaoSupport;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
+
+public class EmployeeDetailsDaoImpl extends JdbcDaoSupport implements EmployeeDetailsDao
+{
+	//12..update a row using object array
+	public int updateEmployeeDetailsOnEmpId(String descr,int deptcode,String manager,int empid)
+	{
+		String query = " UPDATE EmployeeDetails SET  DESIGNATION=?, DEPT_CODE=?, MANAGER=? WHERE EMP_ID=?";
+		int rowsAffected=getJdbcTemplate().update(query, new Object[] { descr,deptcode, manager, empid});
+		return rowsAffected;
+	}
+}
+
+EmployeeMgmt.java
+
+import java.util.List;
+import org.padmini.springjdbc.dao.EmployeeDetailsDao;
+import org.padmini.springjdbc.model.EmployeeDetails;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+public class EmployeeMgmt {
+	
+	public static void main(String args[])
+	{
+		ApplicationContext context=new ClassPathXmlApplicationContext("applicationContext.xml");
+		int change=empDetailsDao.updateEmployeeDetailsOnEmpId("Content Writer",545,"David Edwards",5613);
+		System.out.println("Number of rows effected: "+change);
+	}
+}
+
+output::
+console===========
+Number of rows effected: 1
+table updated=======
+
+Emp_id  Name                  Age  Designation                   Dept_Code  Manager            
+------  -----------------  ------  ----------------------------  ---------  -------------------
+  9862  Robert Bayley          34  H.R.Manager                         454  Sarah Bainbrigde   
+  4171  Nicki Carter           49  PHP Developer                       415  Eric Beaumont      
+  5613  Michael Copsey         41  Content Writer                      545  David Edwards      
+  7570  Judith Dooley          34  Project Manager                     173  David Edwards      
+  2732  Le Fisher              48  General Manager                     848  Jane Foster        
+  8552  Susan Gill             55  Business Development Manager        436  Vincent Gauci      
+  8324  Irene Hammond          38  Internet Marketing Head             765  Helen Harker       
+  3721  Kenneth Henderson      31  Content Writer                      568  Sarah Herbert      
+  7919  Adul Lawal             51  System Administrator                922  John Knowles       
+  1401  Mandy Logan            52  CEO/MD                              545  John Leese         
+  6926  Paul Lucas             53  Internet Marketing Head             426  Jonathan Levens    
+  6884  Valerie Mitchell       36  PHP Developer                       919  Michael McAdam     
+  9350  James Rose             31  Content Writer                      239  Simon Stanton      
+  6942  Rhonda Tasker          23  Content Writer                      951  Unity Baker        
+  1136  Una Tobin              50  Project Manager                     132  Victoria Wynne     
+  4141  Shaun Williams         33  Android Developer                   834  Victor Beadle      
+  3333  Joey Wright            45  Business Development Manager        834  Michael McAdam     
+  3135  Brian Osborne          34  Business Development Manager        343  Winifred Griffith  
+  3135  Georgia Garraway       43  PHP Developer                       763  JakeMatthews       
+
+13.(EmployeeDetails.java,EmployeeDetailsDao.java,EmployeeDetailsDaoImpl.java,EmployeeMgmt.java,applicationContext.xml)
+
+changed files are::
+
+EmployeeDetailsDao.java
+package org.padmini.springjdbc.dao;
+import java.util.List;
+import org.padmini.springjdbc.model.EmployeeDetails;
+public interface EmployeeDetailsDao
+{
+	public boolean ifEmployeeExists(String name);
+}
+
+EmployeeDetailsDaoImpl.java
+
+package org.padmini.springjdbc.impl;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.sql.DataSource;
+import org.padmini.springcore.mapper.EmployeeDetailsRowMapper;
+import org.padmini.springjdbc.dao.EmployeeDetailsDao;
+import org.padmini.springjdbc.model.EmployeeDetails;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcDaoSupport;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
+public class EmployeeDetailsDaoImpl extends JdbcDaoSupport implements EmployeeDetailsDao
+{
+	//13.chk whether employee exists with name
+	public boolean ifEmployeeExists(String name)
+	{
+		String query = "SELECT COUNT(*) FROM EmployeeDetails WHERE NAME=?";
+		int count = getJdbcTemplate().queryForObject(query,new Object[] {name},Integer.class);
+		if(count>=1)
+		{
+			return true;
+		}
+		return false;
+	}
+}
+
+EmployeeMgmt.java
+
+import java.util.List;
+import org.padmini.springjdbc.dao.EmployeeDetailsDao;
+import org.padmini.springjdbc.model.EmployeeDetails;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+public class EmployeeMgmt {
+	
+	public static void main(String args[])
+	{
+		ApplicationContext context=new ClassPathXmlApplicationContext("applicationContext.xml");
+		EmployeeDetailsDao empDetailsDao =(EmployeeDetailsDao) context.getBean("empDetailsDao");
+		boolean isExist =empDetailsDao.ifEmployeeExists("Patricia Adkins");
+		System.out.println("Does an employee with name Patricia Adkins exist: "+isExist);
+	}
+}
+
+output::
+Does an employee with name Patricia Adkins exist: false
+
+14.same as 8
+
