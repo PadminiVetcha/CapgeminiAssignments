@@ -1,0 +1,846 @@
+/Added postman to chrome(behaves as a client where we give our url and get request in desired format).
+Created the SpringRestAssignment folder using String initializr.
+search string initilizr in google (refer screenshot-String Initilizr).
+After generating, it will give a zip file unzip it and import it to the eclipse.
+
+Inorder to runthe file rightclick on controller file,run as,run configurations,select folder name under maven bulid,run.
+(refer screenshot-Run Rest Api)
+
+1.Controller1.java
+
+package org.padmini.springrest.SpringRestAssignment;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class Controller1 {
+	
+	@GetMapping("/greet")
+	public String Greetings()
+	{
+		return "Hello World!!! This is padmini........";
+	}
+}
+
+output:
+localhost:8080/greet===========Hello World!!! This is padmini........
+
+2.(Controller2.java,UserAuthentication.java)
+UserAuthentication.java
+package org.padmini.springrest.SpringRestAssignment;
+
+public class UserAuthentication {
+
+		private String uname;
+		private String pwd;
+
+		public String getUname() {
+			return uname;
+		}
+
+		public void setUname(String uname) {
+			this.uname = uname;
+		}
+
+		public String getPwd() {
+			return pwd;
+		}
+
+		public void setPwd(String pwd) {
+			this.pwd = pwd;
+		}
+		
+		@Override
+		public String toString() {
+			return "UserAuthentication [uname=" + uname + ", pwd=" + pwd + "]";
+		}		
+}
+
+Controller2.java
+package org.padmini.springrest.SpringRestAssignment;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class Controller2 {
+
+	@GetMapping("/chk/{uname}/{pwd}")
+	public String authenticate(@RequestBody @PathVariable("uname") String name,@RequestBody @PathVariable("pwd") String password)
+	{
+		UserAuthentication u=new UserAuthentication();
+		u.setUname(name);
+		u.setPwd(password);
+		if(u.getUname().equalsIgnoreCase("padmini")&& u.getPwd().equalsIgnoreCase("hai")) { return "Valid User"; }
+		  return "Invalid User"; 
+	}
+}
+
+output::
+localhost:8080/chk/jyothi/hai=============Invalid User
+localhost:8080/chk/padmini/hello===========Valid User
+
+3.(Address.java,Controller3.java)
+
+Address.java
+package org.padmini.springrest.SpringRestAssignment;
+
+public class Address {
+
+		private String state;
+		private String city;
+		private String country;
+		private long zipcode;
+		
+		public Address(String state, String city, String country, long zipcode) {
+			super();
+			this.state = state;
+			this.city = city;
+			this.country = country;
+			this.zipcode = zipcode;
+		}
+		public String getState() {
+			return state;
+		}
+		public void setState(String state) {
+			this.state = state;
+		}
+		public String getCity() {
+			return city;
+		}
+		public void setCity(String city) {
+			this.city = city;
+		}
+		public String getCountry() {
+			return country;
+		}
+		public void setCountry(String country) {
+			this.country = country;
+		}
+		public long getZipcode() {
+			return zipcode;
+		}
+		public void setZipcode(long zipcode) {
+			this.zipcode = zipcode;
+		}	
+}
+
+Controller3.java
+
+package org.padmini.springrest.SpringRestAssignment;
+
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class Controller3 {
+	
+	@GetMapping("/address/{zipcode}")
+	public Address getAddress(@RequestBody @PathVariable("zipcode") String zip)
+	{
+		Address add1=new Address("Andhra pradesh","Vizianagaram","India",12345);
+		Address add2=new Address("Telangana", "Hyderabad", "India", 98765);
+		List<Address> l=new ArrayList<>();
+		l.add(add1);
+		l.add(add2);
+		for (Address address : l) 
+		{
+			if(address.getZipcode()==Long.parseLong(zip))
+			{
+				return address;
+			}
+		}
+		return null;
+	}
+}
+
+output:;
+localhost:8080/address/12345=================
+{
+    "state": "Andhra pradesh",
+    "city": "Vizianagaram",
+    "country": "India",
+    "zipcode": 12345
+}
+localhost:8080/address/98765=================
+{
+    "state": "Telangana",
+    "city": "Hyderabad",
+    "country": "India",
+    "zipcode": 98765
+}
+localhost:8080/address/123==============
+null
+
+4.CreditCardController.java
+
+package org.padmini.springrest.Collector;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/validate")
+public class CreditCardController
+{
+	@GetMapping(path="/{no}")
+	public String validate(@PathVariable("no") String num)
+	{
+		if(num.length()==16)
+		{
+			String number=num.substring(0, 6);
+			int n=Integer.parseInt(number);
+			//System.out.println(n);
+			if((n>601100 && n<601109) || (n>601120 && n<601149) ||(n==601174) ||  (n>601177 && n<601179) || (n>601186 && n<601199) || (n>644000 && n<659999))
+			{
+				return "Valid Card Number";
+			}
+			else if((n>510000 && n<559999) || (n>222100 || n<272099))
+			{
+				return "Valid MasterCard Card Number";
+			}
+		}
+		else if(num.length()==15)
+		{
+			String number=num.substring(0, 4);
+			int n=Integer.parseInt(number);
+			if(n==2014 || n==2019)
+			{
+				return "Valid enRoute Card Number";
+			}
+		}
+		else if(num.length()>16 && num.length()<19)
+		{
+			String number=num.substring(0, 4);
+			int n=Integer.parseInt(number);
+			if(n>3528 && n<3589)
+			{
+				return "Valid JCB Card Number";
+			}
+		}
+		else if(num.length()<20)
+		{
+			char x=num.charAt(0);
+			int nu=Character.getNumericValue(x);
+			System.out.println(nu);
+			if(nu==4)
+			{
+				return "Valid Visa Card Number";
+			}
+		}
+		return "Invalid";
+	}
+}
+
+Output:
+http://localhost:8080/validate/5111175789432176=========Valid MasterCard Card Number
+http://localhost:8080/validate/6011337578943217=========Valid Card Number
+http://localhost:8080/validate/201933757894321==========Valid enRoute Card Number
+http://localhost:8080/validate/356633757894321654=======Valid JCB Card Number
+http://localhost:8080/validate/45663375=================Valid Visa Card Number
+http://localhost:8080/validate/33663375=================Invalid
+
+
+5. Created a maven project of spring boot using springInitilize (folder name is SpringRestDatabase) Dependencies added are web,jpa and apache durbey.
+
+(Employeee.java,EmployeeController.java,EmployeeService.java,EmployeeRepository.java,SpringRestDatabaseApplication.java)
+
+Employee.java
+
+package org.padmini.springrest.employee;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
+public class Employee 
+{
+	@Id
+	private int empId;
+	private String empName;
+	private String empDept;
+	private String empDesig;
+	private int empSal;
+	
+	public int getEmpId() {
+		return empId;
+	}
+	public void setEmpId(int empId) {
+		this.empId = empId;
+	}
+	public String getEmpName() {
+		return empName;
+	}
+	public void setEmpName(String empName) {
+		this.empName = empName;
+	}
+	public String getEmpDept() {
+		return empDept;
+	}
+	public void setEmpDept(String empDept) {
+		this.empDept = empDept;
+	}
+	public String getEmpDesig() {
+		return empDesig;
+	}
+	public void setEmpDesig(String empDesig) {
+		this.empDesig = empDesig;
+	}
+	public int getEmpSal() {
+		return empSal;
+	}
+	public void setEmpSal(int empSal) {
+		this.empSal = empSal;
+	}	
+}
+
+EmployeeController.java
+
+package org.padmini.springrest.employee;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class EmployeeController 
+{
+	@Autowired
+	private EmployeeService empSer;
+	
+	@GetMapping("/employee")
+	public List<Employee> getAllEmployee()
+	{
+		return empSer.getAllEmployee();
+	}
+	
+	@GetMapping("/employee/{id}")
+	public Employee getEmployee(@PathVariable Integer id)
+	{
+		return empSer.getEmployee(id);
+	}
+	
+	@PostMapping("/employee")
+	public void addEmployee(@RequestBody Employee emp)
+	{
+		empSer.addEmployee(emp);
+	}
+	
+	@PutMapping("/employee/{id}")
+	public void updateEmployee(@PathVariable Integer id,@RequestBody Employee emp)
+	{
+		empSer.updateEmployee(id,emp);
+	}
+	
+	@DeleteMapping("/employee/{id}")
+	public void deleteEmployee(@PathVariable int id)
+	{
+		empSer.deleteEmployee(id);
+	}
+}
+
+EmployeeService.java
+
+package org.padmini.springrest.employee;
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+@Service
+public class EmployeeService 
+{
+	@Autowired
+	private EmployeeRepository empRepo;
+	
+	public List<Employee> getAllEmployee()
+	{
+		List<Employee> li=new ArrayList<Employee>();
+		empRepo.findAll().forEach(li::add);
+		return li;
+	}
+	
+	public Employee getEmployee(int id)
+	{
+		return empRepo.findById(id).get();
+	}
+	
+	public void addEmployee(Employee emp)
+	{
+		empRepo.save(emp);
+	}
+	
+	public void updateEmployee(int id,Employee emp)
+	{
+		empRepo.save(emp);
+	}
+	public void deleteEmployee(int id)
+	{
+		empRepo.deleteById(id);
+	}
+}
+
+EmployeeRepository.java
+
+package org.padmini.springrest.employee;
+import org.springframework.data.repository.CrudRepository;
+public interface EmployeeRepository extends CrudRepository<Employee, Integer>
+{
+}
+
+SpringRestDatabaseApplication .java
+
+package org.padmini.springrest;
+
+
+import org.springframework.boot.SpringApplication;
+
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+
+@SpringBootApplication
+
+public class SpringRestDatabaseApplication 
+{
+
+	
+	public static void main(String[] args) 
+	{
+		
+		SpringApplication.run(SpringRestDatabaseApplication.class, args);
+	
+	}
+
+
+}
+
+output::
+
+use urls to access it in postman:::
+GET  localhost:8080/employee=============to get all employees
+GET  localhost:8080/employee/{id}========get a particular employee
+POST localhost:8080/employee=============to add a particular employee
+
+{
+	"empId":"2",
+	"empName":"Padmini",
+	"empDept": "Software",
+	"empDesig":"Analyst",
+	"empSal":"380000"
+	
+}
+PUT  localhost:8080/employee/{id}========to update a particular employee
+DELETE  localhost:8080/employee/{id}=====to delete a particular employee
+
+6.Used normal spring boot app but not rest template
+(Calculator.java,Controller6.java,SpringRestAssignment.java)
+
+package org.padmini.springrest.Model;
+
+public class Calculator {
+	
+	private int a;
+	private int b;
+	
+	public int getA() {
+		return a;
+	}
+	public void setA(int a) {
+		this.a = a;
+	}
+	public int getB() {
+		return b;
+	}
+	public void setB(int b) {
+		this.b = b;
+	}	
+}
+
+Controller6.java 
+
+package org.padmini.springrest.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping(path="/calculate")
+public class Controller6 
+{	
+
+	@GetMapping(path="/add/{a}/{b}")
+	public int add(@PathVariable("a") Integer x,@PathVariable("b") Integer y)
+	{
+		return x+y;
+	}
+	
+	@GetMapping(path="/sub/{a}/{b}")
+	public int sub(@PathVariable("a") Integer x,@PathVariable("b") Integer y)
+	{
+		return y-x;
+	}
+	
+	@GetMapping(path="/mul/{a}/{b}")
+	public int mul(@PathVariable("a") Integer x,@PathVariable("b") Integer y)
+	{
+		return x*y;
+	}
+	
+	@GetMapping(path="/div/{a}/{b}")
+	public int div(@PathVariable("a") Integer x,@PathVariable("b") Integer y)
+	{
+		return y/x;
+	}
+}
+
+SpringRestAssignment.java
+
+package org.padmini.springrest;
+
+
+import org.springframework.boot.SpringApplication;
+
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+
+@SpringBootApplication
+
+public class SpringRestDatabaseApplication 
+{
+
+	
+	public static void main(String[] args) 
+	{
+		
+		SpringApplication.run(SpringRestAssignment.class, args);
+	
+	}
+
+
+}
+
+
+output:
+chk in postman
+
+7.
+Open command prompt and go to bin folder of mongo and change the path and type mongod command to start the mongo server.
+open mongodb compass and connect to the server create a database and a collection
+(UserRepository.java,UserController.java,User.java,SpringRestDatabaseApplication .java)
+
+package org.padmini.springrest.user;
+import org.springframework.data.mongodb.repository.MongoRepository;
+public interface UserRepository extends MongoRepository<User, Integer>
+{
+}
+
+UserController .java
+
+package org.padmini.springrest.user;
+import java.util.List;
+import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class UserController 
+{
+
+	@Autowired
+	private UserRepository userRepo;
+	
+	@GetMapping("/user")
+	public List<User> getAllUsers()
+	{
+		return userRepo.findAll();	
+	}
+	
+	@GetMapping("/user/{userId}")
+	public User getUserById(@PathVariable Integer userId)
+	{
+		return userRepo.findById(userId).get();
+	}
+	
+	@PostMapping("/user")
+	public void addUser(@RequestBody User user)
+	{
+		userRepo.save(user);
+	}
+	
+	@PutMapping("/user")
+	public void updateUser(@RequestBody User user)
+	{
+		userRepo.save(user);
+	}
+	
+	@DeleteMapping("/user/{userId}")
+	public void deleteUserById(@PathVariable Integer userId)
+	{
+		userRepo.deleteById(userId);
+	}
+}
+
+User .java
+
+package org.padmini.springrest.user;
+import javax.persistence.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document
+public class User 
+{
+	@Id
+	private int userId;
+	
+	private String userName;
+	
+	public User(int userId, String userName) {
+		super();
+		this.userId = userId;
+		this.userName = userName;
+	}
+	public int getEmpId() {
+		return userId;
+	}
+	public void setEmpId(int userId) {
+		this.userId = userId;
+	}
+	public String getEmpName() {
+		return userName;
+	}
+	public void setEmpName(String userName) {
+		this.userName = userName;
+	}
+	
+	@Override
+	public String toString() {
+		return "User [userId=" + userId + ", userName=" + userName + "]";
+	}
+	
+}
+
+SpringRestDatabaseApplication .java
+
+package org.padmini.springrest;
+
+
+import org.springframework.boot.SpringApplication;
+
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+
+@SpringBootApplication
+
+public class SpringRestDatabaseApplication 
+{
+
+	
+	public static void main(String[] args) 
+	{
+		
+		SpringApplication.run(SpringRestDatabaseApplication.class, args);
+	
+	}
+
+
+}
+
+
+output::
+use postman to test url and chk in mongodb compass whether the data is added or not.
+
+
+8.
+same as 7 but for admin.
+
+9. Created a maven project of spring boot using springInitilize (folder name is SpringRestDatabase) Dependencies added are web,jpa and apache durbey.
+(Customer.java,CustomerController.java,CustomerService.java,CustomerRepository.java,SpringRestDatabaseApplication.java)
+
+Customer.java
+
+package org.padmini.springrest.customer;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+@Entity
+public class Customer 
+{
+	@Id
+	private int custId;
+	private String custName;
+	
+	public int getEmpId() {
+		return custId;
+	}
+	public void setEmpId(int custId) {
+		this.custId = custId;
+	}
+	public String getEmpName() {
+		return custName;
+	}
+	public void setEmpName(String custName) {
+		this.custName = custName;
+	}
+}
+
+CustomerController.java
+
+package org.padmini.springrest.customer;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class CustomerController 
+{
+	@Autowired
+	private CustomerService custSer;
+	
+	@GetMapping("/customer")
+	public List<Customer> getAllCustomer()
+	{
+		return custSer.getAllCustomer();
+	}
+	
+	@GetMapping("/customer/{id}")
+	public Customer getCustomer(@PathVariable Integer id)
+	{
+		return custSer.getCustomer(id);
+	}
+	
+	@PostMapping("/customer")
+	public void addCustomer(@RequestBody Customer cus)
+	{
+		custSer.addCustomer(cus);
+	}
+	
+	@PutMapping("/customer/{id}")
+	public void updateCustomer(@PathVariable Integer id,@RequestBody Customer cus)
+	{
+		custSer.updateCustomer(id,cus);
+	}
+	
+	@DeleteMapping("/customer/{id}")
+	public void deleteCustomer(@PathVariable int id)
+	{
+		custSer.deleteCustomer(id);
+	}
+}
+
+CustomerService.java
+
+package org.padmini.springrest.customer;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class CustomerService 
+{
+	@Autowired
+	private CustomerRepository custRepo;
+	
+	public List<Customer> getAllCustomer()
+	{
+		List<Customer> li=new ArrayList<Customer>();
+		custRepo.findAll().forEach(li::add);
+		return li;
+	}
+	
+	public Customer getCustomer(int id)
+	{
+		return custRepo.findById(id).get();
+	}
+	
+	public void addCustomer(Customer cus)
+	{
+		custRepo.save(cus);
+	}
+	
+	public void updateCustomer(int id,Customer cus)
+	{
+		custRepo.save(cus);
+	}
+	public void deleteCustomer(int id)
+	{
+		custRepo.deleteById(id);
+	}
+}
+
+CustomerRepository.java
+
+package org.padmini.springrest.customer;
+import org.springframework.data.repository.CrudRepository;
+public interface CustomerRepository extends CrudRepository<Customer, Integer>
+{
+}
+
+SpringRestDatabaseApplication .java
+
+package org.padmini.springrest;
+
+
+import org.springframework.boot.SpringApplication;
+
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+
+@SpringBootApplication
+
+public class SpringRestDatabaseApplication 
+{
+
+	
+	public static void main(String[] args)
+	 {
+		
+		SpringApplication.run(SpringRestDatabaseApplication.class, args);
+	
+	}
+
+
+}
+
+
+output::
+
+use urls to access it in postman:::
+GET  localhost:8080/customer=============to get all customers
+GET  localhost:8080/customer/{id}========get a particular customer
+POST localhost:8080/customer=============to add a particular customer
+ {
+        "empName": "Mani",
+        "empId": 2
+    }
+PUT  localhost:8080/customer/{id}========to update a particular customer
+DELETE  localhost:8080/customer/{id}=====to delete a particular customer
+
+10.
