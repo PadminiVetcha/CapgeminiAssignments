@@ -149,7 +149,7 @@ Now if u check in the queue in rabbit mq u will see that the value is 1 now.
 ***************************************************************************************************************************
 
 (CustomerMgmt.java,CustomerRepository.java,CustomerService.java,JMSReceiver.java,RabbitMQConfiguration.java,
-ReceiverApplication.java)
+ReceiverApplication.java,application.properties)
 
 CustomerMgmt.java
 
@@ -369,6 +369,10 @@ public class ReceiverApplication {
 		SpringApplication.run(ReceiverApplication.class, args);
 	}
 }
+ 
+ application.properties
+ 
+ server.port=8081
  
 output::
 Now the queue in the rabbitmq portal is updated from 1 to 0 as the msg in the queue is received.
