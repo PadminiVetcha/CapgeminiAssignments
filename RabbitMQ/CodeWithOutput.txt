@@ -1,0 +1,393 @@
+Inorder to connect to rabbit mq type url::
+http://localhost:15672/
+username=guest
+password=guest
+
+***************************************************************************************************************************
+						RABBIT MQ SENDER APPLICATION
+***************************************************************************************************************************
+
+(CustomerMgmt.java,RabbitMQConfiguration.java,SenderApplication.java)
+
+CustomerMgmt.java
+
+package org.padmini.rabbitmq.customer;
+
+import java.io.Serializable;
+
+public class CustomerMgmt implements Serializable
+{
+	private static final long serialVersionUID = 1L;
+	private int id;
+	private String name;
+	
+	public CustomerMgmt() {
+		super();
+	}
+
+	public CustomerMgmt(int id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Override
+	public String toString() {
+		return "CustomerMgmt [id=" + id + ", name=" + name + "]";
+	}
+}
+
+RabbitMQConfiguration.java
+
+package org.padmini.rabbitmq.customer;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
+
+@Component
+public class RabbitMQConfiguration
+{
+	public static final String topicExchangeName = "message_queue_exchange"; 
+	public static final String queueName = "message_queue";
+	
+	@Bean
+	Queue queue()
+	{
+		return new Queue(queueName, false);
+	}
+	
+	@Bean
+	TopicExchange exchange() 
+	{
+		return new TopicExchange(topicExchangeName);
+	}
+	
+	@Bean
+	Binding binding(Queue queue,TopicExchange exchange)
+	{
+		return BindingBuilder.bind(queue).to(exchange).with("message_routing_key");
+		
+	}
+	
+	@Bean
+	public ConnectionFactory connectionFactory()
+	{
+		CachingConnectionFactory connFactory=new CachingConnectionFactory("localhost");
+		connFactory.setPort(5672);
+		connFactory.setUsername("guest");
+		connFactory.setPassword("guest");
+		return connFactory;
+	}
+}
+
+SenderApplication.java
+
+package org.padmini.rabbitmq;
+
+import org.padmini.rabbitmq.customer.CustomerMgmt;
+import org.padmini.rabbitmq.customer.RabbitMQConfiguration;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class SenderApplication implements CommandLineRunner {
+	@Autowired
+	private RabbitTemplate rabbitTemplate;
+
+	public static void main(String[] args) {
+		SpringApplication.run(SenderApplication.class, args);
+	}
+
+	@Override
+	public void run(String... args) throws Exception {
+		/*
+		 * CustomerMgmt c1=new CustomerMgmt(); c1.setId(1); c1.setName("Padmini");
+		 */
+		  CustomerMgmt c2=new CustomerMgmt(); c2.setId(3); c2.setName("Jyothi");
+		 
+		System.out.println("Sending message.....!!!!");
+		rabbitTemplate.convertAndSend(RabbitMQConfiguration.topicExchangeName, "message_routing_key", c2);
+		/*
+		 * rabbitTemplate.convertAndSend(RabbitMQConfiguration.topicExchangeName,
+		 * "message_routing_key",c2);
+		 */
+		System.out.println("Message is sent successfully....!!!!");
+	}
+}
+ output::
+Sending message.....!!!!
+Message is sent successfully....!!!!
+
+Now if u check in the queue in rabbit mq u will see that the value is 1 now.
+
+***************************************************************************************************************************
+						RABBIT MQ RECEIVER APPLICATION
+***************************************************************************************************************************
+
+(CustomerMgmt.java,CustomerRepository.java,CustomerService.java,JMSReceiver.java,RabbitMQConfiguration.java,
+ReceiverApplication.java)
+
+CustomerMgmt.java
+
+package org.padmini.rabbitmq.customer;
+import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
+public class CustomerMgmt implements Serializable
+{
+	private static final long serialVersionUID = 1L;
+	@Id
+	private int id;
+	private String name;
+	
+	public CustomerMgmt() {
+		super();
+	}
+
+	public CustomerMgmt(int id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Override
+	public String toString() {
+		return "CustomerMgmt [id=" + id + ", name=" + name + "]";
+	}
+}
+
+CustomerRepository.java
+
+package org.padmini.rabbitmq.customer;
+
+import org.springframework.data.repository.CrudRepository;
+
+public interface CustomerRepository extends CrudRepository<CustomerMgmt,Integer>
+{
+}
+
+CustomerService.java
+
+package org.padmini.rabbitmq.customer;
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class CustomerService 
+{
+	@Autowired
+	private CustomerRepository custRepo;
+	
+	public List<CustomerMgmt> getAllCustomer()
+	{
+		List<CustomerMgmt> li=new ArrayList<CustomerMgmt>();
+		custRepo.findAll().forEach(li::add);
+		return li;
+	}
+	
+	public void addCustomer(CustomerMgmt cus)
+	{
+		custRepo.save(cus);
+	}
+}
+
+JMSReceiver.java
+
+package org.padmini.rabbitmq.customer;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.util.List;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.rabbit.listener.api.ChannelAwareMessageListener;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+import com.rabbitmq.client.Channel;
+
+@Component
+@RestController
+public class JMSReceiver implements ChannelAwareMessageListener
+{
+	
+	@Autowired
+	private CustomerService custSer;
+	
+	@GetMapping("/customer")
+	public List<CustomerMgmt> getAllCustomer()
+	{
+		return custSer.getAllCustomer();
+	}
+
+	@Override
+	public void onMessage(Message message, Channel channel) throws Exception 
+	{
+		System.out.println("Received < " +message + " >");
+		byte[] byteArray=message.getBody();
+		CustomerMgmt cust1=(CustomerMgmt) getObject(byteArray);
+		System.out.println("Customer Information is: "+cust1);
+		// To add the details of customer into database(apache derby database)
+		custSer.addCustomer(cust1);
+		channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+		
+	}
+
+	private static Object getObject(byte[] byteArray) throws IOException,ClassNotFoundException
+	{
+		ByteArrayInputStream bis=new ByteArrayInputStream(byteArray);
+		ObjectInput in=new ObjectInputStream(bis); 
+		return in.readObject();
+	}
+}
+
+RabbitMQConfiguration.java
+
+package org.padmini.rabbitmq.customer;
+import org.springframework.amqp.core.AcknowledgeMode;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
+
+@Component
+public class RabbitMQConfiguration
+{
+	public static final String topicExchangeName = "message_queue_exchange"; 
+	public static final String queueName = "message_queue";
+	
+	@Bean
+	Queue queue()
+	{
+		return new Queue(queueName, false);
+	}
+	
+	@Bean
+	TopicExchange exchange() 
+	{
+		return new TopicExchange(topicExchangeName);
+	}
+	
+	@Bean
+	Binding binding(Queue queue,TopicExchange exchange)
+	{
+		return BindingBuilder.bind(queue).to(exchange).with("message_routing_key");
+		
+	}
+	
+	@Bean
+	public ConnectionFactory connectionFactory()
+	{
+		CachingConnectionFactory connFactory=new CachingConnectionFactory("localhost");
+		connFactory.setPort(5672);
+		connFactory.setUsername("guest");
+		connFactory.setPassword("guest");
+		return connFactory;
+	}
+	
+	@Bean
+	SimpleMessageListenerContainer container(ConnectionFactory connFactory,
+			MessageListenerAdapter listenerAdapter)
+	{
+		SimpleMessageListenerContainer container=new SimpleMessageListenerContainer();
+		container.setConnectionFactory(connFactory);
+		container.setAcknowledgeMode(AcknowledgeMode.MANUAL);
+		container.setQueueNames(queueName);
+		container.setMessageListener(listenerAdapter);
+		return container;
+	}
+	
+	@Bean
+	MessageListenerAdapter listenerAdapter(JMSReceiver jmsReceiver)
+	{
+		return new MessageListenerAdapter(jmsReceiver,"receiveMessage");
+	}
+}
+
+
+ReceiverApplication.java
+
+package org.padmini.rabbitmq;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class ReceiverApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(ReceiverApplication.class, args);
+	}
+}
+ 
+output::
+Now the queue in the rabbitmq portal is updated from 1 to 0 as the msg in the queue is received.
+Received < (Body:'[B@15187ab9(byte[109])' MessageProperties [headers={}, contentType=application/x-java-serialized-object, contentLength=0, receivedDeliveryMode=PERSISTENT, priority=0, redelivered=false, receivedExchange=message_queue_exchange, receivedRoutingKey=message_routing_key, deliveryTag=1, consumerTag=amq.ctag-sefotZXaxfY6YW2qqA6Kmg, consumerQueue=message_queue]) >
+Customer Information is: CustomerMgmt [id=3, name=Jyothi]
+
+
+
+
+Now if u open postman and type url====
+
+GET    http://localhost:8081/customer
+result:
+[
+    {
+        "id": 3,
+        "name": "Jyothi"
+    }
+]
+if u want to add another row in database then  stop the server of rabbitmqsenderapplication ,modify the instance of customer in SenderApplication.java(in commented block)
+and again run it.No need to stop the rabbirmqreceiver application...
+Now if u run the url in postman u will find 2 entries in database.
