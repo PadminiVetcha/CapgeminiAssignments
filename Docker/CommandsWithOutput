@@ -1,0 +1,431 @@
+1.
+Signup in docker hub: https://hub.docker.com
+and for command prompt use https://www.katacoda.com/courses/kubernetes/playground and click start scenario
+
+2.To pull an image of nginx
+CMD==docker pull nginx
+
+controlplane $ docker pull nginx
+Using default tag: latest
+latest: Pulling from library/nginx
+f7ec5a41d630: Pull complete 
+aa1efa14b3bf: Pull complete 
+b78b95af9b17: Pull complete 
+c7d6bca2b8dc: Pull complete 
+cf16cd8e71e0: Pull complete 
+0241c68333ef: Pull complete 
+Digest: sha256:75a55d33ecc73c2a242450a9f1cc858499d468f077ea942867e662c247b5e412
+Status: Downloaded newer image for nginx:latest
+docker.io/library/nginx:latest
+
+3.To get all images
+CMD==docker images
+
+controlplane $ docker images
+REPOSITORY                                            TAG                 IMAGE ID            CREATED             SIZE
+nginx                                                 latest              62d49f9bab67        12 days ago         133MB
+
+4.To get only image ids
+CMD==docker images -q
+
+controlplane $ docker images -q
+62d49f9bab67
+
+5.
+
+node01 $ docker run -d --name mynginx nginx
+5e08d2773930446b341090600934c1ac5087ab1cce07a17f4a1c2300f0c9121e 
+
+6.
+node01 $ docker ps
+CONTAINER ID        IMAGE                                          COMMAND                  CREATED              STATUS              PORTS               NAMES
+0bbb65464ca8        74188596f8cb                                   "katacoda-cloud-prov…"   About a minute ago   Up About a minute                       k8s_katacoda-cloud-provider_katacoda-cloud-provider-58f89f7d9-tpkqd_kube-system_e74aa523-4eb9-4a30-8343-15f24aead70e_6
+5e08d2773930        nginx                                          "/docker-entrypoint.…"   8 minutes ago        Up 8 minutes        80/tcp              mynginx
+e8a24d126210        gcr.io/google_containers/kube-keepalived-vip   "/kube-keepalived-vi…"   10 minutes ago       Up 10 minutes                           k8s_kube-keepalived-vip_kube-keepalived-vip-smzcq_kube-system_93d78730-ccbb-4726-bfcf-d8d78556c74d_0
+
+7.
+node01 $ docker container ls -a
+CONTAINER ID        IMAGE                                          COMMAND                  CREATED              STATUS                      PORTS               NAMES
+8ec9e9008f27        74188596f8cb                                   "katacoda-cloud-prov…"   26 seconds ago       Up 25 seconds                                   k8s_katacoda-cloud-provider_katacoda-cloud-provider-58f89f7d9-tpkqd_kube-system_e74aa523-4eb9-4a30-8343-15f24aead70e_5
+ed2af54089a6        74188596f8cb                                   "katacoda-cloud-prov…"   About a minute ago   Exited (2) 26 seconds ago                       k8s_katacoda-cloud-provider_katacoda-cloud-provider-58f89f7d9-tpkqd_kube-system_e74aa523-4eb9-4a30-8343-15f24aead70e_4
+5e08d2773930        nginx                                          "/docker-entrypoint.…"   5 minutes ago        Up 5 minutes                80/tcp              mynginx
+e8a24d126210        gcr.io/google_containers/kube-keepalived-vip   "/kube-keepalived-vi…"   7 minutes ago        Up 7 minutes                                    k8s_kube-keepalived-vip_kube-keepalived-vip-smzcq_kube-system_93d78730-ccbb-4726-bfcf-d8d78556c74d_0
+604105df7924        k8s.gcr.io/pause:3.2                           "/pause"                 8 minutes ago        Up 8 minutes                                    k8s_POD_katacoda-cloud-provider-58f89f7d9-tpkqd_kube-system_e74aa523-4eb9-4a30-8343-15f24aead70e_0
+9b016c328dc7        k8s.gcr.io/pause:3.2                           "/pause"                 8 minutes ago        Up 8 minutes                                    k8s_POD_kube-keepalived-vip-smzcq_kube-system_93d78730-ccbb-4726-bfcf-d8d78556c74d_0
+b822fdb82f52        4e9f801d2217                                   "/opt/bin/flanneld -…"   8 minutes ago        Up 8 minutes                                    k8s_kube-flannel_kube-flannel-ds-amd64-hl59m_kube-system_e46b1f32-d0ba-4710-8048-701d52903e94_0
+df098f076ba4        quay.io/coreos/flannel                         "cp -f /etc/kube-fla…"   8 minutes ago        Exited (0) 8 minutes ago                        k8s_install-cni_kube-flannel-ds-amd64-hl59m_kube-system_e46b1f32-d0ba-4710-8048-701d52903e94_0
+34f52e2e1a7a        k8s.gcr.io/kube-proxy                          "/usr/local/bin/kube…"   8 minutes ago        Up 8 minutes                                    k8s_kube-proxy_kube-proxy-skg6q_kube-system_8bdc63dc-309c-4a4b-8506-5a2c9935eb88_0
+43497d28cda5        k8s.gcr.io/pause:3.2                           "/pause"                 8 minutes ago        Up 8 minutes                                    k8s_POD_kube-flannel-ds-amd64-hl59m_kube-system_e46b1f32-d0ba-4710-8048-701d52903e94_0
+ed0f615d50e5        k8s.gcr.io/pause:3.2                           "/pause"                 8 minutes ago        Up 8 minutes                                    k8s_POD_kube-proxy-skg6q_kube-system_8bdc63dc-309c-4a4b-8506-5a2c9935eb88_0
+node01 $ 
+
+8.
+node01 $ docker inspect --format="{{.Id}}" mynginx
+5e08d2773930446b341090600934c1ac5087ab1cce07a17f4a1c2300f0c9121e
+
+9.(different id than earlier but cmd is same)
+node01 $ docker image history 62d49f9bab67 
+IMAGE               CREATED             CREATED BY                                      SIZE                COMMENT
+62d49f9bab67        13 days ago         /bin/sh -c #(nop)  CMD ["nginx" "-g" "daemon…   0B                  
+<missing>           13 days ago         /bin/sh -c #(nop)  STOPSIGNAL SIGQUIT           0B                  
+<missing>           13 days ago         /bin/sh -c #(nop)  EXPOSE 80                    0B                  
+<missing>           13 days ago         /bin/sh -c #(nop)  ENTRYPOINT ["/docker-entr…   0B                  
+<missing>           13 days ago         /bin/sh -c #(nop) COPY file:09a214a3e07c919a…   4.61kB              
+<missing>           13 days ago         /bin/sh -c #(nop) COPY file:0fd5fca330dcd6a7…   1.04kB              
+<missing>           13 days ago         /bin/sh -c #(nop) COPY file:0b866ff3fc1ef5b0…   1.96kB              
+<missing>           13 days ago         /bin/sh -c #(nop) COPY file:65504f71f5855ca0…   1.2kB               
+<missing>           13 days ago         /bin/sh -c set -x     && addgroup --system -…   63.8MB              
+<missing>           13 days ago         /bin/sh -c #(nop)  ENV PKG_RELEASE=1~buster     0B                  
+<missing>           13 days ago         /bin/sh -c #(nop)  ENV NJS_VERSION=0.5.3        0B                  
+<missing>           13 days ago         /bin/sh -c #(nop)  ENV NGINX_VERSION=1.19.10    0B                  
+<missing>           2 weeks ago         /bin/sh -c #(nop)  LABEL maintainer=NGINX Do…   0B                  
+<missing>           2 weeks ago         /bin/sh -c #(nop)  CMD ["bash"]                 0B                  
+<missing>           2 weeks ago         /bin/sh -c #(nop) ADD file:c855b3c65f5ba94d5…   69.2MB              
+node01 $ 
+
+10.
+node01 $ docker pull tomcat:7.0.108-jdk8-corretto
+Pulling from library/tomcat
+99a21848b482: Pull complete 
+84ece89ed8d5: Pull complete 
+e7ffc7e8fe56: Pull complete 
+b72d91dbf8eb: Pull complete 
+a147146ad4b7: Pull complete 
+Digest: sha256:b5a0638b7b0f9adadc013eab9bec372e872f310eff34dff461919cc3f18b2286
+Status: Downloaded newer image for tomcat:7.0.108-jdk8-corretto
+docker.io/library/tomcat:7.0.108-jdk8-corretto
+
+node01 $ docker images
+REPOSITORY                                      TAG                     IMAGE ID            CREATED             SIZE
+tomcat                                          7.0.108-jdk8-corretto   c43a026ce7be        6 days ago          375MB
+nginx                                           latest                  62d49f9bab67        13 days ago         133MB
+
+11.
+node01 $ docker run -d --name mytomcat tomcat:7.0.108-jdk8-corretto 
+162d56e2961e128d3ad4518f08357b8e18a6dd73f089dfc117da91b0380c8d4f
+node01 $ 
+
+12.5f02e274a91b (container id of tomcat:7.0.108-jdk8-corretto)
+node01 $ docker inspect 5f02e274a91b | grep "IPAddress"
+            "SecondaryIPAddresses": null,
+            "IPAddress": "172.18.0.3",
+                    "IPAddress": "172.18.0.3",
+node01 $ 
+
+13.
+node01 $ docker ps
+CONTAINER ID        IMAGE                                          COMMAND                  CREATED              STATUS              PORTS               NAMES
+5f02e274a91b        tomcat:7.0.108-jdk8-corretto                   "catalina.sh run"        21 seconds ago       Up 18 seconds       8080/tcp            mytomcat
+
+14.
+localhost:8080 is not accessible(this site can't be reached)
+
+15.
+node01 $ docker ps --size
+CONTAINER ID        IMAGE                                          COMMAND                  CREATED             STATUS              PORTS               NAMES                                                                                                                    SIZE
+f385ad15b222        74188596f8cb                                   "katacoda-cloud-prov…"   52 seconds ago      Up 49 seconds                           k8s_katacoda-cloud-provider_katacoda-cloud-provider-58f89f7d9-w65vj_kube-system_aede0f93-dc97-41bc-86fc-bd6a5ee258d2_7   0B (virtual 116MB)
+5f02e274a91b        tomcat:7.0.108-jdk8-corretto                   "catalina.sh run"        13 minutes ago      Up 13 minutes       8080/tcp            mytomcat                                                                                                                 36.5kB (virtual 375MB)
+
+16.
+node01 $ docker exec 5f02e274a91b env
+PATH=/usr/local/tomcat/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+HOSTNAME=5f02e274a91b
+LANG=C.UTF-8
+JAVA_HOME=/usr/lib/jvm/java-1.8.0-amazon-corretto
+CATALINA_HOME=/usr/local/tomcat
+TOMCAT_NATIVE_LIBDIR=/usr/local/tomcat/native-jni-lib
+LD_LIBRARY_PATH=/usr/local/tomcat/native-jni-lib
+GPG_KEYS=05AB33110949707C93A279E3D3EFE6B686867BA6 07E48665A34DCAFAE522E5E6266191C37C037D42 47309207D818FFD8DCD3F83F1931D684307A10A5 541FBE7D8F78B25E055DDEE13C370389288584E7 61B832AC2F1C5A90F0F9B00A1C506407564C17A3 713DA88BE50911535FE716F5208B0AB1D63011C7 79F7026C690BAA50B92CD8B66A3AD3F4F22C4FED 9BA44C2621385CB966EBA586F72C284D731FABEE A27677289986DB50844682F8ACB77FC2E86E29AC A9C5DF4D22E99998D9875A5110C01C5A2F6059E7 DCFD35E0BF8CA7344752DE8B6FB21E8933C60243 F3A04C595DB5B6A5F1ECA43E3B7BBB100D811BBE F7DA48BB64BCB84ECBA7EE6935CD23C10D498E23
+TOMCAT_MAJOR=7
+TOMCAT_VERSION=7.0.108
+TOMCAT_SHA512=78961dd302e4398dc760bf9b93fd8f456d06f5a542535688b87320c2d5558d70168cddb0fd4d85965a453bd75c737d5237cf64bf9e40da93eebd957ee763946c
+HOME=/root
+node01 $ 
+
+17. same as 13
+
+18.
+node01 $ docker run -d --name mytomcat1 -p 8081:8080 tomcat:jdk8-adoptopenjdk-openj9 
+Unable to find image 'tomcat:jdk8-adoptopenjdk-openj9' locally
+jdk8-adoptopenjdk-openj9: Pulling from library/tomcat
+345e3491a907: Pull complete 
+57671312ef6f: Pull complete 
+5e9250ddb7d0: Pull complete 
+592ec2d7c137: Pull complete 
+f853b47aa877: Pull complete 
+63b8b58cbc91: Pull complete 
+ce6db1833da3: Pull complete 
+66bf136a5eee: Pull complete 
+b02c00a2b15c: Pull complete 
+Digest: sha256:7dc9d6eaf71e953cd08cee2ca65b48963432118c4a98e0c07dcb6f9cfb218009
+Status: Downloaded newer image for tomcat:jdk8-adoptopenjdk-openj9
+6e2024343e6f9d7d996566389e595925b78b90fb26e3e13b0824caba3677620e
+
+node01 $ docker ps
+CONTAINER ID        IMAGE                                          COMMAND                  CREATED             STATUS              PORTS                    NAMES
+6e2024343e6f        tomcat:jdk8-adoptopenjdk-openj9                "catalina.sh run"        6 seconds ago       Up 4 seconds        0.0.0.0:8081->8080/tcp   mytomcat1
+6a0d7e860933        74188596f8cb                                   "katacoda-cloud-prov…"   26 seconds ago      Up 25 seconds                                k8s_katacoda-cloud-provider_katacoda-cloud-provider-58f89f7d9-w65vj_kube-system_aede0f93-dc97-41bc-86fc-bd6a5ee258d2_12
+5f02e274a91b        tomcat:7.0.108-jdk8-corretto                   "catalina.sh run"        36 minutes ago      Up 36 minutes       8080/tcp                 mytomcat
+
+19.both 20 and 21.
+
+20.
+node01 $ docker run -d --name myubuntu1 -p 9090:8080 ubuntu:xenial-20210416   or try docker run -it ubuntu:xenial-20210416 
+Unable to find image 'ubuntu:xenial-20210416' locally
+xenial-20210416: Pulling from library/ubuntu
+92473f7ef455: Pull complete 
+fb52bde70123: Pull complete 
+64788f86be3f: Pull complete 
+33f6d5f2e001: Pull complete 
+Digest: sha256:eed7e1076bbc1f342c4474c718e5438af4784f59a4e88ad687dbb98483b59ee4
+Status: Downloaded newer image for ubuntu:xenial-20210416
+1bf250245ab330b41b2125ceca0fcd2427e797dcad29a8922b6196a70ac86e21
+
+node01 $ docker ps -a
+CONTAINER ID        IMAGE                                          COMMAND                  CREATED              STATUS                          PORTS                    NAMES
+8bf5e753cbc0        74188596f8cb                                   "katacoda-cloud-prov…"   50 seconds ago       Up 50 seconds                                            k8s_katacoda-cloud-provider_katacoda-cloud-provider-6786965448-4gp4b_kube-system_9f83291e-3617-4a95-b360-236eec5d53ac_7
+65d685bf4739        ubuntu:xenial-20210416                         "/bin/bash"              About a minute ago   Exited (0) About a minute ago                            clever_cerf
+9ea927132429        74188596f8cb                                   "katacoda-cloud-prov…"   5 minutes ago        Exited (2) 3 minutes ago                                 k8s_katacoda-cloud-provider_katacoda-cloud-provider-6786965448-4gp4b_kube-system_9f83291e-3617-4a95-b360-236eec5d53ac_6
+172a19e4cf4e        ubuntu:xenial-20210416                         "/bin/bash"              11 minutes ago       Exited (0) 9 minutes ago                                 myubuntu1
+4525fcf81eb9        tomcat:jdk8-adoptopenjdk-openj9                "catalina.sh run"        13 minutes ago       Up 13 minutes                   0.0.0.0:8081->8080/tcp   mytomcat1
+
+21.
+node01 $ docker run --name myubuntu2 -p 9091:8080 ubuntu:xenial
+Unable to find image 'ubuntu:xenial' locally
+xenial: Pulling from library/ubuntu
+Digest: sha256:eed7e1076bbc1f342c4474c718e5438af4784f59a4e88ad687dbb98483b59ee4
+Status: Downloaded newer image for ubuntu:xenial
+
+node01 $ docker ps -a
+CONTAINER ID        IMAGE                                          COMMAND                  CREATED             STATUS                      PORTS                    NAMES
+c86f47c26206        ubuntu:xenial                                  "/bin/bash"              7 seconds ago       Exited (0) 6 seconds ago                             myubuntu2
+8bf5e753cbc0        74188596f8cb                                   "katacoda-cloud-prov…"   4 minutes ago       Exited (2) 2 minutes ago                             k8s_katacoda-cloud-provider_katacoda-cloud-provider-6786965448-4gp4b_kube-system_9f83291e-3617-4a95-b360-236eec5d53ac_7
+65d685bf4739        ubuntu:xenial-20210416                         "/bin/bash"              5 minutes ago       Exited (0) 4 minutes ago                             clever_cerf
+172a19e4cf4e        ubuntu:xenial-20210416                         "/bin/bash"              14 minutes ago      Exited (0) 12 minutes ago                            myubuntu1
+4525fcf81eb9        tomcat:jdk8-adoptopenjdk-openj9                "catalina.sh run"        16 minutes ago      Up 16 minutes               0.0.0.0:8081->8080/tcp   mytomcat1
+
+22.
+node01 $ docker ps -a
+CONTAINER ID        IMAGE                                          COMMAND                  CREATED             STATUS                      PORTS                    NAMES
+015a73be2208        74188596f8cb                                   "katacoda-cloud-prov…"   2 minutes ago       Exited (2) 46 seconds ago                            k8s_katacoda-cloud-provider_katacoda-cloud-provider-6786965448-4gp4b_kube-system_9f83291e-3617-4a95-b360-236eec5d53ac_9
+c86f47c26206        ubuntu:xenial                                  "/bin/bash"              6 minutes ago       Exited (0) 6 minutes ago                             myubuntu2
+65d685bf4739        ubuntu:xenial-20210416                         "/bin/bash"              11 minutes ago      Exited (0) 10 minutes ago                            clever_cerf
+172a19e4cf4e        ubuntu:xenial-20210416                         "/bin/bash"              20 minutes ago      Exited (0) 19 minutes ago                            myubuntu1
+4525fcf81eb9        tomcat:jdk8-adoptopenjdk-openj9                "catalina.sh run"        22 minutes ago      Up 22 minutes               0.0.0.0:8081->8080/tcp   mytomcat1
+8688ce987b4e        gcr.io/google_containers/kube-keepalived-vip   "/kube-keepalived-vi…"   23 minutes ago      Up 23 minutes                                        k8s_kube-keepalived-vip_kube-keepalived-vip-b54hc_kube-system_cf0809cd-6357-4b67-a7c2-e38df424bcd9_0
+7dfb377f9a5f        k8s.gcr.io/pause:3.2                           "/pause"                 23 minutes ago      Up 23 minutes                                        k8s_POD_katacoda-cloud-provider-6786965448-4gp4b_kube-system_9f83291e-3617-4a95-b360-236eec5d53ac_0
+07944c9b6dc8        k8s.gcr.io/pause:3.2                           "/pause"                 23 minutes ago      Up 23 minutes                                        k8s_POD_kube-keepalived-vip-b54hc_kube-system_cf0809cd-6357-4b67-a7c2-e38df424bcd9_0
+123bda5d3a00        tomcat:7.0.108-jdk8-corretto                   "catalina.sh run"        23 minutes ago      Up 23 minutes               8080/tcp                 mytomcat
+
+23.
+Yes, tomcat is running u can see it from 22.
+
+24.logs of tomcat:jdk8-adoptopenjdk-openj9  with container id 4525fcf81eb9
+node01 $ docker logs 4525fcf81eb9
+28-Apr-2021 09:39:04.516 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server version name:   Apache Tomcat/9.0.45
+28-Apr-2021 09:39:04.520 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server built:          Mar 30 2021 10:29:04 UTC
+28-Apr-2021 09:39:04.521 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server version number: 9.0.45.0
+28-Apr-2021 09:39:04.521 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log OS Name:               Linux
+28-Apr-2021 09:39:04.522 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log OS Version:            4.15.0-122-generic
+28-Apr-2021 09:39:04.523 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Architecture:          amd64
+28-Apr-2021 09:39:04.524 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Java Home:             /opt/java/openjdk/jre
+28-Apr-2021 09:39:04.524 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Version:           1.8.0_282-b08
+28-Apr-2021 09:39:04.525 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Vendor:            Eclipse OpenJ9
+28-Apr-2021 09:39:04.526 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_BASE:         /usr/local/tomcat
+28-Apr-2021 09:39:04.526 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_HOME:         /usr/local/tomcat
+28-Apr-2021 09:39:04.529 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Xoptionsfile=/opt/java/openjdk/jre/lib/amd64/compressedrefs/options.default
+28-Apr-2021 09:39:04.529 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Xlockword:mode=default,noLockword=java/lang/String,noLockword=java/util/MapEntry,noLockword=java/util/HashMap$Entry,noLockword=org/apache/harmony/luni/util/ModifiedMap$Entry,noLockword=java/util/Hashtable$Entry,noLockword=java/lang/invoke/MethodType,noLockword=java/lang/invoke/MethodHandle,noLockword=java/lang/invoke/CollectHandle,noLockword=java/lang/invoke/ConstructorHandle,noLockword=java/lang/invoke/ConvertHandle,noLockword=java/lang/invoke/ArgumentConversionHandle,noLockword=java/lang/invoke/AsTypeHandle,noLockword=java/lang/invoke/ExplicitCastHandle,noLockword=java/lang/invoke/FilterReturnHandle,noLockword=java/lang/invoke/DirectHandle,noLockword=java/lang/invoke/ReceiverBoundHandle,noLockword=java/lang/invoke/DynamicInvokerHandle,noLockword=java/lang/invoke/FieldHandle,noLockword=java/lang/invoke/FieldGetterHandle,noLockword=java/lang/invoke/FieldSetterHandle,noLockword=java/lang/invoke/StaticFieldGetterHandle,noLockword=java/lang/invoke/StaticFieldSetterHandle,noLockword=java/lang/invoke/IndirectHandle,noLockword=java/lang/invoke/InterfaceHandle,noLockword=java/lang/invoke/VirtualHandle,noLockword=java/lang/invoke/PrimitiveHandle,noLockword=java/lang/invoke/InvokeExactHandle,noLockword=java/lang/invoke/InvokeGenericHandle,noLockword=java/lang/invoke/VarargsCollectorHandle,noLockword=java/lang/invoke/ThunkTuple
+28-Apr-2021 09:39:04.530 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Xjcl:jclse29
+28-Apr-2021 09:39:04.531 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcom.ibm.oti.vm.bootstrap.library.path=/opt/java/openjdk/jre/lib/amd64/compressedrefs:/opt/java/openjdk/jre/lib/amd64
+28-Apr-2021 09:39:04.531 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dsun.boot.library.path=/opt/java/openjdk/jre/lib/amd64/compressedrefs:/opt/java/openjdk/jre/lib/amd64
+28-Apr-2021 09:39:04.531 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.library.path=/opt/java/openjdk/jre/lib/amd64/compressedrefs:/opt/java/openjdk/jre/lib/amd64:/usr/local/tomcat/native-jni-lib:/usr/lib64:/usr/lib
+28-Apr-2021 09:39:04.532 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.home=/opt/java/openjdk/jre
+28-Apr-2021 09:39:04.532 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.ext.dirs=/opt/java/openjdk/jre/lib/ext
+28-Apr-2021 09:39:04.532 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Duser.dir=/usr/local/tomcat
+28-Apr-2021 09:39:04.532 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -XX:+IgnoreUnrecognizedVMOptions
+28-Apr-2021 09:39:04.532 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -XX:+IdleTuningGcOnIdle
+28-Apr-2021 09:39:04.532 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Xshareclasses:name=openj9_system_scc,cacheDir=/opt/java/.scc,readonly,nonFatal
+28-Apr-2021 09:39:04.532 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.class.path=.
+28-Apr-2021 09:39:04.533 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.config.file=/usr/local/tomcat/conf/logging.properties
+28-Apr-2021 09:39:04.533 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+28-Apr-2021 09:39:04.533 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djdk.tls.ephemeralDHKeySize=2048
+28-Apr-2021 09:39:04.533 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.protocol.handler.pkgs=org.apache.catalina.webresources
+28-Apr-2021 09:39:04.533 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dorg.apache.catalina.security.SecurityListener.UMASK=0027
+28-Apr-2021 09:39:04.533 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dignore.endorsed.dirs=
+28-Apr-2021 09:39:04.533 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.class.path=/usr/local/tomcat/bin/bootstrap.jar:/usr/local/tomcat/bin/tomcat-juli.jar
+28-Apr-2021 09:39:04.533 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.base=/usr/local/tomcat
+28-Apr-2021 09:39:04.533 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.home=/usr/local/tomcat
+28-Apr-2021 09:39:04.533 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.io.tmpdir=/usr/local/tomcat/temp
+28-Apr-2021 09:39:04.533 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dsun.java.command=org.apache.catalina.startup.Bootstrap start
+28-Apr-2021 09:39:04.533 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dsun.java.launcher=SUN_STANDARD
+28-Apr-2021 09:39:04.533 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dsun.java.launcher.pid=1
+28-Apr-2021 09:39:04.554 INFO [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent Loaded Apache Tomcat Native library [1.2.27] using APR version [1.6.5].
+28-Apr-2021 09:39:04.554 INFO [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true].
+28-Apr-2021 09:39:04.554 INFO [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent APR/OpenSSL configuration: useAprConnector [false], useOpenSSL [true]
+28-Apr-2021 09:39:04.557 INFO [main] org.apache.catalina.core.AprLifecycleListener.initializeSSL OpenSSL successfully initialized [OpenSSL 1.1.1f  31 Mar 2020]
+28-Apr-2021 09:39:04.815 INFO [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["http-nio-8080"]
+28-Apr-2021 09:39:04.853 INFO [main] org.apache.catalina.startup.Catalina.load Server initialization in [547] milliseconds
+28-Apr-2021 09:39:04.870 INFO [main] org.apache.catalina.core.StandardService.startInternal Starting service [Catalina]
+28-Apr-2021 09:39:04.871 INFO [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet engine: [Apache Tomcat/9.0.45]
+28-Apr-2021 09:39:04.882 INFO [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["http-nio-8080"]
+28-Apr-2021 09:39:04.891 INFO [main] org.apache.catalina.startup.Catalina.start Server startup in [36] milliseconds
+
+Also tried to access localhost:8081
+but the ouput is ==the site can't be reached.
+
+25.Ubuntu is running.
+
+node01 $ docker ps -a
+CONTAINER ID        IMAGE                                          COMMAND                  CREATED             STATUS                      PORTS                    NAMES
+9bdcb701531a        74188596f8cb                                   "katacoda-cloud-prov…"   4 minutes ago       Exited (2) 2 minutes ago                             k8s_katacoda-cloud-provider_katacoda-cloud-provider-6786965448-4gp4b_kube-system_9f83291e-3617-4a95-b360-236eec5d53ac_11
+c86f47c26206        ubuntu:xenial                                  "/bin/bash"              16 minutes ago      Exited (0) 16 minutes ago                            myubuntu2
+65d685bf4739        ubuntu:xenial-20210416                         "/bin/bash"              21 minutes ago      Exited (0) 20 minutes ago                            clever_cerf
+172a19e4cf4e        ubuntu:xenial-20210416                         "/bin/bash"              31 minutes ago      Exited (0) 29 minutes ago                            myubuntu1
+4525fcf81eb9        tomcat:jdk8-adoptopenjdk-openj9                "catalina.sh run"        32 minutes ago      Up 32 minutes               0.0.0.0:8081->8080/tcp   mytomcat1
+
+26.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+39.0
+node01 $ docker images --help
+
+Usage:  docker images [OPTIONS] [REPOSITORY[:TAG]]
+
+List images
+
+Options:
+  -a, --all             Show all images (default hides intermediate images)
+      --digests         Show digests
+  -f, --filter filter   Filter output based on conditions provided
+      --format string   Pretty-print images using a Go template
+      --no-trunc        Don't truncate output
+  -q, --quiet           Only show numeric IDs
+
+39.1
+node01 $ docker images -a
+REPOSITORY                                      TAG                        IMAGE ID            CREATED             SIZE
+tomcat                                          jdk8-adoptopenjdk-openj9   a1f42ae0337f        4 days ago          375MB
+ubuntu                                          xenial                     aefd7f02ae24        5 days ago          134MB
+ubuntu                                          xenial-20210416            aefd7f02ae24        5 days ago          134MB
+tomcat                                          7.0.108-jdk8-corretto      c43a026ce7be        8 days ago          375MB
+
+39.2
+node01 $ docker images --filter "since=ubuntu"
+REPOSITORY          TAG                        IMAGE ID            CREATED             SIZE
+tomcat              jdk8-adoptopenjdk-openj9   a1f42ae0337f        4 days ago          375MB
+ubuntu              xenial                     aefd7f02ae24        5 days ago          134MB
+ubuntu              xenial-20210416            aefd7f02ae24        5 days ago          134MB
+tomcat              7.0.108-jdk8-corretto      c43a026ce7be        8 days ago          375MB
+
+39.3
+node01 $ docker images -q
+a1f42ae0337f
+aefd7f02ae24
+aefd7f02ae24
+c43a026ce7be
+
+40.0
+node01 $ docker ps --help
+
+Usage:  docker ps [OPTIONS]
+
+List containers
+
+Options:
+  -a, --all             Show all containers (default shows just running)
+  -f, --filter filter   Filter output based on conditions provided
+      --format string   Pretty-print containers using a Go template
+  -n, --last int        Show n last created containers (includes all states) (default -1)
+  -l, --latest          Show the latest created container (includes all states)
+      --no-trunc        Don't truncate output
+  -q, --quiet           Only display numeric IDs
+  -s, --size            Display total file sizes
+
+40.1
+node01 $ docker ps -a
+CONTAINER ID        IMAGE                                          COMMAND                  CREATED             STATUS                      PORTS                    NAMES
+3d1fd1858e53        74188596f8cb                                   "katacoda-cloud-prov…"   4 minutes ago       Exited (2) 2 minutes ago                             k8s_katacoda-cloud-provider_katacoda-cloud-provider-58f89f7d9-xh5p4_kube-system_b7225bb4-237a-4e0d-a595-1dad6937deed_9
+91609a648acf        ubuntu:xenial                                  "/bin/bash"              20 minutes ago      Exited (0) 20 minutes ago                            myubuntu2
+4fe222bae69f        ubuntu:xenial-20210416                         "/bin/bash"              23 minutes ago      Exited (0) 23 minutes ago                            myubuntu1
+f209f6203d38        tomcat:jdk8-adoptopenjdk-openj9                "catalina.sh run"        23 minutes ago      Up 23 minutes               0.0.0.0:8081->8080/tcp   mytomcat1
+b7b1c536fb9f        tomcat:7.0.108-jdk8-corretto                   "catalina.sh run"        24 minutes ago      Up 24 minutes               8080/tcp                 mytomcat
+
+40.2 filter where id=f209f6203d38
+node01 $ docker ps -f "id=f209f6203d38"
+CONTAINER ID        IMAGE                             COMMAND             CREATED             STATUS              PORTS                    NAMES
+f209f6203d38        tomcat:jdk8-adoptopenjdk-openj9   "catalina.sh run"   26 minutes ago      Up 26 minutes       0.0.0.0:8081->8080/tcp   mytomcat1
+
+40.3 Gives container id's
+node01 $ docker ps -q
+061844bf3b1c
+f209f6203d38
+b7b1c536fb9f
+8cdadcf911a1
+f176815f80ca
+20310e4fdb4b
+b0c01f5f84da
+b6ff499c9de1
+82ec22a78a4f
+c2b121ec39ce
+
+40.4 Gives latest 5 containers
+node01 $ docker ps -n 5
+CONTAINER ID        IMAGE                             COMMAND                  CREATED             STATUS                      PORTS                    NAMES
+0b6ea8556c9d        74188596f8cb                      "katacoda-cloud-prov…"   3 minutes ago       Exited (2) 2 minutes ago                             k8s_katacoda-cloud-provider_katacoda-cloud-provider-58f89f7d9-xh5p4_kube-system_b7225bb4-237a-4e0d-a595-1dad6937deed_15
+91609a648acf        ubuntu:xenial                     "/bin/bash"              44 minutes ago      Exited (0) 44 minutes ago                            myubuntu2
+4fe222bae69f        ubuntu:xenial-20210416            "/bin/bash"              47 minutes ago      Exited (0) 47 minutes ago                            myubuntu1
+f209f6203d38        tomcat:jdk8-adoptopenjdk-openj9   "catalina.sh run"        47 minutes ago      Up 47 minutes               0.0.0.0:8081->8080/tcp   mytomcat1
+b7b1c536fb9f        tomcat:7.0.108-jdk8-corretto      "catalina.sh run"        48 minutes ago      Up 48 minutes               8080/tcp                 mytomcat
+
+40.5 Gives latest container
+node01 $ docker ps -l
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                          PORTS               NAMES
+061844bf3b1c        74188596f8cb        "katacoda-cloud-prov…"   3 minutes ago       Exited (2) About a minute ago                       k8s_katacoda-cloud-provider_katacoda-cloud-provider-58f89f7d9-xh5p4_kube-system_b7225bb4-237a-4e0d-a595-1dad6937deed_11
+
+40.6 displays size of containers
+node01 $ docker ps -s
+CONTAINER ID        IMAGE                                          COMMAND                  CREATED             STATUS              PORTS                    NAMES                SIZE
+f209f6203d38        tomcat:jdk8-adoptopenjdk-openj9                "catalina.sh run"        49 minutes ago      Up 48 minutes       0.0.0.0:8081->8080/tcp   mytomcat1            8.8kB (virtual 375MB)
+b7b1c536fb9f        tomcat:7.0.108-jdk8-corretto                   "catalina.sh run"        49 minutes ago      Up 49 minutes       8080/tcp                 mytomcat             36.5kB (virtual 375MB)
